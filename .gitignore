@@ -1,0 +1,19 @@
+# Secrets - never commit
+.env
+service-account.json
+*.session
+*.session-journal
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Runtime output
+screenshots/*.png
+logs/*.log
+data/*.json
+
+!screenshots/.gitkeep
+!logs/.gitkeep
+!data/.gitkeep

@@ -1,0 +1,32 @@
+version: '3.8'
+
+# hood_scraper.py, blockscout_enricher.py, score_calculator.py, alert_bot.py
+# and daily_export.py are one-shot scripts meant to run on a schedule
+# (cron / Task Scheduler), not as long-lived containers.
+
+services:
+  telethon:
+    build: .
+    command: python telethon_collector.py
+    env_file: .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  frontend:
+    build: .
+    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    ports:
+      - "8501:8501"
+    env_file: .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
+
+  screen-ocr:
+    build: .
+    command: python screen_ocr_monitor.py
+    env_file: .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
