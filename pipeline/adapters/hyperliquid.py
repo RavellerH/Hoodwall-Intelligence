@@ -84,6 +84,39 @@ def get_fills(address):
     return data if isinstance(data, list) else []
 
 
+def exists(address):
+    """Does this address have a Hyperliquid account at all?
+
+    Chain resolution for a submitted address normally means probing block
+    explorers, and every explorer is blind to Hyperliquid: the activity is
+    positions inside the venue, not transactions. So membership has to be
+    asked of the venue itself.
+
+    "Has an account" means equity, an open position, or a fill on record.
+    An address that merely exists as 40 hex characters returns an empty
+    clearinghouse state, which is the answer we want to distinguish.
+    """
+    try:
+        state = get_state(address) or {}
+    except HyperliquidError:
+        raise
+
+    summary = state.get("marginSummary") or {}
+    if _num(summary.get("accountValue")) > 0:
+        return True
+    if _num(state.get("withdrawable")) > 0:
+        return True
+    if any((entry.get("position") or entry).get("coin")
+           for entry in state.get("assetPositions") or []):
+        return True
+
+    # A closed-out account still has history, and is still an account.
+    try:
+        return bool(get_fills(address))
+    except HyperliquidError:
+        return False
+
+
 # --- feature extraction ---------------------------------------------------
 
 def extract(address, state, fills):

@@ -31,6 +31,16 @@ knows where the address is actually active does `--write-kb` promote it to
 record would put an unverified fact in the knowledge base to satisfy a
 schema, which is exactly backwards.
 
+A seed may carry a `chain_hint`. Hyperliquid is the case that needs one:
+every block explorer is blind to it, because the activity is positions
+inside the venue rather than transactions, so a Hyperliquid account probes
+as "no activity anywhere" and would never be filed at all. A hinted seed is
+asked of the venue directly, through `adapters.hyperliquid.exists()` —
+equity, an open position, or a fill on record all mean "this is an
+account". A confirmed one is filed on `hyperliquid` and the Hyperliquid
+scorer takes it from there. Flow tracing still cannot follow it: there is
+no transfer graph inside a perps venue to walk.
+
 ## Why counterparties are not clusters
 
 Expanding one hop from a wallet and calling the result "their cluster"

@@ -324,7 +324,7 @@ knowledge/infrastructure.yml exchanges, bridges, mixers, routers - not wallets
 docs/                       signal-analysis, knowledge-base, flow-tracing,
                              attribution-methods, graph-and-sentiment,
                              realtime-alerts, tool-landscape
-tests/                      165 tests across pipeline, kb, graph, sentiment, adapters
+tests/                      172 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis

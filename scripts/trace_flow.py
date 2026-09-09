@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from pipeline import chain, flow, store  # noqa: E402
+from pipeline.adapters import hyperliquid as hl  # noqa: E402
 from pipeline.kb import addresses as addr  # noqa: E402
 
 WATCHLIST = ROOT / "knowledge" / "watchlist.yml"
@@ -38,6 +39,32 @@ def load_watchlist():
         return []
     rows = yaml.safe_load(WATCHLIST.read_text(encoding="utf-8")) or []
     return rows if isinstance(rows, list) else rows.get("seeds", [])
+
+
+def probe_hyperliquid(seeds, seed_meta):
+    """Ask the venue whether these addresses are Hyperliquid accounts.
+
+    Every block explorer is blind to Hyperliquid, so a seed that lives there
+    probes as "no activity anywhere" and never gets filed. Only addresses
+    hinted at hyperliquid are asked, so this costs one call per hint rather
+    than one per seed.
+    """
+    hinted = [s for s in seeds if seed_meta.get(s, {}).get("chain_hint") == "hyperliquid"]
+    if not hinted:
+        return {}
+    print(f"\n[hyperliquid] checking {len(hinted)} hinted address(es) at the venue")
+    confirmed = {}
+    for address in hinted:
+        try:
+            if hl.exists(address):
+                confirmed[address] = {"transactions": 0, "is_contract": False,
+                                      "venue": "hyperliquid"}
+                print(f"  {addr.shorten(address)}: account found")
+            else:
+                print(f"  {addr.shorten(address)}: no account")
+        except hl.HyperliquidError as exc:
+            print(f"  ! {addr.shorten(address)}: {exc}")
+    return confirmed
 
 
 def merge_wallets(chain_key, records, write):
@@ -81,7 +108,9 @@ def kb_records(report, seed_meta):
                 "confidence": meta.get("confidence", "reported"),
                 "added": today,
                 "notes": (meta.get("note") or "Seed wallet submitted for flow tracing.")
-                         + f" Active on {chain_key}: {info['transactions']} tx.",
+                         + (" Confirmed as a Hyperliquid account at the venue."
+                            if info.get("venue") == "hyperliquid"
+                            else f" Active on {chain_key}: {info['transactions']} tx."),
             }
             if meta.get("handle"):
                 record["handle"] = meta["handle"]
@@ -155,6 +184,10 @@ def main():
         return print(f"chain API refused the request: {exc}") or 2
     except (flow.FlowError, addr.AddressError) as exc:
         return print(f"{exc}") or 1
+
+    for address, info in probe_hyperliquid(
+            [addr.normalize(s, "evm") for s in seeds], seed_meta).items():
+        report["activity"].setdefault(address, {})["hyperliquid"] = info
 
     out = Path(args.out) if args.out else Path(store.config.DATA_DIR) / "flow_links.json"
     out.parent.mkdir(parents=True, exist_ok=True)
