@@ -8,7 +8,7 @@ and a copyright problem. Set PUBLISH_RAW_TEXT=true to override.
 import json
 from pathlib import Path
 
-from . import config, scoring
+from . import config, graph, scoring, sentiment
 from .kb import load as load_kb
 from .kb.schema import ValidationError
 from .store import load, utcnow
@@ -110,8 +110,29 @@ def run():
     kb_payload = _build_kb(rows)
     meta["knowledge"] = kb_payload["stats"]
 
+    graph_payload, sentiment_payload = _build_graph_and_sentiment(rows)
+    meta["graph"] = graph_payload.get("stats", {})
+    meta["sentiment"] = {
+        "score": sentiment_payload.get("overall", {}).get("score"),
+        "label": sentiment_payload.get("overall", {}).get("label"),
+        "confidence": sentiment_payload.get("overall", {}).get("confidence"),
+    }
+
+    # A compact top-bar ticker (à la CoinMarketCap): live price + 24h change
+    # per chain that has a mapped DefiLlama coin id. Free, no key, works
+    # from the pipeline's very first run.
+    market_payload = list(load("market").values())
+    meta["market"] = [
+        {"chain": r["chain"], "name": r["name"], "symbol": r["symbol"],
+         "price_usd": r["price_usd"], "change_24h": r["price_change_24h"]}
+        for r in market_payload if r.get("price_usd") is not None
+    ]
+
     _write("wallets.json", rows)
     _write("kb.json", kb_payload)
+    _write("graph.json", graph_payload)
+    _write("sentiment.json", sentiment_payload)
+    _write("market.json", market_payload)
     _write("meta.json", meta)
     print(f"[publish] {len(rows)} wallet(s) published of {len(scores)} scored")
     return len(rows)
@@ -254,3 +275,54 @@ def _build_kb(scored_rows):
         "sources": list(kb.sources.values()),
         "errors": kb.errors,
     }
+
+
+def _build_graph_and_sentiment(scored_rows):
+    """Assemble the relationship graph and the sentiment read.
+
+    Both degrade gracefully: with no enrichment yet the graph is entirely
+    behavioural and the flow signal reports zero confidence rather than a
+    fabricated neutral reading.
+    """
+    try:
+        kb = load_kb()
+    except ValidationError as exc:
+        print(f"  ! graph skipped, knowledge base failed: {exc}")
+        return {"nodes": [], "edges": [], "clusters": [], "stats": {}}, {}
+
+    events = load("events")
+    hl_scores = load("hl_scores")
+    evm_scores = {r["address"]: r for r in load("scores").values() if r.get("address")}
+
+    graph_payload = graph.build(kb, events, hl_scores, evm_scores)
+    stats = graph_payload["stats"]
+    print(f"  graph: {stats['nodes']} nodes, {stats['edges']} edges "
+          f"({stats['transfer_edges']} transfer / {stats['behavioural_edges']} behavioural), "
+          f"{stats['clusters']} clusters")
+
+    messages = list(load("telegram_messages").values())
+    source_trust = None
+    for source in kb.sources.values():
+        if source.get("trust"):
+            source_trust = source["trust"]
+            break
+
+    # Real market momentum where available: DefiLlama needs no key and
+    # works from the very first run, so price_signal is no longer an
+    # always-empty stub once the market stage has run at least once.
+    market_rows = load("market")
+    quotes = [
+        {"symbol": r["symbol"], "change_24h": r["price_change_24h"], "volume_24h": None}
+        for r in market_rows.values() if r.get("price_change_24h") is not None
+    ]
+
+    overall = sentiment.analyze(
+        graph_payload["nodes"], hl_scores, messages, quotes=quotes, posts=[],
+        source_trust=source_trust)
+    by_narrative = sentiment.per_narrative(kb, graph_payload["nodes"], hl_scores, messages)
+
+    print(f"  sentiment: {overall['label']} {overall['score']:+.2f} "
+          f"(confidence {overall['confidence']:.2f}, "
+          f"sources reporting: {', '.join(overall['reporting_sources']) or 'none'})")
+
+    return graph_payload, {"overall": overall, "by_narrative": by_narrative}

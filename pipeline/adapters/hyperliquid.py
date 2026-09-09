@@ -142,8 +142,15 @@ def extract(address, state, fills):
     times = sorted(int(f["time"]) for f in fills if f.get("time"))
     span_days = ((times[-1] - times[0]) / 86_400_000) if len(times) > 1 else 0.0
 
+    fills_capped = len(fills) >= FILL_PAGE_CAP
+    # Guard the divisor: a burst of fills inside one minute would otherwise
+    # produce an absurd rate.
+    fills_per_day = (len(fills) / max(span_days, 1 / 24)) if fills else 0.0
+
     return {
         "address": (address or "").lower(),
+        "fills_capped": fills_capped,
+        "fills_per_day": round(fills_per_day, 2),
         "equity": round(equity, 2),
         "notional": round(notional, 2),
         "margin_used": round(margin_used, 2),
@@ -178,7 +185,18 @@ WEIGHTS = {
 }
 assert abs(sum(WEIGHTS.values()) - 1.0) < 1e-9
 
-SATURATION = {"equity": 10_000_000.0, "fills": 500, "coins": 15}
+# Observed fill rates across real tracked accounts span 0.1 to 48,000 per
+# day, so the saturation point is set high enough to keep that range
+# distinguishable instead of pinning every active account at 1.0.
+SATURATION = {"equity": 10_000_000.0, "fills_per_day": 50_000.0, "coins": 15}
+
+# userFills returns a bounded page. In production 20 of 22 tracked accounts
+# came back with exactly this many fills, so the raw count is a floor
+# ("at least N"), identical across every busy account, and cannot
+# discriminate between them. Intensity is measured as fills per active day
+# instead, which stays meaningful under the cap: 2,000 fills across a day is
+# a very different account from 2,000 across three years.
+FILL_PAGE_CAP = 2000
 
 # Leverage bands. Perps are leveraged by design, so leverage is not itself
 # a negative - but an account running 20x+ is one wick from liquidation and
@@ -208,8 +226,19 @@ def components(f):
     else:
         realized_performance = 0.5 * min(1.0, win_rate / 0.6) + 0.5 * pnl_positive
 
-    activity = 0.7 * _log_norm(f["fill_count"], SATURATION["fills"]) + \
-               0.3 * min(1.0, f["activity_span_days"] / 30.0)
+    intensity = _log_norm(f.get("fills_per_day", 0), SATURATION["fills_per_day"])
+
+    if f.get("fills_capped"):
+        # The span covers only the returned page, not the account's
+        # lifetime. Treating it as longevity actively inverts the signal:
+        # the busiest accounts fill their page in hours and would look
+        # newest, while a dormant account's page stretches over years.
+        # Longevity is simply unknown here, so it is held neutral.
+        longevity = 0.5
+    else:
+        longevity = min(1.0, f["activity_span_days"] / 90.0)
+
+    activity = 0.7 * intensity + 0.3 * longevity
 
     diversification = 0.5 * _log_norm(f["distinct_coins"], SATURATION["coins"]) + \
                       0.5 * (1.0 - min(1.0, f["concentration"]))

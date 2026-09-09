@@ -17,7 +17,7 @@ import sys
 import time
 import traceback
 
-from pipeline import enrich, enrich_hl, masks, publish, score
+from pipeline import enrich, enrich_hl, market, masks, publish, score
 from pipeline.sources import discovery, hood, telegram
 
 
@@ -56,6 +56,7 @@ STAGES = {
     "enrich": enrich.run,
     "score": score.run,
     "hyperliquid": enrich_hl.run,
+    "market": market.run,
     "publish": publish.run,
 }
 

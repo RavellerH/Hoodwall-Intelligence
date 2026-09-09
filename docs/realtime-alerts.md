@@ -108,5 +108,5 @@ secret` entries, not `wrangler.toml` fields.
 An address known only in masked form (`0x3475…3a12`) cannot be watched — a
 provider needs the full address. `kb_watchlist.py` therefore skips them,
 which is why the exported EVM list can be far smaller than the wallet count
-in the terminal. Resolve them first (see the mask resolution note in the
-main README).
+shown in the dashboard's Wallets view. Resolve them first (see the mask
+resolution note in the main README).

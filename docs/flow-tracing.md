@@ -104,6 +104,22 @@ Fan-out is multiplicative, so tracing has hard ceilings of its own:
 Depth 2 expands only from wallets already judged `probable`. Expanding from
 every counterparty instead makes the second hop the entire chain.
 
+## How this differs from the relationship graph
+
+`pipeline/graph.py` and this module answer different questions and are not
+alternatives to each other.
+
+The graph draws relationships **between wallets already in the store** —
+transfer edges from enriched events, behavioural edges from shared
+entities, narratives, tokens and funding — and clusters them for the UI.
+Its universe is what the pipeline already knows.
+
+Flow tracing goes the other way: it starts from one address and calls the
+chain to find wallets **nobody has recorded yet**, then decides which of
+them are the same owner. Its output is new addresses; the graph's output is
+structure over known ones. A traced link written with `--write-kb` becomes
+a wallet the graph can then draw.
+
 ## Limits worth knowing
 
 - **Bridges break the trail.** Value that leaves through a bridge reappears

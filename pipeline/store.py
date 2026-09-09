@@ -30,6 +30,7 @@ TABLES = {
     "events": "event_id",
     "scores": "address",
     "hl_scores": "address",
+    "market": "chain",
     "telegram_messages": "message_id",
     "masked": "mask",
     "state": "key",
