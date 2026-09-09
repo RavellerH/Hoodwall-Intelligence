@@ -3,6 +3,8 @@
   "arbitrum": {
    "api_base": "https://api.blockscout.com/42161/api/v2",
    "chain_id": 42161,
+   "defillama_chain": "Arbitrum",
+   "defillama_coin": "coingecko:arbitrum",
    "enrichment": "blockscout",
    "explorer": "https://arbitrum.blockscout.com",
    "family": "evm",
@@ -12,6 +14,7 @@
   "base": {
    "api_base": "https://api.blockscout.com/8453/api/v2",
    "chain_id": 8453,
+   "defillama_chain": "Base",
    "enrichment": "blockscout",
    "explorer": "https://base.blockscout.com",
    "family": "evm",
@@ -20,6 +23,7 @@
   },
   "bitcoin": {
    "api_base": "https://mempool.space/api",
+   "defillama_coin": "coingecko:bitcoin",
    "enrichment": "none",
    "explorer": "https://mempool.space",
    "family": "utxo",
@@ -30,6 +34,8 @@
   "ethereum": {
    "api_base": "https://api.blockscout.com/1/api/v2",
    "chain_id": 1,
+   "defillama_chain": "Ethereum",
+   "defillama_coin": "coingecko:ethereum",
    "enrichment": "blockscout",
    "explorer": "https://eth.blockscout.com",
    "family": "evm",
@@ -39,6 +45,8 @@
   "hyperliquid": {
    "api_base": "https://api.hyperliquid.xyz/info",
    "chain_id": 999,
+   "defillama_chain": "Hyperliquid L1",
+   "defillama_coin": "coingecko:hyperliquid",
    "enrichment": "none",
    "explorer": "https://app.hyperliquid.xyz/explorer",
    "family": "evm",
@@ -50,6 +58,8 @@
   "optimism": {
    "api_base": "https://api.blockscout.com/10/api/v2",
    "chain_id": 10,
+   "defillama_chain": "OP Mainnet",
+   "defillama_coin": "coingecko:optimism",
    "enrichment": "blockscout",
    "explorer": "https://optimism.blockscout.com",
    "family": "evm",
@@ -67,6 +77,8 @@
    "notes": "Arbitrum Orbit L2. Per-instance API is gated; use the Pro API."
   },
   "solana": {
+   "defillama_chain": "Solana",
+   "defillama_coin": "coingecko:solana",
    "enrichment": "none",
    "explorer": "https://solscan.io",
    "family": "svm",
@@ -747,7 +759,82 @@
    "conviction": "low",
    "entities": [],
    "key": "robinhood-launchpad-wave",
-   "linked_wallets": [],
+   "linked_wallets": [
+    "robinhood:0x025d…e6ed",
+    "robinhood:0x0759…0ab3",
+    "robinhood:0x0d54…7463",
+    "robinhood:0x1196…c201",
+    "robinhood:0x1994…a348",
+    "robinhood:0x1a0c…f784",
+    "robinhood:0x1f6d…7ed0",
+    "robinhood:0x21fa…04b6",
+    "robinhood:0x2797…4f84",
+    "robinhood:0x2c69…38ad",
+    "robinhood:0x2f5e…759e",
+    "robinhood:0x3133…656a",
+    "robinhood:0x3190…ef79",
+    "robinhood:0x3475…3a12",
+    "robinhood:0x3f65…f941",
+    "robinhood:0x4077…9352",
+    "robinhood:0x41cc…42f5",
+    "robinhood:0x444c…c40d",
+    "robinhood:0x492c…ff6e",
+    "robinhood:0x4b10…8d76",
+    "robinhood:0x4d88…4271",
+    "robinhood:0x4d96…26f3",
+    "robinhood:0x4ede…6d0a",
+    "robinhood:0x51af…6697",
+    "robinhood:0x552b…be23",
+    "robinhood:0x573f…c9b2",
+    "robinhood:0x578a…390d",
+    "robinhood:0x57a8…2ede",
+    "robinhood:0x5a9b…8da6",
+    "robinhood:0x602f…5033",
+    "robinhood:0x609f…c735",
+    "robinhood:0x6174…9ccf",
+    "robinhood:0x62e5…5645",
+    "robinhood:0x63eb…a0c2",
+    "robinhood:0x664d…5dc1",
+    "robinhood:0x6ad7…873e",
+    "robinhood:0x6d3a…735d",
+    "robinhood:0x6f8c…5e44",
+    "robinhood:0x7551…ae61",
+    "robinhood:0x7701…6e5e",
+    "robinhood:0x7799…1fdb",
+    "robinhood:0x7e0b…63e0",
+    "robinhood:0x8160…4d7f",
+    "robinhood:0x89d2…11d6",
+    "robinhood:0x8c15…0a95",
+    "robinhood:0x917a…3841",
+    "robinhood:0x9846…c212",
+    "robinhood:0x9dbf…aada",
+    "robinhood:0x9ff5…6cba",
+    "robinhood:0xa52d…c7c6",
+    "robinhood:0xa68e…ce75",
+    "robinhood:0xa83b…8811",
+    "robinhood:0xacd7…fb40",
+    "robinhood:0xb255…23b8",
+    "robinhood:0xb43d…23c8",
+    "robinhood:0xb8f7…3e9d",
+    "robinhood:0xbf00…4903",
+    "robinhood:0xc2c6…091c",
+    "robinhood:0xc5c3…6280",
+    "robinhood:0xc965…9641",
+    "robinhood:0xcb4d…35c9",
+    "robinhood:0xcbc0…721c",
+    "robinhood:0xd171…d52c",
+    "robinhood:0xd27d…b245",
+    "robinhood:0xd409…3fed",
+    "robinhood:0xd422…b20f",
+    "robinhood:0xd845…7d1b",
+    "robinhood:0xe286…216d",
+    "robinhood:0xe5a9…f4f9",
+    "robinhood:0xe957…88f2",
+    "robinhood:0xe95b…77fd",
+    "robinhood:0xecb7…7039",
+    "robinhood:0xf341…15c4",
+    "robinhood:0xf565…471d"
+   ],
    "opened": "2026-09-08",
    "outcomes": [
     {
@@ -3951,7 +4038,9 @@
     }
    ],
    "masked": "0x025d…e6ed",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 50.8%; reported realized PnL $20,936; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -3972,7 +4061,9 @@
     }
    ],
    "masked": "0x0759…0ab3",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 37.2%; reported realized PnL $64,329; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -3993,7 +4084,9 @@
     }
    ],
    "masked": "0x0d54…7463",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 28.8%; reported realized PnL $6,796; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4014,7 +4107,9 @@
     }
    ],
    "masked": "0x1196…c201",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 32.4%; reported realized PnL $7,240; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4035,7 +4130,9 @@
     }
    ],
    "masked": "0x1994…a348",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 44.8%; reported realized PnL $7,658; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4056,7 +4153,9 @@
     }
    ],
    "masked": "0x1a0c…f784",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 57.5%; reported realized PnL $3,426; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4077,7 +4176,9 @@
     }
    ],
    "masked": "0x1f6d…7ed0",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 44.4%; reported realized PnL $6,226; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4098,7 +4199,9 @@
     }
    ],
    "masked": "0x21fa…04b6",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 32.1%; reported realized PnL $584,295; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4119,7 +4222,9 @@
     }
    ],
    "masked": "0x2797…4f84",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 44.7%; reported realized PnL $11,538; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4140,7 +4245,9 @@
     }
    ],
    "masked": "0x2c69…38ad",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 68.2%; reported realized PnL $7,765; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4161,7 +4268,9 @@
     }
    ],
    "masked": "0x2f5e…759e",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 24.0%; reported realized PnL $5,631; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4182,7 +4291,9 @@
     }
    ],
    "masked": "0x3133…656a",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 61.4%; reported realized PnL $2,775; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4203,7 +4314,9 @@
     }
    ],
    "masked": "0x3190…ef79",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 23.9%; reported realized PnL $6,695; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4224,7 +4337,9 @@
     }
    ],
    "masked": "0x3475…3a12",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 40.0%; reported realized PnL $68,469; 3 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4245,7 +4360,9 @@
     }
    ],
    "masked": "0x3f65…f941",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 46.3%; reported realized PnL $16,160; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4266,7 +4383,9 @@
     }
    ],
    "masked": "0x4077…9352",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 25.7%; reported realized PnL $48,444; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4287,7 +4406,9 @@
     }
    ],
    "masked": "0x41cc…42f5",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 34.0%; reported realized PnL $35,166; 3 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4308,7 +4429,9 @@
     }
    ],
    "masked": "0x444c…c40d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 42.6%; reported realized PnL $179,398; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4329,7 +4452,9 @@
     }
    ],
    "masked": "0x492c…ff6e",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 35.3%; reported realized PnL $17,271; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4350,7 +4475,9 @@
     }
    ],
    "masked": "0x4b10…8d76",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 40.9%; reported realized PnL $13,121; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4371,7 +4498,9 @@
     }
    ],
    "masked": "0x4d88…4271",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 53.1%; reported realized PnL $32,967; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4392,7 +4521,9 @@
     }
    ],
    "masked": "0x4d96…26f3",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 56.9%; reported realized PnL $152,172; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4413,7 +4544,9 @@
     }
    ],
    "masked": "0x4ede…6d0a",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 24.4%; reported realized PnL $4,062; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4434,7 +4567,9 @@
     }
    ],
    "masked": "0x51af…6697",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 68.8%; reported realized PnL $7,904; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4455,7 +4590,9 @@
     }
    ],
    "masked": "0x552b…be23",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 32.9%; reported realized PnL $12,563; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4476,7 +4613,9 @@
     }
    ],
    "masked": "0x573f…c9b2",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 39.4%; reported realized PnL $31,095; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4497,7 +4636,9 @@
     }
    ],
    "masked": "0x578a…390d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 52.8%; reported realized PnL $40,099; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4518,7 +4659,9 @@
     }
    ],
    "masked": "0x57a8…2ede",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 31.4%; reported realized PnL $403; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4539,7 +4682,9 @@
     }
    ],
    "masked": "0x5a9b…8da6",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 30.1%; reported realized PnL $53,928; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4560,7 +4705,9 @@
     }
    ],
    "masked": "0x602f…5033",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 48.6%; reported realized PnL $9,114; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4581,7 +4728,9 @@
     }
    ],
    "masked": "0x609f…c735",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 69.8%; reported realized PnL $205,885; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4602,7 +4751,9 @@
     }
    ],
    "masked": "0x6174…9ccf",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 39.9%; reported realized PnL $1,078; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4623,7 +4774,9 @@
     }
    ],
    "masked": "0x62e5…5645",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 37.4%; reported realized PnL $263,213; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4644,7 +4797,9 @@
     }
    ],
    "masked": "0x63eb…a0c2",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 47.2%; reported realized PnL $18,910; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4665,7 +4820,9 @@
     }
    ],
    "masked": "0x664d…5dc1",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 50.8%; reported realized PnL $10,397; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4686,7 +4843,9 @@
     }
    ],
    "masked": "0x6ad7…873e",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 89.5%; reported realized PnL $87,873; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4707,7 +4866,9 @@
     }
    ],
    "masked": "0x6d3a…735d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 45.6%; reported realized PnL $22,184; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4728,7 +4889,9 @@
     }
    ],
    "masked": "0x6f8c…5e44",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 53.9%; reported realized PnL $32,555; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4749,7 +4912,9 @@
     }
    ],
    "masked": "0x7551…ae61",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 56.1%; reported realized PnL $51,148; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4770,7 +4935,9 @@
     }
    ],
    "masked": "0x7701…6e5e",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 84.4%; reported realized PnL $19,065; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4791,7 +4958,9 @@
     }
    ],
    "masked": "0x7799…1fdb",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 57.8%; reported realized PnL $19,622; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4812,7 +4981,9 @@
     }
    ],
    "masked": "0x7e0b…63e0",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 70.4%; reported realized PnL $2,484; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4833,7 +5004,9 @@
     }
    ],
    "masked": "0x8160…4d7f",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 10.5%; reported realized PnL $-16,345; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4854,7 +5027,9 @@
     }
    ],
    "masked": "0x89d2…11d6",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 33.8%; reported realized PnL $64,818; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4875,7 +5050,9 @@
     }
    ],
    "masked": "0x8c15…0a95",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 0.0%; reported realized PnL $0; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4896,7 +5073,9 @@
     }
    ],
    "masked": "0x917a…3841",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 35.4%; reported realized PnL $24,867; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4917,7 +5096,9 @@
     }
    ],
    "masked": "0x9846…c212",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 34.9%; reported realized PnL $193,437; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4938,7 +5119,9 @@
     }
    ],
    "masked": "0x9dbf…aada",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 52.9%; reported realized PnL $59,959; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4959,7 +5142,9 @@
     }
    ],
    "masked": "0x9ff5…6cba",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 33.0%; reported realized PnL $3,725; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -4980,7 +5165,9 @@
     }
    ],
    "masked": "0xa52d…c7c6",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 46.8%; reported realized PnL $1,743; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5001,7 +5188,9 @@
     }
    ],
    "masked": "0xa68e…ce75",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 39.4%; reported realized PnL $6,324; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5022,7 +5211,9 @@
     }
    ],
    "masked": "0xa83b…8811",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 45.3%; reported realized PnL $72,223; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5043,7 +5234,9 @@
     }
    ],
    "masked": "0xacd7…fb40",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 44.2%; reported realized PnL $62,717; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5064,7 +5257,9 @@
     }
    ],
    "masked": "0xb255…23b8",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 54.1%; reported realized PnL $22,229; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5085,7 +5280,9 @@
     }
    ],
    "masked": "0xb43d…23c8",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 71.9%; reported realized PnL $6,629; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5106,7 +5303,9 @@
     }
    ],
    "masked": "0xb8f7…3e9d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 48.2%; reported realized PnL $10,346; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5127,7 +5326,9 @@
     }
    ],
    "masked": "0xbf00…4903",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 56.9%; reported realized PnL $50,558; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5148,7 +5349,9 @@
     }
    ],
    "masked": "0xc2c6…091c",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 63.9%; reported realized PnL $45,967; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5169,7 +5372,9 @@
     }
    ],
    "masked": "0xc5c3…6280",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 43.2%; reported realized PnL $191,818; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5190,7 +5395,9 @@
     }
    ],
    "masked": "0xc965…9641",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 49.6%; reported realized PnL $114,828; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5211,7 +5418,9 @@
     }
    ],
    "masked": "0xcb4d…35c9",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 47.4%; reported realized PnL $21,375; 3 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5232,7 +5441,9 @@
     }
    ],
    "masked": "0xcbc0…721c",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 24.4%; reported realized PnL $-34,467; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5253,7 +5464,9 @@
     }
    ],
    "masked": "0xd171…d52c",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 36.5%; reported realized PnL $6,067; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5274,7 +5487,9 @@
     }
    ],
    "masked": "0xd27d…b245",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 47.5%; reported realized PnL $7,332; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5295,7 +5510,9 @@
     }
    ],
    "masked": "0xd409…3fed",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 27.7%; reported realized PnL $1,578; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5316,7 +5533,9 @@
     }
    ],
    "masked": "0xd422…b20f",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 37.0%; reported realized PnL $23,883; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5337,7 +5556,9 @@
     }
    ],
    "masked": "0xd845…7d1b",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 55.9%; reported realized PnL $2,426; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5358,7 +5579,9 @@
     }
    ],
    "masked": "0xe286…216d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 60.2%; reported realized PnL $74,334; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5379,7 +5602,9 @@
     }
    ],
    "masked": "0xe5a9…f4f9",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 26.2%; reported realized PnL $-6,243; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5400,7 +5625,9 @@
     }
    ],
    "masked": "0xe957…88f2",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 40.9%; reported realized PnL $37,387; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5421,7 +5648,9 @@
     }
    ],
    "masked": "0xe95b…77fd",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 67.5%; reported realized PnL $4,710; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5442,7 +5671,9 @@
     }
    ],
    "masked": "0xecb7…7039",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 41.2%; reported realized PnL $14,870; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5463,7 +5694,9 @@
     }
    ],
    "masked": "0xf341…15c4",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 30.9%; reported realized PnL $23,877; 1 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"
@@ -5484,7 +5717,9 @@
     }
    ],
    "masked": "0xf565…471d",
-   "narratives": [],
+   "narratives": [
+    "robinhood-launchpad-wave"
+   ],
    "notes": "Vendor-reported: reported win rate 38.3%; reported realized PnL $6,661; 2 feed appearance(s)",
    "resolved": false,
    "source": "intel-hood-vantis"

@@ -130,6 +130,11 @@ def validate_wallet(record, where, chains):
     out["added"] = _check_date(record.get("added"), "added", where)
     out["labels"] = _check_list(record, "labels", where)
     out["narratives"] = _check_list(record, "narratives", where)
+    # Tokens this wallet was observed buying. This is the co-occurrence
+    # signal the relationship graph uses: two wallets buying the same
+    # micro-cap within one feed window is far stronger evidence of
+    # coordination than merely sharing a data source.
+    out["tokens"] = _check_list(record, "tokens", where)
     out["family"] = family
     out["key"] = f"{chain}:{out['address'] or masked}"
     return out

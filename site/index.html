@@ -3,62 +3,86 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HOODWALL TERMINAL</title>
-<meta name="description" content="Multi-chain wallet and narrative intelligence terminal.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23000'/><text y='.92em' x='8' font-size='78' fill='%23ffa028' font-family='monospace'>H</text></svg>">
-<link rel="stylesheet" href="terminal.css">
+<title>Hoodwall Intelligence</title>
+<meta name="description" content="Multi-chain wallet, narrative and sentiment monitoring.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%234c5fea'/><path d='M9 20 L14 13 L18 17 L23 9' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
 
-<header class="topbar">
-  <span class="brand">HOODWALL<span class="dim">·</span>INTELLIGENCE</span>
-  <span class="sep">│</span>
-  <span id="ticker" class="ticker">LOADING…</span>
-  <span class="spacer"></span>
-  <span id="kb-health" class="health"></span>
-  <span class="sep">│</span>
-  <span id="clock" class="clock">--:--:-- UTC</span>
-</header>
-
-<div class="cmdbar">
-  <label for="cmd" class="prompt">CMD</label>
-  <input id="cmd" type="text" autocomplete="off" spellcheck="false"
-         placeholder="type a command or filter — HELP for commands, / to focus">
-  <span id="cmdhint" class="cmdhint"></span>
-</div>
-
 <div class="shell">
-  <nav class="nav" id="nav" aria-label="Views">
-    <div class="nav-title">FUNCTIONS</div>
-    <button class="navitem" data-view="DASH"><b>1</b> DASH<span>overview</span></button>
-    <button class="navitem" data-view="WAL"><b>2</b> WAL<span>wallets</span></button>
-    <button class="navitem" data-view="ENT"><b>3</b> ENT<span>entities</span></button>
-    <button class="navitem" data-view="NAR"><b>4</b> NAR<span>narratives</span></button>
-    <button class="navitem" data-view="CHN"><b>5</b> CHN<span>chains</span></button>
-    <button class="navitem" data-view="SRC"><b>6</b> SRC<span>sources</span></button>
-    <div class="nav-title">FILTER</div>
-    <div id="chainfilter" class="navfilter"></div>
-  </nav>
-
-  <main class="main">
-    <div class="panel-head">
-      <span id="panel-title">DASH</span>
-      <span class="spacer"></span>
-      <span id="panel-count" class="dim"></span>
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-mark">HW</span>
+      <span class="brand-name">Hoodwall</span>
     </div>
-    <div id="panel" class="panel" tabindex="0"></div>
-  </main>
+
+    <nav class="nav" id="nav" aria-label="Sections">
+      <button class="navitem" data-view="DASH" data-icon="grid">Overview</button>
+      <button class="navitem" data-view="WAL" data-icon="wallet">Wallets</button>
+      <button class="navitem" data-view="ENT" data-icon="users">Entities</button>
+      <button class="navitem" data-view="NAR" data-icon="doc">Narratives</button>
+      <button class="navitem" data-view="MAP" data-icon="share">Relationship Map</button>
+      <button class="navitem" data-view="PNL" data-icon="dollar">Positions &amp; P&amp;L</button>
+      <button class="navitem" data-view="SENT" data-icon="pulse">Sentiment</button>
+      <div class="nav-sep"></div>
+      <button class="navitem" data-view="CHN" data-icon="link">Chains</button>
+      <button class="navitem" data-view="SRC" data-icon="stack">Sources</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme">
+        <span class="ti-light" data-icon="sun"></span>
+        <span class="ti-dark" data-icon="moon"></span>
+      </button>
+      <div class="updated" id="updated">—</div>
+    </div>
+  </aside>
+
+  <div class="mainwrap">
+    <header class="topbar">
+      <button class="menu-btn" id="menu-btn" type="button" aria-label="Menu" data-icon="menu"></button>
+
+      <div class="searchwrap">
+        <span class="search-icon" data-icon="search"></span>
+        <input id="search" type="search" autocomplete="off" spellcheck="false"
+               placeholder="Search wallet, entity, token, narrative…">
+        <kbd class="search-kbd">/</kbd>
+      </div>
+
+      <div class="ticker" id="ticker" aria-label="Market prices"></div>
+
+      <div class="health" id="kb-health"></div>
+    </header>
+
+    <main class="page">
+      <div class="page-head">
+        <div>
+          <h1 id="page-title">Overview</h1>
+          <p id="page-sub" class="page-sub"></p>
+        </div>
+        <div class="page-actions" id="page-actions"></div>
+      </div>
+      <div id="panel" class="panel" tabindex="0"></div>
+    </main>
+  </div>
 
   <aside class="detail" id="detail">
-    <div class="panel-head"><span id="detail-title">DETAIL</span></div>
+    <div class="detail-head">
+      <span id="detail-title">Details</span>
+      <button id="detail-close" class="icon-btn" type="button" aria-label="Close" data-icon="x"></button>
+    </div>
     <div id="detail-body" class="detail-body">
-      <p class="dim">Select a row — <b>↑↓</b> to move, <b>ENTER</b> to open.</p>
+      <div class="empty-hint">
+        <span data-icon="cursor" class="empty-hint-icon"></span>
+        <p>Select a row to see details.</p>
+      </div>
     </div>
   </aside>
 </div>
+<div class="scrim" id="scrim" hidden></div>
 
-<footer class="fkeys" id="fkeys"></footer>
-
-<script src="terminal.js"></script>
+<script src="graph.js"></script>
+<script src="dashboard.js"></script>
 </body>
 </html>
