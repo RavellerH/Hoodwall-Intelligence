@@ -266,4 +266,10 @@ vendor's "SMART MONEY" tag is not used as a score input: across its own 74
 tagged wallets, reported win rate and reported PnL correlate at **r =
 −0.001**, and the median tracked call is **down 77%**.
 
+[`docs/tool-landscape.md`](docs/tool-landscape.md) catalogs third-party
+attention, copy-trading, execution, bridge, wallet and research tools, and
+notes where each overlaps with or differs from what Hoodwall does — useful
+when deciding whether a gap here is worth building or better covered by an
+existing tool.
+
 Not investment advice.
