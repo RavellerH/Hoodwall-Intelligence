@@ -117,6 +117,60 @@ def exists(address):
         return False
 
 
+def ledger(address):
+    """Deposits, withdrawals and transfers as the venue itself records them.
+
+    This is the account's cash movement, not its trading: it says when money
+    entered and left, which is the venue's half of the funding question. The
+    other half - who sent it - lives on Arbitrum, because a Hyperliquid
+    account is funded by bridging USDC in from there.
+
+    Returns a list of {type, amount, time, raw}. An unsupported endpoint or
+    an unexpected shape yields an empty list rather than an exception: the
+    Arbitrum side is the authoritative answer, and this is corroboration.
+    """
+    try:
+        data = _post({"type": "userNonFundingLedgerUpdates", "user": address})
+    except HyperliquidError as exc:
+        print(f"    (ledger unavailable for {address}: {exc})")
+        return []
+    if not isinstance(data, list):
+        return []
+
+    events = []
+    for entry in data:
+        if not isinstance(entry, dict):
+            continue
+        delta = entry.get("delta") or {}
+        if not isinstance(delta, dict):
+            continue
+        amount = _num(delta.get("usdc") or delta.get("amount"))
+        if amount == 0:
+            continue
+        events.append({
+            "type": delta.get("type") or "?",
+            "amount": amount,
+            "time": entry.get("time"),
+        })
+    events.sort(key=lambda e: e["time"] or 0)
+    return events
+
+
+def funding_summary(address):
+    """What the venue knows about money entering and leaving this account."""
+    events = ledger(address)
+    deposits = [e for e in events if "deposit" in (e["type"] or "").lower()]
+    withdrawals = [e for e in events if "withdraw" in (e["type"] or "").lower()]
+    return {
+        "address": address,
+        "events": len(events),
+        "deposit_count": len(deposits),
+        "deposit_total": sum(e["amount"] for e in deposits),
+        "withdrawal_count": len(withdrawals),
+        "first_deposit_at": deposits[0]["time"] if deposits else None,
+    }
+
+
 # --- feature extraction ---------------------------------------------------
 
 def extract(address, state, fills):

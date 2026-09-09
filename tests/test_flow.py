@@ -165,16 +165,26 @@ def test_evm_chains_excludes_venues_without_an_explorer():
     assert "ethereum" in chains
 
 
-def test_curated_role_beats_the_heuristic(wire):
-    """A registered router is a contract even though nothing on chain says so."""
+def count_address_calls(fake, monkeypatch):
+    """Count chain.get_address calls, patching the module the code calls.
+
+    Wrapping fake.get_address after wire() does nothing: monkeypatch has
+    already bound the original method onto the chain module, so the wrapper
+    is never reached and a "no calls were made" assertion passes vacuously.
+    """
     calls = []
-    fake = wire(FakeChain({ROUTER: [tx(SEED, ROUTER)]}))
-    original = fake.get_address
 
     def counting(address, base=None):
         calls.append(address)
-        return original(address, base=base)
-    fake.get_address = counting
+        return fake.get_address(address, base=base)
+    monkeypatch.setattr(chain, "get_address", counting)
+    return calls
+
+
+def test_curated_role_beats_the_heuristic(wire, monkeypatch):
+    """A registered router is a contract even though nothing on chain says so."""
+    fake = wire(FakeChain({ROUTER: [tx(SEED, ROUTER)]}))
+    calls = count_address_calls(fake, monkeypatch)
 
     kind, detail = flow.classify(ROUTER, "base", [SEED],
                                  kb=FakeKB({ROUTER: "router"}), chain_key="testnet")
@@ -224,3 +234,84 @@ def test_reverse_lookup_ignores_deposits_we_cannot_attribute(wire):
     wire(FakeChain({DEPOSIT: [tx(SEED2, DEPOSIT)]}))
     flow.record_deposit("testnet", DEPOSIT, SEED2)
     assert flow.expand_from_deposits(CHAINS, [SEED], kb=FakeKB()) == []
+
+
+# --- funding sources ------------------------------------------------------
+
+FUNDER = "0x" + "11" * 20
+EXCHANGE = "0x" + "22" * 20
+BRIDGE = "0x" + "33" * 20
+
+
+def test_hyperliquid_is_redirected_to_its_on_ramp():
+    """The venue has no transfer graph; its Arbitrum on-ramp does."""
+    assert flow.on_ramp_chain("hyperliquid") == "arbitrum"
+    assert flow.on_ramp_chain("base") == "base"
+
+
+def test_funding_sources_rank_by_value_and_name_the_origin(wire):
+    history = {
+        SEED: [tx(FUNDER, SEED, value="5000000000000000000"),
+               tx(EXCHANGE, SEED, value="1000000000000000000"),
+               tx(SEED, SIBLING, value="2000000000000000000")],
+        FUNDER: [tx(FUNDER, SEED)],
+        EXCHANGE: [tx(EXCHANGE, SEED)],
+    }
+    wire(FakeChain(history))
+    result = flow.funding_sources(SEED, "testnet", "base",
+                                  kb=FakeKB({EXCHANGE: "cex_hot"}))
+    assert [r["address"] for r in result["sources"]] == [FUNDER, EXCHANGE]
+    assert result["sources"][0]["total"] == 5.0
+    assert result["sources"][0]["origin"] == "sent by another wallet"
+    assert "exchange" in result["sources"][1]["origin"]
+    # Outbound is what the wallet spent; it says nothing about its origin.
+    assert SIBLING not in [r["address"] for r in result["sources"]]
+
+
+def test_first_funder_is_withheld_on_a_truncated_history(wire):
+    history = {SEED: [tx(FUNDER, SEED)], FUNDER: [tx(FUNDER, SEED)]}
+    wire(FakeChain(history, complete=False))
+    result = flow.funding_sources(SEED, "testnet", "base", kb=FakeKB())
+    assert result["complete"] is False
+    assert result["first_funder"] is None, "the oldest page is not the oldest transfer"
+
+    wire(FakeChain(history))
+    assert flow.funding_sources(SEED, "testnet", "base",
+                                kb=FakeKB())["first_funder"] == FUNDER
+
+
+def test_a_mixer_source_says_the_trail_ends(wire):
+    wire(FakeChain({SEED: [tx(HOTWALLET, SEED)], HOTWALLET: []}))
+    result = flow.funding_sources(SEED, "testnet", "base",
+                                  kb=FakeKB({HOTWALLET: "mixer"}))
+    assert "trail ends" in result["sources"][0]["origin"]
+
+
+def test_one_wallet_funding_two_tracked_accounts_is_reported(wire):
+    history = {
+        SEED: [tx(FUNDER, SEED)],
+        SEED2: [tx(FUNDER, SEED2)],
+        FUNDER: [tx(FUNDER, SEED), tx(FUNDER, SEED2)],
+    }
+    wire(FakeChain(history))
+    report = flow.trace_funding([(SEED, "testnet"), (SEED2, "testnet")],
+                                chains=CHAINS, kb=FakeKB())
+    assert len(report["shared_funders"]) == 1
+    assert report["shared_funders"][0]["funder"] == FUNDER
+    assert len(report["shared_funders"][0]["funded"]) == 2
+
+
+def test_classification_is_shared_across_wallets_in_one_run(wire, monkeypatch):
+    """Funding sources overlap by design; classifying each one per wallet
+    would spend the budget re-deriving the same answer."""
+    history = {
+        SEED: [tx(EXCHANGE, SEED)],
+        SEED2: [tx(EXCHANGE, SEED2)],
+        EXCHANGE: [tx(EXCHANGE, SEED)],
+    }
+    fake = wire(FakeChain(history))
+    calls = count_address_calls(fake, monkeypatch)
+
+    flow.trace_funding([(SEED, "testnet"), (SEED2, "testnet")],
+                       chains=CHAINS, kb=FakeKB())
+    assert calls.count(EXCHANGE) == 1

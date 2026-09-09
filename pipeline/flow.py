@@ -387,6 +387,164 @@ def _same_window(row):
     return (end - start) <= datetime.timedelta(hours=24)
 
 
+# --- where the money came from ---------------------------------------------
+
+# A Hyperliquid account is funded by bridging USDC in from Arbitrum, and the
+# depositor there is the same address. So the venue has no transfer graph,
+# but its on-ramp does - and it is an ordinary Blockscout chain.
+ON_RAMP = {"hyperliquid": "arbitrum"}
+
+
+def on_ramp_chain(chain_key):
+    """The chain to inspect when asking where a wallet's money came from."""
+    return ON_RAMP.get(chain_key, chain_key)
+
+
+def funding_sources(address, chain_key, base, kb=None, pages=None,
+                    limit=None, memo=None):
+    """Every address that ever sent this wallet value, classified.
+
+    The question "where did this wallet's money come from" is answered by
+    inbound edges, not by the whole counterparty graph: money going out is
+    what the wallet spent, and says nothing about its origin.
+
+    `memo` carries classifications between wallets in one run. Funding
+    sources overlap heavily - that is the entire point of looking at them -
+    so classifying the same exchange hot wallet once per wallet would spend
+    most of the budget re-deriving the same answer.
+    """
+    pages = pages or config.MAX_FLOW_PAGES
+    limit = limit or config.MAX_FUNDING_SOURCES
+    memo = {} if memo is None else memo
+
+    inbound, _outbound, complete = _history(address, base, pages)
+
+    grouped = {}
+    for edge in inbound:
+        row = grouped.setdefault(edge["peer"], {
+            "address": edge["peer"], "count": 0, "total": 0.0,
+            "symbol": edge["symbol"], "first": "", "last": "", "txs": [],
+        })
+        row["count"] += 1
+        row["total"] += edge["amount"]
+        when = edge["time"]
+        if when:
+            row["first"] = min(row["first"] or when, when)
+            row["last"] = max(row["last"], when)
+        if len(row["txs"]) < 3:
+            row["txs"].append(edge["tx"])
+
+    # Largest first: the wallet's real backer, not whoever sent dust last.
+    ranked = sorted(grouped.values(), key=lambda r: -r["total"])[:limit]
+
+    for row in ranked:
+        key = f"{chain_key}:{row['address']}"
+        if key not in memo:
+            try:
+                kind, detail = classify(row["address"], base, [address], pages,
+                                        kb=kb, chain_key=chain_key)
+            except chain.ChainError as exc:
+                print(f"  ! {addr.shorten(row['address'])}: {exc}")
+                kind, detail = "unknown", {}
+            memo[key] = (kind, (detail or {}).get("role"))
+        row["kind"], row["role"] = memo[key]
+        row["origin"] = _origin_phrase(row)
+
+    # The first money in is the account's origin, and is only knowable when
+    # the whole inbound history was read - a truncated read shows the oldest
+    # transfer we happened to fetch, which is a different thing entirely.
+    earliest = min((r for r in ranked if r["first"]), key=lambda r: r["first"],
+                   default=None)
+    return {
+        "address": address, "chain": chain_key, "complete": complete,
+        "sources": ranked,
+        "first_funder": earliest["address"] if (earliest and complete) else None,
+        "first_funded_at": earliest["first"] if (earliest and complete) else None,
+    }
+
+
+def _origin_phrase(row):
+    """Say in words what a funding source is, since the kind alone is terse."""
+    role, kind = row.get("role"), row.get("kind")
+    if role == "cex_hot" or kind == "service":
+        return "withdrawn from an exchange or shared service"
+    if role == "bridge":
+        return "bridged in from another chain"
+    if role == "mixer":
+        return "came out of a mixer - the trail ends here"
+    if kind == "contract":
+        return "paid out by a contract"
+    if kind == "deposit":
+        return "a deposit address, which should not be funding anyone"
+    return "sent by another wallet"
+
+
+def trace_funding(wallets, chains=None, kb=None, pages=None, limit=None):
+    """Funding sources for many wallets, sharing one classification memo.
+
+    `wallets` is an iterable of (address, chain_key). A Hyperliquid entry is
+    redirected to its on-ramp chain automatically, which is the only way the
+    question can be answered for a venue account.
+    """
+    kb = kb if kb is not None else loader.load()
+    chains = chains if chains is not None else evm_chains(kb)
+    memo, report = {}, {"generated_at": _now(), "wallets": {}, "shared_funders": []}
+
+    for address, chain_key in wallets:
+        look_at = on_ramp_chain(chain_key)
+        base = chains.get(look_at)
+        if not base:
+            print(f"  ! {addr.shorten(address)}: no readable chain for {look_at}")
+            continue
+        if look_at != chain_key:
+            print(f"  {addr.shorten(address)}: {chain_key} account, "
+                  f"inspecting its {look_at} on-ramp")
+        result = funding_sources(address, look_at, base, kb=kb, pages=pages,
+                                 limit=limit, memo=memo)
+        result["account_chain"] = chain_key
+        report["wallets"][f"{chain_key}:{address}"] = result
+
+        # A funder that is a plain wallet is worth remembering: it is either
+        # the owner's other wallet or the person who paid them.
+        for row in result["sources"]:
+            if row.get("kind") == "deposit":
+                record_deposit(look_at, row["address"], address)
+
+    # Two tracked wallets funded by one ordinary wallet is a cluster.
+    by_funder = {}
+    for key, result in report["wallets"].items():
+        for row in result["sources"]:
+            if row.get("kind") == "wallet":
+                by_funder.setdefault(row["address"], []).append(key)
+    report["shared_funders"] = [
+        {"funder": funder, "funded": sorted(set(targets))}
+        for funder, targets in sorted(by_funder.items())
+        if len(set(targets)) > 1
+    ]
+    return report
+
+
+def summarize_funding(report):
+    lines = []
+    for key, result in sorted(report["wallets"].items()):
+        note = "" if result["complete"] else "  (history truncated)"
+        lines.append(f"\n{key}{note}")
+        if result["first_funder"]:
+            lines.append(f"  first funded by {result['first_funder']} "
+                         f"at {result['first_funded_at']}")
+        elif not result["complete"]:
+            lines.append("  first funder unknown - the full history was not read")
+        for row in result["sources"]:
+            lines.append(f"    {row['total']:>14,.4f} {row['symbol']:<6} "
+                         f"x{row['count']:<3} {row['address']}  {row['origin']}")
+    for shared in report["shared_funders"]:
+        lines.append(f"\n  one wallet funded several tracked accounts: "
+                     f"{shared['funder']}")
+        for target in shared["funded"]:
+            lines.append(f"    -> {target}")
+    return "\n".join(lines) or "no funding history read"
+
+
 # --- the trace -------------------------------------------------------------
 
 def trace(seeds, chains=None, depth=None, budget=None, pages=None,

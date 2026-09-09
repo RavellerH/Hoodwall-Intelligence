@@ -179,10 +179,33 @@ especially firmly here, because these mechanisms produce *inferences about
 people* — the one category where an automated writer must never be trusted
 with the authoritative record.
 
+## The Hyperliquid correction
+
+Flow tracing does not work on a Hyperliquid account: positions are internal
+to the venue, so there is no transfer graph to walk. That is true, and it
+led to the wrong conclusion — that the funding question was unanswerable
+for those wallets.
+
+It is not. A Hyperliquid account is funded by bridging USDC in from
+**Arbitrum**, and the depositor there is the same address. So the venue has
+no graph, but its on-ramp is an ordinary Blockscout chain that this project
+already reads. `flow.on_ramp_chain()` encodes the redirect, and
+`scripts/deposit_sources.py` applies it automatically: ask for the funding
+of a `hyperliquid` wallet and Arbitrum is what gets inspected.
+
+The venue's own ledger (`adapters.hyperliquid.ledger()`) is read as
+corroboration — it knows when money entered and how much, but not who sent
+it. Arbitrum knows who. Neither answer is complete alone.
+
+The general lesson is worth keeping: **when a venue has no transfer graph,
+look at its on-ramp.** The same shape applies to any chain or venue whose
+balances arrive over a bridge.
+
 ## Build order
 
-1. `knowledge/infrastructure.yml` + loader support — the foundation the rest leans on.
-2. Deposit registry and reverse lookup — largest gain, data already produced.
+1. `knowledge/infrastructure.yml` + loader support — the foundation the rest leans on. **Done.**
+2. Deposit registry and reverse lookup — largest gain, data already produced. **Done.**
+2b. Funding sources per wallet, with the Hyperliquid on-ramp redirect — `scripts/deposit_sources.py`. **Done.**
 3. `fingerprints` table, derived on enrich — unblocks behavioural matching.
 4. `pending_exits` + forward watching — CEX withdrawal and bridge pairing.
 5. Mixer boundary reporting and labelling — small, and honest about limits.

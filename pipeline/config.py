@@ -108,6 +108,9 @@ MAX_DISCOVERY_BLOCKS = _int("MAX_DISCOVERY_BLOCKS", 20)
 MAX_FLOW_DEPTH = _int("MAX_FLOW_DEPTH", 2)
 MAX_FLOW_ADDRESSES = _int("MAX_FLOW_ADDRESSES", 120)
 MAX_FLOW_PAGES = _int("MAX_FLOW_PAGES", 3)
+# Funding sources are ranked by value, so the cap keeps the largest backers
+# and drops the dust - which is the right trade when budget runs out.
+MAX_FUNDING_SOURCES = _int("MAX_FUNDING_SOURCES", 12)
 
 # --- Publishing ------------------------------------------------------------
 SITE_TITLE = _env("SITE_TITLE", "Hoodwall Intelligence")

@@ -193,6 +193,17 @@ Links it infers are written with `confidence: inferred` and never overwrite
 a hand-authored record. Full method and its limits:
 [docs/flow-tracing.md](docs/flow-tracing.md).
 
+Where a wallet's money came from is a separate question, answered by
+`scripts/deposit_sources.py`: inbound value grouped by source, ranked by
+size, each source named as an exchange, a bridge, a mixer or another wallet.
+Hyperliquid accounts are redirected to their Arbitrum on-ramp automatically
+— the venue has no transfer graph, but the bridge deposit that funded the
+account is ordinary on-chain history.
+
+```bash
+python scripts/deposit_sources.py --entity theunipcs --venue
+```
+
 Deposit addresses are remembered in `data/deposits.json`, which inverts the
 exchange boundary: any wallet funding a deposit address we already attribute
 is the same exchange account, so the registry reaches wallets no forward
@@ -302,7 +313,7 @@ pipeline/
   config.py                 env-var configuration
   store.py                  JSON store (keyed upserts, atomic writes)
   chain.py                  Blockscout client (retry/backoff, multi-chain)
-  flow.py                   money-flow tracing and same-owner scoring
+  flow.py                   money-flow tracing, same-owner scoring, funding sources
   masks.py                  resolves truncated addresses like 0x3475…3a12
   features.py                behavioural feature extraction (EVM)
   scoring.py                  the Smart Score formula and label rules (EVM)
@@ -324,7 +335,7 @@ knowledge/infrastructure.yml exchanges, bridges, mixers, routers - not wallets
 docs/                       signal-analysis, knowledge-base, flow-tracing,
                              attribution-methods, graph-and-sentiment,
                              realtime-alerts, tool-landscape
-tests/                      172 tests across pipeline, kb, graph, sentiment, adapters
+tests/                      181 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis
