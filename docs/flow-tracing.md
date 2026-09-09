@@ -42,7 +42,8 @@ exchange, a bridge, or simply another person. So each candidate is first
 |---|---|---|
 | `contract` | Blockscout reports code at the address | dropped — not a wallet |
 | `service` | more than `SERVICE_DEGREE` (60) distinct peers | dropped — router, hot wallet, MM |
-| `deposit` | funded by a seed, forwards everything to one address it never receives from, never returns to its funder | dropped from the cluster, **kept as a signal** |
+| `mixer` | a curated privacy pool | dropped, and reported as where the trail ends |
+| `deposit` | funded by a seed, forwards everything to one address it never receives from, never returns to its funder | dropped from the cluster, **kept and remembered** |
 | `wallet` | everything else | scored |
 
 The deposit case is the interesting one. A CEX deposit address is
@@ -52,6 +53,37 @@ cluster goes wrong. It is not the user's wallet. But two seeds depositing
 to the **same** address means one exchange account, which is stronger
 evidence of common ownership than any transfer pattern, so it is reported
 separately as a `shared_deposit` finding.
+
+Classification consults `knowledge/infrastructure.yml` first. An address
+listed there — an exchange hot wallet, a bridge, a mixer, a router — is
+taken at its word and costs no API call; the heuristics above only run for
+addresses nobody has identified. Curated knowledge beating inference is the
+point: degree and shape are guesses about addresses whose identity is often
+publicly known.
+
+## The deposit registry
+
+Deposit addresses are remembered across runs, in `data/deposits.json`, as
+address → the funders seen using it. That single table turns the exchange
+boundary from an ending into a beginning:
+
+> Once `0xDEP` is known to be this account's deposit address, **any** wallet
+> that sends to `0xDEP` is the same exchange account — and so, almost
+> certainly, the same person.
+
+`expand_from_deposits()` runs that lookup backwards at the end of every
+trace, and it reaches wallets no forward walk ever could: an address that
+shares nothing with the seed except an exchange account, that no feed has
+mentioned, and that has never transacted with any wallet we know.
+
+It scores `SHARED_DEPOSIT_SCORE` (55, above `probable`) but deliberately not
+higher: a shared custodial account, or depositing on someone else's behalf,
+produces the same shape.
+
+The registry only grows, and only from what tracing observes. Promoting an
+entry into `knowledge/infrastructure.yml` — asserting that an address really
+is an exchange deposit — stays a human decision, because that file is what
+the tracer trusts without checking.
 
 ## The signals
 
@@ -126,7 +158,9 @@ a wallet the graph can then draw.
   on another chain with a different sender. Probing runs per chain; it does
   not stitch a bridge crossing back together.
 - **Privacy tooling breaks it by design.** A mixer between two wallets
-  leaves no edge to walk.
+  leaves no edge to walk, and the tracer says so rather than guessing.
+  [`docs/attribution-methods.md`](attribution-methods.md) covers what is and
+  is not recoverable across a mixer, an exchange and a bridge.
 - **Balance history is not available** through this API, so `sweep` is
   approximated from transfer shape and weighted as a soft signal.
 - **A link is a claim about wallets, not about people.** An address

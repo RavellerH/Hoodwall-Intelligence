@@ -193,6 +193,13 @@ Links it infers are written with `confidence: inferred` and never overwrite
 a hand-authored record. Full method and its limits:
 [docs/flow-tracing.md](docs/flow-tracing.md).
 
+Deposit addresses are remembered in `data/deposits.json`, which inverts the
+exchange boundary: any wallet funding a deposit address we already attribute
+is the same exchange account, so the registry reaches wallets no forward
+walk could. What survives a mixer, an exchange or a bridge — and what
+honestly does not — is worked through in
+[docs/attribution-methods.md](docs/attribution-methods.md).
+
 ## Setup
 
 ### 1. Enable GitHub Pages
@@ -312,9 +319,11 @@ site/                        the dashboard (published to Pages)
   index.html / dashboard.css / dashboard.js / graph.js
 data/                       the JSON store (committed by Actions)
 knowledge/watchlist.yml     submitted addresses awaiting a chain
+knowledge/infrastructure.yml exchanges, bridges, mixers, routers - not wallets
 docs/                       signal-analysis, knowledge-base, flow-tracing,
-                             graph-and-sentiment, realtime-alerts, tool-landscape
-tests/                      154 tests across pipeline, kb, graph, sentiment, adapters
+                             attribution-methods, graph-and-sentiment,
+                             realtime-alerts, tool-landscape
+tests/                      159 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis

@@ -32,6 +32,18 @@ CONVICTION = {"none", "low", "medium", "high"}
 
 NARRATIVE_STATUS = {"emerging", "active", "cooling", "dead", "invalidated"}
 
+# What an address is, when it is not a wallet. Curated in
+# knowledge/infrastructure.yml and trusted by the tracer without checking,
+# which is why the vocabulary is closed.
+INFRASTRUCTURE_ROLES = {
+    "cex_hot",       # exchange hot/omnibus wallet
+    "cex_deposit",   # deposit address confirmed to belong to one account
+    "bridge",        # cross-chain bridge or relayer
+    "mixer",         # privacy pool - interaction is itself a label
+    "router",        # DEX router, aggregator, shared contract
+    "burn",          # null / dead
+}
+
 WALLET_LABELS = {
     "smart_money", "whale", "accumulator", "distributor", "trading_bot",
     "mev_bot", "lp_mm", "bridge_flow", "fresh_emerging", "insider",
@@ -222,6 +234,38 @@ def validate_narrative(meta, where, chains):
             raise ValidationError(f"{spot} must be a mapping with 'date' and 'note'")
         u["date"] = _check_date(u.get("date"), "date", spot)
     out["updates"] = updates
+    return out
+
+
+def validate_infrastructure(record, where, chains):
+    """An address that is not a wallet: an exchange, a bridge, a mixer.
+
+    `chain` is optional and means "every EVM chain" when omitted, because a
+    router or hot wallet is routinely deployed at one address everywhere.
+    """
+    from . import addresses as addr
+
+    out = dict(record)
+    address = _require(record, "address", where)
+    _check_enum(_require(record, "role", where), INFRASTRUCTURE_ROLES, "role", where)
+
+    chain = record.get("chain")
+    if chain and chain not in chains:
+        raise ValidationError(
+            f"{where}: chain={chain!r} is not in chains.yml{_suggest(chain, chains)}"
+        )
+    family = chains[chain]["family"] if chain else "evm"
+    try:
+        out["address"] = addr.validate(address, family)
+    except addr.AddressError as exc:
+        raise ValidationError(f"{where}: {exc}")
+
+    if record.get("confidence"):
+        _check_enum(record["confidence"], CONFIDENCE, "confidence", where)
+    out["confidence"] = record.get("confidence", "reported")
+    out["chain"] = chain
+    out["name"] = record.get("name", "")
+    out["key"] = f"{chain or '*'}:{out['address']}"
     return out
 
 

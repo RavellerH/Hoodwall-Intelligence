@@ -1,0 +1,33 @@
+# Curated infrastructure addresses: things that are not wallets.
+#
+# flow.py classifies counterparties by heuristic - contract flag, peer
+# degree, deposit-sweep shape. That works, but it is guesswork about
+# addresses whose identity is often publicly known. Anything listed here is
+# treated as authoritative and the heuristic is skipped.
+#
+# role:
+#   cex_hot      exchange hot/omnibus wallet - value in or out of a venue
+#   cex_deposit  a deposit address confirmed to belong to one account
+#   bridge       cross-chain bridge or its relayer
+#   mixer        privacy pool; interaction is itself a label
+#   router       DEX router, aggregator, or other shared contract
+#   burn         null / dead address
+#
+# chain: omit to apply the entry on every EVM chain (CEX hot wallets and
+# routers are commonly deployed at the same address everywhere); set it to
+# scope the entry to one chain.
+#
+# Entries are added as they are confirmed, by hand. An address the pipeline
+# merely suspects belongs in data/deposits.json, not here - promoting an
+# inference into curated knowledge is a decision for a person, and this file
+# is what the tracer trusts without checking.
+
+- address: '0x0000000000000000000000000000000000000000'
+  role: burn
+  name: Null address
+  confidence: confirmed
+
+- address: '0x000000000000000000000000000000000000dead'
+  role: burn
+  name: Dead address
+  confidence: confirmed

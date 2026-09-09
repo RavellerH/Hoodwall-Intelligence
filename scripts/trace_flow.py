@@ -120,6 +120,8 @@ def main():
     ap.add_argument("--out", default=None, help="report path (default data/flow_links.json)")
     ap.add_argument("--write-kb", action="store_true",
                     help="write probable links into knowledge/wallets/")
+    ap.add_argument("--no-registry", action="store_true",
+                    help="skip the deposit-registry reverse lookup")
     args = ap.parse_args()
 
     watchlist = load_watchlist()
@@ -145,7 +147,9 @@ def main():
         chains = {k: v for k, v in chains.items() if k in args.chain}
 
     try:
-        report = flow.trace(seeds, chains=chains, depth=args.depth, budget=args.budget)
+        report = flow.trace(seeds, chains=chains, depth=args.depth,
+                            budget=args.budget,
+                            expand_deposits=not args.no_registry)
     except chain.ChainAuthError as exc:
         # A gated explorer is a configuration problem, not a finding.
         return print(f"chain API refused the request: {exc}") or 2

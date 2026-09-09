@@ -32,7 +32,7 @@ than believed.
 """
 import datetime
 
-from . import chain, config
+from . import chain, config, store
 from .kb import addresses as addr
 from .kb import loader
 
@@ -54,6 +54,25 @@ WEIGHTS = {
     "sweep": 15,
     "shared_funder": 15,
     "same_window": 5,
+}
+
+# Two wallets funding one CEX deposit address are one exchange account.
+# Above PROBABLE, because an exchange assigns the address to a single user -
+# but not absolute: a shared custodial account, or depositing on someone
+# else's behalf, produces the same shape.
+SHARED_DEPOSIT_SCORE = 55
+
+
+# A curated role from knowledge/infrastructure.yml short-circuits the
+# heuristic. cex_deposit stays "deposit" because a deposit address is the
+# one non-wallet whose *users* are the finding.
+ROLE_CLASSIFICATION = {
+    "burn": "contract",
+    "router": "contract",
+    "cex_hot": "service",
+    "bridge": "service",
+    "mixer": "mixer",
+    "cex_deposit": "deposit",
 }
 
 
@@ -114,6 +133,46 @@ def _int(value):
         return int(value)
     except (TypeError, ValueError):
         return 0
+
+
+# --- the deposit registry --------------------------------------------------
+# A CEX deposit address belongs to exactly one account, so remembering who
+# funds it turns the boundary around: the next wallet seen sending to it is
+# the same account, and therefore almost certainly the same person.
+
+def _deposit_key(chain_key, address):
+    return f"{chain_key}:{address.lower()}"
+
+
+def record_deposit(chain_key, address, funder, forwards_to=None):
+    """Note that `funder` deposits through `address`. Returns known funders.
+
+    Merged rather than overwritten: the whole value of this table is that
+    the funder list grows across runs.
+    """
+    key = _deposit_key(chain_key, address)
+    rows = store.load("deposits")
+    row = rows.get(key) or {"key": key, "chain": chain_key,
+                            "address": address.lower(), "funders": []}
+    funders = sorted(set(row.get("funders", [])) | {funder.lower()})
+    store.upsert("deposits", [{
+        "key": key, "chain": chain_key, "address": address.lower(),
+        "funders": funders, "forwards_to": forwards_to or row.get("forwards_to"),
+        "updated_at": store.utcnow(),
+    }])
+    return funders
+
+
+def deposit_funders(chain_key, address):
+    """Everyone previously seen funding this deposit address."""
+    row = store.load("deposits").get(_deposit_key(chain_key, address))
+    return list(row.get("funders", [])) if row else []
+
+
+def known_deposits(chain_key=None):
+    """Registered deposit addresses, optionally for one chain."""
+    return [r for r in store.load("deposits").values()
+            if chain_key is None or r.get("chain") == chain_key]
 
 
 # --- transfer extraction ---------------------------------------------------
@@ -228,7 +287,7 @@ def _history(address, base, pages):
     return inbound, outbound, complete
 
 
-def classify(address, base, seeds, pages=None):
+def classify(address, base, seeds, pages=None, kb=None, chain_key=None):
     """Decide what a counterparty *is* before asking whose it is.
 
     Returns one of: 'contract', 'service', 'deposit', 'wallet'. The
@@ -239,6 +298,12 @@ def classify(address, base, seeds, pages=None):
     evidence than any transfer pattern.
     """
     pages = pages or config.MAX_FLOW_PAGES
+
+    # Curated knowledge wins over inference, and costs no API call.
+    role = kb.role_of(address, chain_key) if kb else None
+    if role:
+        return ROLE_CLASSIFICATION.get(role, "service"), {"role": role}
+
     summary = chain.get_address(address, base=base) or {}
     if summary.get("is_contract"):
         return "contract", summary
@@ -324,7 +389,8 @@ def _same_window(row):
 
 # --- the trace -------------------------------------------------------------
 
-def trace(seeds, chains=None, depth=None, budget=None, pages=None):
+def trace(seeds, chains=None, depth=None, budget=None, pages=None,
+          kb=None, expand_deposits=True):
     """Walk money flow out from `seeds` and return a linkage report.
 
     Depth 2 expands only from wallets already judged probable. Expanding
@@ -333,7 +399,8 @@ def trace(seeds, chains=None, depth=None, budget=None, pages=None):
     depth = depth or config.MAX_FLOW_DEPTH
     budget = budget or config.MAX_FLOW_ADDRESSES
     pages = pages or config.MAX_FLOW_PAGES
-    chains = chains if chains is not None else evm_chains()
+    kb = kb if kb is not None else loader.load()
+    chains = chains if chains is not None else evm_chains(kb)
     if not chains:
         raise FlowError("no Blockscout-readable EVM chain in knowledge/chains.yml")
 
@@ -380,13 +447,17 @@ def trace(seeds, chains=None, depth=None, budget=None, pages=None):
                         if candidate in walked or examined >= budget:
                             continue
                         examined += 1
-                        kind, _summary = classify(candidate, base, seeds, pages)
+                        kind, _summary = classify(candidate, base, seeds, pages,
+                                                  kb=kb, chain_key=chain_key)
                         classified[candidate] = kind
 
                     if kind != "wallet":
                         report["skipped"].setdefault(kind, []).append(candidate)
                         if kind == "deposit":
-                            deposits.setdefault(candidate, []).append(origin)
+                            # Persisted, not just noted: the funder list is
+                            # what a later run recognises the address by.
+                            funders = record_deposit(chain_key, candidate, origin)
+                            deposits.setdefault((chain_key, candidate), set()).update(funders)
                         continue
 
                     score, verdict, evidence = score_link(
@@ -412,17 +483,83 @@ def trace(seeds, chains=None, depth=None, budget=None, pages=None):
             if not frontier:
                 break
 
-    for deposit, users in deposits.items():
-        if len(set(users)) > 1:
-            report["shared"].append({
-                "kind": "shared_deposit", "via": deposit,
-                "addresses": sorted(set(users)),
-                "note": "these wallets deposit to one address - one exchange account",
-            })
+    for (chain_key, deposit), users in deposits.items():
+        if len(users) < 2:
+            continue
+        report["shared"].append({
+            "kind": "shared_deposit", "via": deposit, "chain": chain_key,
+            "addresses": sorted(users),
+            "note": "these wallets deposit to one address - one exchange account",
+        })
+        # Any funder that is not a seed is a wallet this trace just found.
+        for found in sorted(users - set(seeds)):
+            key = f"{chain_key}:{found}"
+            if key in report["links"]:
+                continue
+            report["links"][key] = {
+                "chain": chain_key, "address": found,
+                "linked_to": sorted(users & set(seeds))[0] if users & set(seeds) else deposit,
+                "hop": 1, "score": SHARED_DEPOSIT_SCORE, "verdict": "probable",
+                "evidence": [f"funds the same exchange deposit address "
+                             f"{addr.shorten(deposit)} as this trace's seed"],
+                "first_seen": "", "last_seen": "", "in": {}, "out": {},
+                "example_txs": [],
+            }
+
+    if expand_deposits:
+        report["from_registry"] = expand_from_deposits(
+            chains, seeds, kb=kb, pages=pages, report=report)
 
     for entry in report["skipped"].values():
         entry[:] = sorted(set(entry))
     return report
+
+
+def expand_from_deposits(chains, seeds, kb=None, pages=None, report=None):
+    """Find wallets that fund a deposit address we already attribute.
+
+    This is the trace running backwards, and it is the reason the registry
+    exists. Walking forward from a seed stops at the exchange; walking back
+    from a known deposit address reaches every other wallet of the same
+    account - including ones no feed has ever mentioned.
+    """
+    pages = pages or config.MAX_FLOW_PAGES
+    seeds = {s.lower() for s in seeds}
+    found = []
+
+    for chain_key, base in chains.items():
+        for row in known_deposits(chain_key):
+            known = {f.lower() for f in row.get("funders", [])}
+            # Only interesting if we attribute it to something in this trace.
+            if not known & seeds:
+                continue
+            try:
+                inbound, _out, _complete = _history(row["address"], base, pages)
+            except chain.ChainError as exc:
+                print(f"  ! {chain_key} {addr.shorten(row['address'])}: {exc}")
+                continue
+            senders = {e["peer"] for e in inbound}
+            fresh = sorted(senders - known - seeds)
+            if senders - known:
+                record_deposit(chain_key, row["address"], next(iter(senders - known)))
+            for wallet in fresh:
+                found.append({"chain": chain_key, "address": wallet,
+                              "via": row["address"]})
+                if report is not None:
+                    key = f"{chain_key}:{wallet}"
+                    if key not in report["links"]:
+                        report["links"][key] = {
+                            "chain": chain_key, "address": wallet,
+                            "linked_to": sorted(known & seeds)[0],
+                            "hop": 1, "score": SHARED_DEPOSIT_SCORE,
+                            "verdict": "probable",
+                            "evidence": [
+                                f"funds {addr.shorten(row['address'])}, a deposit "
+                                f"address already attributed to this account"],
+                            "first_seen": "", "last_seen": "",
+                            "in": {}, "out": {}, "example_txs": [],
+                        }
+    return found
 
 
 def _now():
@@ -446,7 +583,19 @@ def summarize(report):
     for shared in report["shared"]:
         lines.append(f"\n  {shared['kind']} via {shared['via']}: "
                      + ", ".join(addr.shorten(a) for a in shared["addresses"]))
+    registry = report.get("from_registry") or []
+    if registry:
+        lines.append(f"\nfrom the deposit registry: {len(registry)} wallet(s) "
+                     "no walk would have reached")
+        for hit in registry:
+            lines.append(f"  {hit['chain']}:{hit['address']} "
+                         f"via {addr.shorten(hit['via'])}")
     skipped = "; ".join(f"{k} {len(v)}" for k, v in sorted(report["skipped"].items()))
     if skipped:
         lines.append(f"\nnot wallets: {skipped}")
+    # A mixer is worth naming rather than counting: it is where the trail
+    # ends, and the report should say so instead of quietly showing nothing.
+    for address in report["skipped"].get("mixer", []):
+        lines.append(f"  ! trail ends at mixer {address} - "
+                     "linking past it needs operator error, not more budget")
     return "\n".join(lines)

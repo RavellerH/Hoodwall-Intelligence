@@ -8,7 +8,7 @@ inbound history was actually read.
 """
 import pytest
 
-from pipeline import chain, flow
+from pipeline import chain, config, flow, store
 
 CHAINS = {"testnet": "https://example.invalid/api/v2"}
 
@@ -47,6 +47,24 @@ class FakeChain:
         return list(self.histories.get(address, [])), self.complete
 
 
+@pytest.fixture(autouse=True)
+def isolated_store(monkeypatch, tmp_path):
+    """Tracing now persists a deposit registry, so tests must not write to
+    the repo's own data/ - an earlier version committed fixture addresses."""
+    monkeypatch.setattr(config, "DATA_DIR", tmp_path)
+    return tmp_path
+
+
+class FakeKB:
+    """Just enough knowledge base to answer role_of()."""
+
+    def __init__(self, roles=None):
+        self.roles = {k.lower(): v for k, v in (roles or {}).items()}
+
+    def role_of(self, address, chain=None):
+        return self.roles.get((address or "").lower())
+
+
 @pytest.fixture
 def wire(monkeypatch):
     def _wire(fake):
@@ -61,7 +79,7 @@ def test_contract_counterparty_is_not_a_wallet(wire):
                           contracts=[ROUTER]))
     kind, _ = flow.classify(ROUTER, "base", [SEED])
     assert kind == "contract"
-    report = flow.trace([SEED], chains=CHAINS)
+    report = flow.trace([SEED], chains=CHAINS, kb=FakeKB())
     assert report["links"] == {}
     assert ROUTER in report["skipped"]["contract"]
     assert fake  # the fake really was used
@@ -86,7 +104,7 @@ def test_deposit_address_is_excluded_but_shared_use_is_reported(wire):
     wire(FakeChain(history))
     assert flow.classify(DEPOSIT, "base", [SEED, SEED2])[0] == "deposit"
 
-    report = flow.trace([SEED, SEED2], chains=CHAINS)
+    report = flow.trace([SEED, SEED2], chains=CHAINS, kb=FakeKB())
     assert DEPOSIT in report["skipped"]["deposit"]
     assert report["links"] == {}
     shared = report["shared"]
@@ -101,7 +119,7 @@ def test_sole_funder_and_round_trip_is_probable(wire):
         SIBLING: [tx(SEED, SIBLING), tx(SIBLING, SEED)],
     }
     wire(FakeChain(history))
-    report = flow.trace([SEED], chains=CHAINS)
+    report = flow.trace([SEED], chains=CHAINS, kb=FakeKB())
     link = report["links"][f"testnet:{SIBLING}"]
     assert link["verdict"] == "probable"
     assert link["score"] >= flow.PROBABLE
@@ -116,7 +134,7 @@ def test_partial_history_never_claims_sole_funding(wire):
         SIBLING: [tx(SEED, SIBLING), tx(SIBLING, SEED)],
     }
     wire(FakeChain(history, complete=False))
-    report = flow.trace([SEED], chains=CHAINS)
+    report = flow.trace([SEED], chains=CHAINS, kb=FakeKB())
     link = report["links"][f"testnet:{SIBLING}"]
     assert not any("every inbound" in e for e in link["evidence"])
     assert link["verdict"] == "possible"
@@ -130,7 +148,7 @@ def test_one_way_payment_is_not_a_link(wire):
         SIBLING: [tx(SEED, SIBLING), tx(other, SIBLING), tx(SIBLING, other)],
     }
     wire(FakeChain(history))
-    report = flow.trace([SEED], chains=CHAINS)
+    report = flow.trace([SEED], chains=CHAINS, kb=FakeKB())
     assert report["links"] == {}
 
 
@@ -145,3 +163,64 @@ def test_evm_chains_excludes_venues_without_an_explorer():
     chains = flow.evm_chains()
     assert "hyperliquid" not in chains, "perps venue has no transfer graph to walk"
     assert "ethereum" in chains
+
+
+def test_curated_role_beats_the_heuristic(wire):
+    """A registered router is a contract even though nothing on chain says so."""
+    calls = []
+    fake = wire(FakeChain({ROUTER: [tx(SEED, ROUTER)]}))
+    original = fake.get_address
+
+    def counting(address, base=None):
+        calls.append(address)
+        return original(address, base=base)
+    fake.get_address = counting
+
+    kind, detail = flow.classify(ROUTER, "base", [SEED],
+                                 kb=FakeKB({ROUTER: "router"}), chain_key="testnet")
+    assert kind == "contract"
+    assert detail["role"] == "router"
+    assert calls == [], "a curated answer must cost no API call"
+
+
+def test_mixer_is_its_own_class_not_a_wallet(wire):
+    wire(FakeChain({}))
+    kind, _ = flow.classify(HOTWALLET, "base", [SEED],
+                            kb=FakeKB({HOTWALLET: "mixer"}), chain_key="testnet")
+    assert kind == "mixer"
+
+
+def test_deposit_registry_accumulates_across_runs(wire):
+    """The funder list must merge, not replace - that is the whole point."""
+    wire(FakeChain({}))
+    flow.record_deposit("testnet", DEPOSIT, SEED)
+    funders = flow.record_deposit("testnet", DEPOSIT, SEED2)
+    assert sorted(funders) == sorted([SEED.lower(), SEED2.lower()])
+    assert sorted(flow.deposit_funders("testnet", DEPOSIT)) == sorted(funders)
+    assert [r["address"] for r in flow.known_deposits("testnet")] == [DEPOSIT.lower()]
+    assert flow.known_deposits("otherchain") == []
+
+
+def test_reverse_lookup_finds_a_wallet_no_trace_walked_to(wire):
+    """The registry running backwards: a stranger funding a known deposit
+    address is the same exchange account, and so the same person."""
+    stranger = "0x" + "9a" * 20
+    wire(FakeChain({DEPOSIT: [tx(SEED, DEPOSIT), tx(stranger, DEPOSIT),
+                              tx(DEPOSIT, HOTWALLET)]}))
+    flow.record_deposit("testnet", DEPOSIT, SEED)
+
+    report = {"links": {}}
+    found = flow.expand_from_deposits(CHAINS, [SEED], kb=FakeKB(),
+                                      report=report)
+    assert [f["address"] for f in found] == [stranger]
+    link = report["links"][f"testnet:{stranger}"]
+    assert link["verdict"] == "probable"
+    assert link["linked_to"] == SEED.lower()
+    assert "already attributed" in link["evidence"][0]
+
+
+def test_reverse_lookup_ignores_deposits_we_cannot_attribute(wire):
+    """A deposit address with no seed among its funders is somebody else's."""
+    wire(FakeChain({DEPOSIT: [tx(SEED2, DEPOSIT)]}))
+    flow.record_deposit("testnet", DEPOSIT, SEED2)
+    assert flow.expand_from_deposits(CHAINS, [SEED], kb=FakeKB()) == []
