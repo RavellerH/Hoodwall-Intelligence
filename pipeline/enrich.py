@@ -6,7 +6,12 @@ first; after that, the most stale wallets are refreshed, so the dataset
 keeps improving run over run instead of going stale after the first pass.
 """
 from . import chain, config
+from .chain import ChainAuthError
 from .store import (event_id, load, prune_events, upsert, utcnow, values)
+
+
+# Stop the stage after this many consecutive failures.
+CIRCUIT_BREAKER_THRESHOLD = 10
 
 
 def _classify(tx, address):
@@ -52,6 +57,8 @@ def enrich_wallet(address):
     try:
         info = chain.get_address(address)
         transactions = chain.get_transactions(address, limit=config.MAX_EVENTS_PER_WALLET)
+    except ChainAuthError:
+        raise   # configuration problem: abort the stage, do not retry per wallet
     except chain.ChainError as exc:
         print(f"  ! {address}: {exc}")
         return False
@@ -121,15 +128,36 @@ def run():
     print(f"[enrich] {len(pending)} pending, {len(wallets)} known; "
           f"processing {len(queue)} this run")
 
-    ok = 0
+    ok, consecutive_failures = 0, 0
     for i, address in enumerate(queue, 1):
-        if enrich_wallet(address):
+        try:
+            succeeded = enrich_wallet(address)
+        except ChainAuthError as exc:
+            # Every wallet would fail identically; stop immediately.
+            raise RuntimeError(f"chain API refused the request: {exc}") from exc
+
+        if succeeded:
             ok += 1
+            consecutive_failures = 0
+        else:
+            consecutive_failures += 1
+            # A long unbroken failure run means the endpoint is down or the
+            # response shape changed - grinding through the rest of the queue
+            # just burns minutes and produces the same nothing.
+            if consecutive_failures >= CIRCUIT_BREAKER_THRESHOLD:
+                print(f"  ! {consecutive_failures} consecutive failures; "
+                      "stopping early (endpoint appears unavailable)")
+                break
         if i % 10 == 0:
             print(f"  ... {i}/{len(queue)}")
 
     prune_events()
     print(f"[enrich] enriched {ok}/{len(queue)}")
+    if ok == 0 and queue:
+        # Surface this: a run that enriches nothing is a failure even though
+        # every individual step "succeeded".
+        print("::warning::Enrichment produced no wallets - check BLOCKSCOUT_BASE "
+              "and BLOCKSCOUT_API_KEY.")
     return ok
 
 

@@ -73,14 +73,19 @@ pipeline runs but the deploy step fails.
 | Variable | Example |
 |---|---|
 | `HOOD_BASE_URL` | `https://hood.vantis.sh` |
-| `BLOCKSCOUT_BASE` | `https://robinhoodchain.blockscout.com/api/v2` |
+| `BLOCKSCOUT_BASE` | `https://api.blockscout.com/4663/api/v2` (default; usually leave unset) |
 | `TG_SOURCE` | `@channelname` |
 | `SITE_URL` | `https://<user>.github.io/Hoodwall-Intelligence/` |
 
-### 3. Secrets (all optional — sources skip themselves if unset)
+### 3. Secrets
+
+`BLOCKSCOUT_API_KEY` is required — without it enrichment cannot run (see
+*Chain API access* below). The Telegram secrets are optional; those sources
+skip themselves if unset.
 
 | Secret | For |
 |---|---|
+| `BLOCKSCOUT_API_KEY` | **Required** for on-chain enrichment — free key from https://blockscout.com |
 | `TG_API_ID`, `TG_API_HASH` | Telegram API, from https://my.telegram.org |
 | `TG_SESSION_STRING` | Telegram auth (see below) |
 | `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Daily digest, from @BotFather |
@@ -112,6 +117,32 @@ on its own.
 | Screen OCR ingestion | Blockscout block-walking | There is no screen in CI, and reading the chain directly is strictly better |
 | Always-on Telethon listener | Cursor-based polling | Nothing stays running between scheduled jobs |
 | cron / Task Scheduler on your PC | GitHub Actions schedules | The PC no longer has to be on |
+
+## Chain API access
+
+Robinhood Chain (chain id **4663**) is an Arbitrum Orbit L2 explored by
+Blockscout. Its per-instance host, `robinhoodchain.blockscout.com/api/v2`,
+returns **403 Forbidden** to programmatic requests — chain data is served
+through Blockscout's multichain Pro API instead:
+
+```
+https://api.blockscout.com/4663/api/v2/...
+Authorization: Bearer $BLOCKSCOUT_API_KEY
+```
+
+Get a free key at https://blockscout.com and store it as the
+`BLOCKSCOUT_API_KEY` secret. `BLOCKSCOUT_BASE` already defaults to the Pro
+API, so no variable change is needed.
+
+If enrichment still returns nothing, run **Actions → Diagnose chain API →
+Run workflow**. It probes every plausible base URL and auth combination in
+one job and prints which works, rather than requiring a scheduled run per
+guess.
+
+The client treats 401/403 as permanent and aborts the stage immediately
+instead of retrying per wallet, and enrichment stops after 10 consecutive
+failures and emits a workflow warning — so a broken endpoint fails fast and
+visibly rather than burning three minutes and reporting success.
 
 ## Caveats
 

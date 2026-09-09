@@ -18,15 +18,32 @@ def _get_session():
     global _session
     if _session is None:
         _session = requests.Session()
-        _session.headers.update(
-            {"User-Agent": "hoodwall-intelligence/2.0 (+github actions)",
-             "Accept": "application/json"}
-        )
+        # A browser-like User-Agent matters: Blockscout hosts sit behind a
+        # CDN that rejects obvious bot agents outright.
+        _session.headers.update({
+            "User-Agent": (
+                "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                "(KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36"
+            ),
+            "Accept": "application/json, text/plain, */*",
+            "Accept-Language": "en-US,en;q=0.9",
+        })
+        if config.BLOCKSCOUT_API_KEY:
+            _session.headers["Authorization"] = f"Bearer {config.BLOCKSCOUT_API_KEY}"
     return _session
 
 
 class ChainError(RuntimeError):
     """A Blockscout call that failed after exhausting retries."""
+
+
+class ChainAuthError(ChainError):
+    """The endpoint refused us (401/403).
+
+    This is a configuration problem - a missing API key or a gated host -
+    not a transient fault, so it is never retried and callers should abort
+    the whole stage rather than repeat it for every wallet.
+    """
 
 
 def _get(path, params=None):
@@ -52,6 +69,17 @@ def _get(path, params=None):
                 time.sleep(min(wait, 30))
                 delay *= 2
                 continue
+            if response.status_code in (401, 403):
+                # Permanent: retrying 60 wallets x 3 attempts against a gated
+                # host burns minutes and changes nothing.
+                raise ChainAuthError(
+                    f"{response.status_code} {response.reason} for {url}. "
+                    "Robinhood Chain is served through the Blockscout Pro API: set "
+                    "BLOCKSCOUT_API_KEY and BLOCKSCOUT_BASE="
+                    "https://api.blockscout.com/4663/api/v2"
+                )
+            if 400 <= response.status_code < 500:
+                raise ChainError(f"{response.status_code} {response.reason} for {url}")
             response.raise_for_status()
             time.sleep(config.BLOCKSCOUT_DELAY)
             return response.json()

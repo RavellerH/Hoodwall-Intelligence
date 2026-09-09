@@ -56,6 +56,8 @@ jobs:
           TG_SOURCE: ${{ vars.TG_SOURCE }}
           HOOD_BASE_URL: ${{ vars.HOOD_BASE_URL }}
           BLOCKSCOUT_BASE: ${{ vars.BLOCKSCOUT_BASE }}
+          BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
+          BLOCKSCOUT_CHAIN_ID: ${{ vars.BLOCKSCOUT_CHAIN_ID }}
         run: python run.py ${{ inputs.stage || 'all' }}
 
       - name: Commit data
