@@ -1,131 +1,153 @@
-# Robinhood Chain Wallet Monitor
+# Hoodwall Intelligence
 
-Local-first, open-source wallet intelligence agent. Monitors three
-ingestion sources (hood.vantis.sh scraper, a Telegram channel, and
-optional screen OCR), enriches wallets with on-chain data from Blockscout,
-scores and categorizes them with a local LLM (Ollama), and delivers a
-daily digest via Telegram. Data lives in Google Sheets, with daily CSV
-rotation to Google Drive to keep it small.
+Cloud-native wallet intelligence for Robinhood Chain. Discovers candidate
+wallets from three sources, enriches them with on-chain data from
+Blockscout, scores them with a published deterministic formula, and
+publishes a static dashboard to GitHub Pages.
 
-No cloud AI costs, no VPS - everything runs on your own PC.
+**No server, no database, no LLM, no cost.** GitHub Actions is the cron
+engine, the repo is the database, and GitHub Pages is the front end.
 
-## Architecture
+## How it works
 
 ```
-hood.vantis.sh --> hood_scraper.py -----\
-Telegram channel -> telethon_collector.py -> Google Sheets -> blockscout_enricher.py -> score_calculator.py (Ollama) -> alert_bot.py / frontend
-Screen (optional) -> screen_ocr_monitor.py -/
+                    ┌──────────────── GitHub Actions (cron, every 30 min) ───────────────┐
+                    │                                                                    │
+ hood.vantis.sh ───▶│  ingest ──▶ enrich ──▶ score ──▶ publish                            │
+ Telegram channel ─▶│    │          │          │          │                               │
+ Blockscout ───────▶│    │          │          │          │                               │
+                    │    ▼          ▼          ▼          ▼                               │
+                    │  data/candidates.json  data/scores.json   site/data/*.json          │
+                    │           (committed back to the repo = the database)               │
+                    └────────────────────────────────┬───────────────────────────────────┘
+                                                     ▼
+                                          GitHub Pages (static dashboard)
 ```
+
+| Stage | What it does |
+|---|---|
+| `ingest` | Scrapes hood.vantis.sh, polls the Telegram channel, walks recent Blockscout blocks, then resolves masked addresses |
+| `enrich` | Pulls each candidate's on-chain profile and recent transactions |
+| `score` | Computes the Smart Score and behavioural labels — pure function, no network |
+| `publish` | Writes the JSON the dashboard reads |
+
+Run any stage locally: `python run.py ingest|enrich|score|publish|all`
+
+## The Smart Score
+
+The score is a **weighted formula, not a model output** — so every number
+decomposes into its inputs, and the dashboard shows that breakdown for
+each wallet.
+
+| Component | Weight | Measures |
+|---|---|---|
+| Activity scale | 0.25 | Volume of transactions (log-scaled) |
+| Sustained presence | 0.20 | Active days and day-to-day density |
+| Counterparty breadth | 0.20 | Distinct counterparties, and diversity per transaction |
+| Protocol engagement | 0.15 | Contract interaction vs plain transfers |
+| Economic weight | 0.15 | Native value actually moved |
+| Recency | 0.05 | Exponential decay, 14-day half-life |
+
+Multiplicative penalties apply for a high revert rate (×0.70), activity
+concentrated on a single counterparty (×0.70), and many transactions
+moving no value (×0.75). Wallets with fewer than 3 events are capped at 20.
+
+Tiers: **elite** ≥80, **watch** ≥65, **candidate** ≥45, else archived.
+
+Tuning belongs in `SATURATION` in `pipeline/scoring.py` — the point at
+which a component earns full credit — rather than in the weights.
+
+Labels (`smart_money`, `whale`, `trading_bot`, `mev_bot`, `accumulator`,
+`distributor`, `lp_mm`, `fresh_emerging`, `noise`) are rule-based and each
+carries the evidence string that triggered it.
 
 ## Setup
 
-1. **Install Ollama** and pull the models:
-   ```bash
-   ollama pull qwen2.5:7b
-   ollama pull nomic-embed-text
-   ollama pull llama3.2:3b
-   curl http://localhost:11434/api/tags   # verify it's running
-   ```
+### 1. Enable GitHub Pages
+Repository **Settings → Pages → Source: GitHub Actions**. Without this the
+pipeline runs but the deploy step fails.
 
-2. **Install Tesseract OCR** (only needed if you enable screen OCR):
-   - Windows: https://github.com/UB-Mannheim/tesseract/wiki
-   - Linux: `sudo apt install tesseract-ocr`
-   - Mac: `brew install tesseract`
+### 2. Repository variables
+**Settings → Secrets and variables → Actions → Variables:**
 
-3. **Python environment:**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate   # Windows: venv\Scripts\activate
-   pip install -r requirements.txt
-   playwright install chromium
-   ```
-
-4. **Google Sheets/Drive:**
-   - Create a Google Cloud project, enable the Sheets API and Drive API.
-   - Create a service account, download its JSON key, save it as
-     `service-account.json` in this folder.
-   - Create a spreadsheet, note its ID from the URL, and share it with the
-     service account's email (Editor access).
-   - Create a Drive folder for daily CSV exports, note its ID.
-
-5. **Configure `.env`:** copy `.env.example` to `.env` and fill in
-   `GOOGLE_SHEET_ID`, `GOOGLE_DRIVE_FOLDER_ID`, your Telegram API
-   credentials (from https://my.telegram.org), your bot token (from
-   @BotFather), and your Telegram user id.
-
-6. **Create the sheet tabs** (candidates, wallets, wallets_updated, events,
-   labels, telegram_messages, ocr_results) with their header rows:
-   ```bash
-   python setup_sheets.py
-   ```
-
-7. **Authenticate the Telegram userbot** (one-time; creates
-   `wallet_monitor_session.session`):
-   ```bash
-   python telethon_collector.py
-   # enter the login code Telegram sends you, then Ctrl+C once "Listening..." appears
-   ```
-
-## Running
-
-Always-on processes:
-```bash
-python telethon_collector.py
-cd frontend && streamlit run app.py --server.port 8501   # http://localhost:8501
-python screen_ocr_monitor.py   # optional, only if OCR_ENABLED=true
-```
-
-Or via Docker Compose (same three always-on services):
-```bash
-docker compose up -d
-```
-
-Scheduled jobs (cron on Linux/Mac, Task Scheduler on Windows):
-
-| Script | Suggested schedule |
+| Variable | Example |
 |---|---|
-| `hood_scraper.py` | every 10 minutes |
-| `blockscout_enricher.py` | every hour |
-| `score_calculator.py` | daily, e.g. 2 AM |
-| `alert_bot.py` | daily, e.g. 8 AM |
-| `daily_export.py` | daily, e.g. 11 PM |
+| `HOOD_BASE_URL` | `https://hood.vantis.sh` |
+| `BLOCKSCOUT_BASE` | `https://robinhoodchain.blockscout.com/api/v2` |
+| `TG_SOURCE` | `@channelname` |
+| `SITE_URL` | `https://<user>.github.io/Hoodwall-Intelligence/` |
 
-Example crontab:
-```cron
-*/10 * * * * cd /path/to/project && venv/bin/python hood_scraper.py >> logs/hood_scraper.log 2>&1
-0 * * * *    cd /path/to/project && venv/bin/python blockscout_enricher.py >> logs/enricher.log 2>&1
-0 2 * * *    cd /path/to/project && venv/bin/python score_calculator.py >> logs/scorer.log 2>&1
-0 8 * * *    cd /path/to/project && venv/bin/python alert_bot.py >> logs/alert_bot.log 2>&1
-0 23 * * *   cd /path/to/project && venv/bin/python daily_export.py >> logs/export.log 2>&1
+### 3. Secrets (all optional — sources skip themselves if unset)
+
+| Secret | For |
+|---|---|
+| `TG_API_ID`, `TG_API_HASH` | Telegram API, from https://my.telegram.org |
+| `TG_SESSION_STRING` | Telegram auth (see below) |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | Daily digest, from @BotFather |
+
+### 4. Telegram session
+Actions cannot do an interactive login, so mint a session string once
+locally and store it as `TG_SESSION_STRING`:
+
+```bash
+pip install telethon
+TG_API_ID=... TG_API_HASH=... python scripts/mint_telegram_session.py
 ```
 
-## Project layout
+That string grants full read access to your Telegram account — treat it as
+a password.
+
+### 5. Run it
+**Actions → Pipeline → Run workflow.** After that it runs every 30 minutes
+on its own.
+
+## What changed from the local version
+
+| Local (v1) | Cloud (v2) | Why |
+|---|---|---|
+| Ollama scores wallets | Deterministic formula | No GPU in CI — and a 7B model inventing a 0–100 number was never reproducible or explainable |
+| Google Sheets | JSON committed to the repo | No service account, no API quota; every run is a reviewable diff |
+| Append-only rows, deduped by readers | Keyed upserts | Removes an entire class of "keep the latest row" bugs |
+| Streamlit dashboard | Static HTML on Pages | Nothing to keep running |
+| Screen OCR ingestion | Blockscout block-walking | There is no screen in CI, and reading the chain directly is strictly better |
+| Always-on Telethon listener | Cursor-based polling | Nothing stays running between scheduled jobs |
+| cron / Task Scheduler on your PC | GitHub Actions schedules | The PC no longer has to be on |
+
+## Caveats
+
+- **Scheduled workflows are best-effort.** GitHub queues them under load, so
+  `*/30` means "about every half hour."
+- **Actions disables schedules after 60 days without repo activity.** The
+  pipeline's own commits count, so this only matters if it is already broken.
+- **The JSON store grows.** Events are capped per wallet
+  (`MAX_EVENTS_PER_WALLET`), and each run commits, so history accumulates.
+- **Public repo = public data.** Raw Telegram text is excluded from
+  published artifacts unless `PUBLISH_RAW_TEXT=true`.
+
+## Repo layout
 
 ```
-config.py               # centralized .env / settings access
-regex_utils.py           # shared address / tx-hash regexes
-google_sheets.py          # Sheets & Drive API helpers
-setup_sheets.py           # one-time: creates tabs + header rows
-llm_utils.py               # Ollama chat/generate/embed + wallet categorization
-telethon_collector.py      # Telegram channel reader (always-on)
-hood_scraper.py            # hood.vantis.sh Playwright scraper (scheduled)
-screen_ocr_monitor.py      # optional screen OCR fallback (always-on or scheduled)
-blockscout_enricher.py     # on-chain enrichment (scheduled)
-score_calculator.py        # Smart Score + label calculation via Ollama (scheduled)
-alert_bot.py                # daily Telegram digest (scheduled)
-daily_export.py             # CSV rotation to Google Drive (scheduled)
-frontend/app.py              # Streamlit dashboard
+run.py                      CLI entrypoint; workflows call this
+pipeline/
+  config.py                 env-var configuration
+  store.py                  JSON store (keyed upserts, atomic writes)
+  chain.py                  Blockscout client (retry/backoff)
+  masks.py                  resolves truncated addresses like 0x3475…3a12
+  features.py               behavioural feature extraction
+  scoring.py                the Smart Score formula and label rules
+  enrich.py / score.py / publish.py / digest.py
+  sources/hood.py | telegram.py | discovery.py
+site/                       the dashboard (published to Pages)
+data/                       the JSON store (committed by Actions)
+docs/signal-analysis.md     analysis of the vendor feed this ingests
+tests/                      scorer and mask-resolution tests
 ```
 
-## Resource requirements
+## Analysis
 
-- CPU: 6+ cores recommended
-- RAM: 16 GB (32 GB recommended)
-- GPU: 8+ GB VRAM recommended for Ollama (CPU-only works with smaller models
-  like `qwen2.5:1.5b`, just slower)
-- Storage: ~50 GB free for models + data
+[`docs/signal-analysis.md`](docs/signal-analysis.md) documents why the
+vendor's "SMART MONEY" tag is not used as a score input: across its own 74
+tagged wallets, reported win rate and reported PnL correlate at **r =
+−0.001**, and the median tracked call is **down 77%**.
 
-## Cost
-
-Electricity only (~$5-15/month). No VPS, no per-token AI costs. Google
-Sheets/Drive API usage stays within the free tier for personal use.
+Not investment advice.

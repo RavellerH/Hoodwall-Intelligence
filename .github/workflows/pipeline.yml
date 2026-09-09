@@ -1,0 +1,94 @@
+name: Pipeline
+
+# The cron engine of the whole system. Ingests candidates, enriches them
+# from Blockscout, scores them, commits the updated JSON store back to the
+# repo, and publishes the dashboard to GitHub Pages.
+on:
+  schedule:
+    # Every 30 minutes. GitHub queues scheduled runs on a best-effort basis,
+    # so treat this as "about every half hour", not a hard guarantee.
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Stage to run'
+        required: false
+        default: 'all'
+        type: choice
+        options: [all, ingest, enrich, score, publish]
+
+permissions:
+  contents: write   # commit the JSON store back to the repo
+  pages: write      # publish the dashboard
+  id-token: write   # required by deploy-pages
+
+# Runs mutate committed state, so they must never overlap. Queue instead of
+# cancelling: a half-finished enrichment still has data worth committing.
+concurrency:
+  group: pipeline
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Install Chromium
+        # Only needed if hood.vantis.sh turns out to be client-rendered; the
+        # scraper tries plain HTTP first and falls back to the browser.
+        run: python -m playwright install --with-deps chromium
+
+      - name: Run pipeline
+        env:
+          TG_API_ID: ${{ secrets.TG_API_ID }}
+          TG_API_HASH: ${{ secrets.TG_API_HASH }}
+          TG_SESSION_STRING: ${{ secrets.TG_SESSION_STRING }}
+          TG_SOURCE: ${{ vars.TG_SOURCE }}
+          HOOD_BASE_URL: ${{ vars.HOOD_BASE_URL }}
+          BLOCKSCOUT_BASE: ${{ vars.BLOCKSCOUT_BASE }}
+        run: python run.py ${{ inputs.stage || 'all' }}
+
+      - name: Commit data
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data site/data
+          if git diff --staged --quiet; then
+            echo "No data changes to commit."
+            exit 0
+          fi
+          git commit -m "data: pipeline run $(date -u +%Y-%m-%dT%H:%MZ)"
+          # A concurrent commit (a manual dispatch, a pushed code change) can
+          # land while this job runs; rebase rather than fail the run.
+          for attempt in 1 2 3; do
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+            echo "Push failed; rebasing and retrying."
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            sleep $((attempt * 5))
+          done
+          echo "::error::Could not push data after 3 attempts."
+          exit 1
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}

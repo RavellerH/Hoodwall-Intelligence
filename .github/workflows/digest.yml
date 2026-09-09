@@ -1,0 +1,29 @@
+name: Daily digest
+
+# Sends the Telegram summary of elite / watch wallets. Split from the main
+# pipeline so a messaging outage can never block data collection.
+on:
+  schedule:
+    - cron: '0 13 * * *'   # 13:00 UTC daily
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install requests
+      - name: Send digest
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          SITE_URL: ${{ vars.SITE_URL }}
+        run: python run.py digest
