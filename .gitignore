@@ -1,6 +1,5 @@
 # Secrets - never commit
 .env
-service-account.json
 *.session
 *.session-journal
 
@@ -8,12 +7,8 @@ service-account.json
 venv/
 __pycache__/
 *.pyc
+.pytest_cache/
 
-# Runtime output
-screenshots/*.png
-logs/*.log
-data/*.json
-
-!screenshots/.gitkeep
-!logs/.gitkeep
-!data/.gitkeep
+# NOTE: data/*.json is deliberately NOT ignored.
+# The JSON store in data/ IS the database - GitHub Actions commits it back
+# to the repo after every run, and that commit history is the audit trail.

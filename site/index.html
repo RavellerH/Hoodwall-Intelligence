@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoodwall Intelligence</title>
+<meta name="description" content="Deterministic wallet intelligence for Robinhood Chain.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#128225;</text></svg>">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="brand">
+    <h1>Hoodwall Intelligence</h1>
+    <p class="tagline">Deterministic wallet scoring for Robinhood Chain</p>
+  </div>
+  <div class="freshness">
+    <span id="generated" class="generated">loading…</span>
+    <a id="repo-link" class="ghost-link" href="https://github.com/RavellerH/Hoodwall-Intelligence">source</a>
+  </div>
+</header>
+
+<section class="stats" id="stats" aria-label="Pipeline summary"></section>
+
+<section class="controls" aria-label="Filters">
+  <input id="search" type="search" placeholder="Search address…" autocomplete="off" spellcheck="false">
+  <div id="tier-filters" class="chips" role="group" aria-label="Filter by tier"></div>
+  <select id="label-filter" aria-label="Filter by label"><option value="">All labels</option></select>
+  <select id="source-filter" aria-label="Filter by source"><option value="">All sources</option></select>
+  <button id="reset" class="ghost-btn" type="button">Reset</button>
+</section>
+
+<main>
+  <div class="table-scroll">
+    <table id="wallets">
+      <thead>
+        <tr>
+          <th data-sort="address" class="sortable">Wallet</th>
+          <th data-sort="smart_score" class="sortable numeric">Score</th>
+          <th>Labels</th>
+          <th data-sort="tx_count" class="sortable numeric">Txs</th>
+          <th data-sort="distinct_counterparties" class="sortable numeric">Peers</th>
+          <th data-sort="active_days" class="sortable numeric">Active days</th>
+          <th data-sort="volume_native" class="sortable numeric">Volume</th>
+          <th data-sort="recency_days" class="sortable numeric">Last seen</th>
+          <th data-sort="source" class="sortable">Source</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+  <p id="empty" class="empty" hidden></p>
+</main>
+
+<aside id="detail" class="detail" hidden aria-label="Wallet detail">
+  <button id="detail-close" class="detail-close" type="button" aria-label="Close">&times;</button>
+  <div id="detail-body"></div>
+</aside>
+<div id="scrim" class="scrim" hidden></div>
+
+<footer>
+  <p>
+    Scores are computed by a published formula, not a model — every number
+    decomposes into its inputs. Rebuilt on a schedule by GitHub Actions.
+  </p>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

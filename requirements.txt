@@ -1,15 +1,6 @@
+# Runtime dependencies for the cloud pipeline.
+# No LLM client and no Google API client: scoring is a local formula and
+# state lives in the repo, not in Sheets.
+requests==2.32.3
 telethon==1.36.0
 playwright==1.47.0
-mss==9.1.0
-pytesseract==0.3.13
-pillow==10.4.0
-google-auth==2.35.0
-google-auth-oauthlib==0.8.0
-google-auth-httplib2==0.2.0
-google-api-python-client==2.149.0
-python-telegram-bot==21.7
-requests==2.32.3
-pandas==2.2.3
-python-dotenv==1.0.1
-streamlit==1.39.0
-opencv-python==4.10.0.84

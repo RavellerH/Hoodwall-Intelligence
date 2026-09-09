@@ -1,0 +1,1 @@
+"""Candidate wallet ingestion sources."""
