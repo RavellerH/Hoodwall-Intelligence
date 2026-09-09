@@ -183,3 +183,59 @@ def test_high_winrate_but_losing_is_not_smart_money():
     names = {l["name"] for l in hl.label(f)}
     assert "smart_money" not in names
     assert "unprofitable" in names
+
+
+# --- fill page cap (found in production data) -----------------------------
+# 20 of 22 real tracked accounts returned exactly 2000 fills, which is the
+# API's page size rather than their activity. These pin the handling.
+
+def _capped_fills(n, span_days):
+    """n fills spread evenly across span_days, ending now."""
+    step = int(span_days * 86_400_000 / max(n - 1, 1))
+    return [{"coin": "ETH", "closedPnl": "1", "fee": "0",
+             "time": 1757000000000 + i * step, "sz": "1"} for i in range(n)]
+
+
+def test_capped_fills_are_flagged():
+    f = hl.extract("0x1", {}, _capped_fills(hl.FILL_PAGE_CAP, 1.0))
+    assert f["fills_capped"] is True
+
+    g = hl.extract("0x1", {}, _capped_fills(50, 100.0))
+    assert g["fills_capped"] is False
+
+
+def test_rate_discriminates_between_capped_accounts():
+    """Raw fill count is identical under the cap, so rate must separate them."""
+    fast = hl.extract("0x1", {}, _capped_fills(hl.FILL_PAGE_CAP, 0.02))
+    slow = hl.extract("0x2", {}, _capped_fills(hl.FILL_PAGE_CAP, 25.0))
+    assert fast["fill_count"] == slow["fill_count"]
+    assert fast["fills_per_day"] > slow["fills_per_day"] * 100
+    assert hl.components(fast)["activity"] > hl.components(slow)["activity"]
+
+
+def test_page_cap_does_not_invert_longevity():
+    """A hyperactive account fills its page in hours; a dormant one takes
+    years. Treating the page window as lifetime would rank them backwards."""
+    hyperactive = hl.extract("0x1", {}, _capped_fills(hl.FILL_PAGE_CAP, 0.02))
+    dormant = hl.extract("0x2", {}, _capped_fills(137, 988.0))
+    assert dormant["activity_span_days"] > hyperactive["activity_span_days"]
+    assert (hl.components(hyperactive)["activity"]
+            > hl.components(dormant)["activity"]), \
+        "the busier account must score higher on activity"
+
+
+def test_uncapped_account_still_uses_real_longevity():
+    brief = hl.extract("0x1", {}, _capped_fills(40, 1.0))
+    sustained = hl.extract("0x2", {}, _capped_fills(40, 120.0))
+    assert not brief["fills_capped"] and not sustained["fills_capped"]
+    assert (hl.components(sustained)["activity"]
+            > hl.components(brief)["activity"] * 0.5)
+
+
+def test_fills_per_day_guards_against_zero_span():
+    """A burst inside one minute must not produce an unbounded rate."""
+    now = 1757000000000
+    burst = [{"coin": "ETH", "closedPnl": "0", "fee": "0", "time": now, "sz": "1"}
+             for _ in range(100)]
+    f = hl.extract("0x1", {}, burst)
+    assert f["fills_per_day"] <= 100 * 24
