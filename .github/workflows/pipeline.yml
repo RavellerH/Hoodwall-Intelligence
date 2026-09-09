@@ -10,8 +10,12 @@ on:
     # 60 wallets x 2 calls + ~22 discovery calls = 142, so 24 runs/day is
     # ~3,400 calls - about 68% of the allowance, leaving headroom for manual
     # dispatches. A 30-minute cadence would exceed the free tier outright.
-    # Scheduled runs are best-effort and may be delayed under load.
-    - cron: '0 * * * *'
+    #
+    # Minute 17, not 0: scheduled runs are best-effort and GitHub drops or
+    # heavily delays them under load, and the top of the hour is by far the
+    # most contended slot. An off-peak minute measurably improves the odds
+    # of actually firing.
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
       stage:
@@ -66,25 +70,56 @@ jobs:
 
       - name: Commit data
         run: |
+          set -euo pipefail
           git config user.name  "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add data site/data
           if git diff --staged --quiet; then
             echo "No data changes to commit."
             exit 0
           fi
-          git commit -m "data: pipeline run $(date -u +%Y-%m-%dT%H:%MZ)"
-          # A concurrent commit (a manual dispatch, a pushed code change) can
-          # land while this job runs; rebase rather than fail the run.
+          git commit -q -m "data: pipeline run $(date -u +%Y-%m-%dT%H:%MZ)"
+
           for attempt in 1 2 3; do
             if git push; then
               echo "Pushed on attempt $attempt."
               exit 0
             fi
-            echo "Push failed; rebasing and retrying."
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+
+            echo "Push rejected: ${GITHUB_REF_NAME} moved. Reconciling."
+            # Do NOT rebase. Every store file is a JSON object rewritten in
+            # full by both sides, so a rebase conflicts every single time and
+            # leaves the tree detached with unmerged paths - after which each
+            # further retry fails on "not currently on a branch". That turned
+            # a recoverable push rejection into a hard CI failure once
+            # already.
+            #
+            # Instead: keep this run's store, take the branch's new tip, merge
+            # the store key-wise, and regenerate the derived site files with
+            # the pipeline's own tooling.
+            snapshot="$(mktemp -d)"
+            cp -a data "$snapshot/data"
+
+            git rebase --abort 2>/dev/null || true
+            git merge --abort 2>/dev/null || true
+            git reset -q --hard HEAD
+            git fetch -q origin "${GITHUB_REF_NAME}"
+            git checkout -q -B "${GITHUB_REF_NAME}" "origin/${GITHUB_REF_NAME}"
+
+            python scripts/merge_store.py data "$snapshot/data"
+            rm -rf data && mv "$snapshot/data" data
+            python run.py publish
+
+            git add data site/data
+            if git diff --staged --quiet; then
+              echo "Nothing left to commit after reconciling."
+              exit 0
+            fi
+            git commit -q -m "data: pipeline run $(date -u +%Y-%m-%dT%H:%MZ)"
             sleep $((attempt * 5))
           done
+
           echo "::error::Could not push data after 3 attempts."
           exit 1
 
