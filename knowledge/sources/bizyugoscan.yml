@@ -1,0 +1,29 @@
+key: bizyugoscan
+name: BizyugoScan
+type: wallet_tracker
+url: https://bizyugoscan.com
+description: >
+  A wallet-tracking site submitted for ingestion. Named after the `bizyugo`
+  entity already tracked here, though the site has not been confirmed to be
+  operated by that person.
+
+# Deliberately empty. Every other number in this directory was measured
+# from a feed's own published record; inventing one here to make the file
+# look complete would be the exact failure this directory exists to prevent.
+reliability: {}
+
+caveats:
+  - Not yet inspected. The scraper reads whatever the page and its JSON
+    endpoints expose; which wallets it lists, on which chain, and by what
+    criteria are all unknown until a run reports them.
+  - Chain is unstated. Addresses it publishes are EVM-shaped but carry no
+    chain, so flow tracing must probe for where they are active.
+  - Attribution between a handle and an address, if the site shows one, is
+    the site's claim - reported, never confirmed.
+
+trust: unknown
+notes: >
+  Discovery source. Everything it yields lands in `candidates` for
+  enrichment and the deterministic scorer to judge on observed behaviour;
+  nothing it asserts is a score input. Revisit this record with measured
+  numbers once the first run has produced them.

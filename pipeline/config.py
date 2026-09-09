@@ -74,6 +74,10 @@ HOOD_BASE_URL = _env("HOOD_BASE_URL", "https://hood.vantis.sh")
 # headless browser. Leave false: the HTTP path is ~20x faster in CI.
 HOOD_FORCE_BROWSER = _bool("HOOD_FORCE_BROWSER", False)
 
+# --- bizyugoscan.com source ------------------------------------------------
+BIZYUGOSCAN_BASE_URL = _env("BIZYUGOSCAN_BASE_URL", "https://bizyugoscan.com")
+BIZYUGOSCAN_FORCE_BROWSER = _bool("BIZYUGOSCAN_FORCE_BROWSER", False)
+
 # --- Telegram --------------------------------------------------------------
 TG_API_ID = _env("TG_API_ID")
 TG_API_HASH = _env("TG_API_HASH")

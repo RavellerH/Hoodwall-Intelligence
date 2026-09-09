@@ -313,7 +313,8 @@ pipeline/
   adapters/hyperliquid.py     perps feature extraction and scoring
   adapters/defillama.py       free market data client
   kb/                          knowledge-base loader, schema, address validation
-  sources/hood.py | telegram.py | discovery.py
+  sources/scraper.py          generic vendor-site scraper (addresses + masks)
+  sources/hood.py | bizyugoscan.py | telegram.py | discovery.py
 knowledge/                  your curated wallets, entities, narratives, sources
 site/                        the dashboard (published to Pages)
   index.html / dashboard.css / dashboard.js / graph.js
@@ -323,7 +324,7 @@ knowledge/infrastructure.yml exchanges, bridges, mixers, routers - not wallets
 docs/                       signal-analysis, knowledge-base, flow-tracing,
                              attribution-methods, graph-and-sentiment,
                              realtime-alerts, tool-landscape
-tests/                      159 tests across pipeline, kb, graph, sentiment, adapters
+tests/                      165 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis
