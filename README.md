@@ -29,10 +29,31 @@ Keyboard-first, amber-on-black, information-dense.
 | `2` | WAL — every tracked wallet, all chains |
 | `3` | ENT — entity clusters (wallets grouped by person/org) |
 | `4` | NAR — narratives with measured outcomes |
-| `5` | CHN — chain coverage and which have live data |
-| `6` | SRC — sources and their measured reliability |
+| `5` | **MAP — wallet relationship graph** (Bubblemaps-style, with flow) |
+| `6` | **PNL — positions, equity, realized/unrealized P&L** |
+| `7` | **SENT — sentiment across five sources** |
+| `8` | CHN — chain coverage and which have live data |
+| `9` | SRC — sources and their measured reliability |
 | `/` | command line (`HELP`, `CHAIN sol`, `FIND cupsey`) |
 | `↑↓` / `j k` | move · `ENTER` open detail · `ESC` clear |
+
+### The graph (MAP)
+
+Solid arrowed edges are **transfers** — value actually moved on-chain.
+Faint dashed edges are **behavioural** — the wallets share an entity, token,
+narrative or source. They are never blended, and the legend always states
+what share of edges are evidence rather than inference. Nodes are sized by
+value, coloured by cluster, and a dashed ring marks a masked address that
+cannot gain transfer edges until resolved.
+
+### Sentiment (SENT)
+
+Five sources, each reporting a score, a confidence and its evidence.
+Confidence-weighted, so a source with no data contributes nothing instead of
+dragging the reading toward neutral. Fully deterministic today, with one
+clean seam where an LLM narrator can be dropped in later.
+
+See [docs/graph-and-sentiment.md](docs/graph-and-sentiment.md).
 
 Purple `◌` marks an address known only in masked form.
 

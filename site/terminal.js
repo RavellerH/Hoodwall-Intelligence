@@ -6,7 +6,7 @@
    move the selection, ENTER opens detail, "/" focuses the command line. */
 'use strict';
 
-const VIEWS = ['DASH', 'WAL', 'ENT', 'NAR', 'CHN', 'SRC'];
+const VIEWS = ['DASH', 'WAL', 'ENT', 'NAR', 'MAP', 'PNL', 'SENT', 'CHN', 'SRC'];
 
 const state = {
   kb: null, meta: null, scored: [],
@@ -14,6 +14,7 @@ const state = {
   chains: new Set(),      // empty = all
   query: '',
   sort: {}, selected: {}, // per view
+  graph: null, sentiment: null, graphInstance: null,
 };
 
 const $ = (id) => document.getElementById(id);
@@ -60,6 +61,14 @@ async function boot() {
   try {
     state.scored = await fetch(`data/wallets.json${bust}`).then((r) => r.json());
   } catch { state.scored = []; }
+  // The graph and sentiment feeds are optional: an older deployment may not
+  // have them yet, and their views should say so rather than break the app.
+  try {
+    state.graph = await fetch(`data/graph.json${bust}`).then((r) => r.json());
+  } catch { state.graph = null; }
+  try {
+    state.sentiment = await fetch(`data/sentiment.json${bust}`).then((r) => r.json());
+  } catch { state.sentiment = null; }
 
   renderChrome();
   setView('DASH');
@@ -93,8 +102,9 @@ function renderChrome() {
         ${esc(c.toUpperCase())}<span class="n">${byChain[c]}</span></button>`).join('');
 
   $('fkeys').innerHTML = [
-    ['F1', 'HELP'], ['1', 'DASH'], ['2', 'WAL'], ['3', 'ENT'],
-    ['4', 'NAR'], ['5', 'CHN'], ['6', 'SRC'], ['/', 'CMD'], ['ESC', 'CLEAR'],
+    ['1', 'DASH'], ['2', 'WAL'], ['3', 'ENT'], ['4', 'NAR'], ['5', 'MAP'],
+    ['6', 'PNL'], ['7', 'SENT'], ['8', 'CHN'], ['9', 'SRC'],
+    ['/', 'CMD'], ['?', 'HELP'],
   ].map(([k, l]) => `<button class="fkey" data-cmd="${l}"><b>${k}</b>${l}</button>`).join('');
 }
 
@@ -112,15 +122,18 @@ function setView(view) {
 const TITLES = {
   DASH: 'DASH · OVERVIEW', WAL: 'WAL · TRACKED WALLETS',
   ENT: 'ENT · ENTITY CLUSTERS', NAR: 'NAR · NARRATIVES',
-  CHN: 'CHN · CHAIN COVERAGE', SRC: 'SRC · SOURCES',
+  MAP: 'MAP · WALLET RELATIONSHIP GRAPH', PNL: 'PNL · POSITIONS & P&L',
+  SENT: 'SENT · SENTIMENT', CHN: 'CHN · CHAIN COVERAGE', SRC: 'SRC · SOURCES',
 };
 
 function render() {
   $('panel-title').textContent = TITLES[state.view] || state.view;
   const renderers = { DASH: viewDash, WAL: viewWallets, ENT: viewEntities,
-                      NAR: viewNarratives, CHN: viewChains, SRC: viewSources };
+                      NAR: viewNarratives, MAP: viewMap, PNL: viewPnl,
+                      SENT: viewSentiment, CHN: viewChains, SRC: viewSources };
   const count = renderers[state.view]();
-  $('panel-count').textContent = count === null ? '' : `${count} ROW(S)`;
+  const unit = state.view === 'MAP' ? 'NODE(S)' : 'ROW(S)';
+  $('panel-count').textContent = count === null ? '' : `${count} ${unit}`;
 }
 
 /* ---------------- filtering + sorting ---------------- */
@@ -270,6 +283,155 @@ function viewNarratives() {
       <td class="dim">${esc((n.chains || []).join(',').toUpperCase()) || '—'}</td>
       <td class="num">${(n.tokens || []).length}</td>
       <td class="dim">${esc(n.opened || '—')}</td></tr>`);
+}
+
+function viewMap() {
+  const g = state.graph;
+  if (!g || !g.nodes || !g.nodes.length) {
+    $('panel').innerHTML = '<div class="empty">NO GRAPH DATA — run the pipeline to build it.</div>';
+    return null;
+  }
+  const st = g.stats || {};
+  // State the evidence/inference split up front: a graph that looks
+  // authoritative while resting mostly on inference is misleading.
+  const coverage = (st.transfer_coverage || 0) * 100;
+
+  $('panel').innerHTML = `
+    <div class="maplegend">
+      <span><i class="ln solid"></i> TRANSFER (${st.transfer_edges || 0}) — observed on-chain</span>
+      <span><i class="ln dash"></i> BEHAVIOURAL (${st.behavioural_edges || 0}) — inferred</span>
+      <span class="dim">${st.clusters || 0} clusters · ${coverage.toFixed(0)}% of edges are evidence</span>
+      <span class="spacer"></span>
+      <span class="dim">drag to pan · scroll to zoom · click a node</span>
+    </div>
+    <div class="mapwrap"><canvas id="mapcanvas"></canvas></div>
+    <div class="clusterbar" id="clusterbar"></div>`;
+
+  const canvas = $('mapcanvas');
+  state.graphInstance = createGraph(canvas, g, {
+    onSelect: (node) => openDetail('wallet', node.id),
+  });
+
+  $('clusterbar').innerHTML = state.graphInstance.legend().slice(0, 12).map((c) => `
+    <button class="cchip" data-cluster="${esc(c.members[0])}">
+      <i style="background:${c.color}"></i>${esc(c.name)}
+      <span class="n">${c.size}</span></button>`).join('');
+  return st.nodes;
+}
+
+function viewPnl() {
+  // Only wallets with observed data can show P&L; the rest would be a
+  // fabricated zero.
+  const rows = (state.kb.wallets || [])
+    .filter((w) => w.observed && chainOk(w.chain))
+    .filter((w) => matches([w.address, w.entity, w.handle].join(' ')))
+    .map((w) => {
+      const o = w.observed;
+      return {
+        ...w,
+        equity: o.equity ?? null,
+        unrealized: o.unrealized_pnl ?? null,
+        realized: o.realized_pnl ?? null,
+        win_rate: o.win_rate ?? null,
+        leverage: o.leverage ?? null,
+        positions: o.position_count ?? 0,
+        score: o.smart_score,
+      };
+    });
+
+  if (!rows.length) {
+    $('panel').innerHTML = `<div class="empty">NO POSITION DATA YET.<br><br>
+      <span class="dim">Run <b>python run.py hyperliquid</b> (needs no API key),
+      or set BLOCKSCOUT_API_KEY for EVM chains.</span></div>`;
+    return 0;
+  }
+
+  const total = rows.reduce((a, r) => a + (r.equity || 0), 0);
+  const unreal = rows.reduce((a, r) => a + (r.unrealized || 0), 0);
+  const real = rows.reduce((a, r) => a + (r.realized || 0), 0);
+
+  const tiles = `<div class="tiles">
+    <div class="tile"><div class="v">$${fmtUsd(total)}</div><div class="k">TRACKED EQUITY</div></div>
+    <div class="tile"><div class="v ${unreal >= 0 ? 'pos' : 'neg'}">${unreal >= 0 ? '+' : '-'}$${fmtUsd(Math.abs(unreal))}</div><div class="k">UNREALIZED</div></div>
+    <div class="tile"><div class="v ${real >= 0 ? 'pos' : 'neg'}">${real >= 0 ? '+' : '-'}$${fmtUsd(Math.abs(real))}</div><div class="k">REALIZED</div></div>
+    <div class="tile"><div class="v">${rows.length}</div><div class="k">WITH LIVE DATA</div></div>
+  </div>`;
+
+  const sorted = sortRows(rows, 'PNL', 'equity');
+  $('panel').innerHTML = tiles + `<table><thead><tr>
+      <th data-key="display">WALLET</th><th data-key="entity">ENTITY</th>
+      <th class="num" data-key="equity">EQUITY</th>
+      <th class="num" data-key="unrealized">uPnL</th>
+      <th class="num" data-key="realized">rPnL</th>
+      <th class="num" data-key="win_rate">WIN</th>
+      <th class="num" data-key="leverage">LEV</th>
+      <th class="num" data-key="positions">POS</th>
+      <th class="num" data-key="score">SCORE</th></tr></thead><tbody>
+    ${sorted.map((r) => `<tr data-key="${esc(r.key)}" data-kind="wallet">
+      <td class="addr">${esc(r.display)}</td>
+      <td>${r.entity ? esc(r.entity) : '<span class="faint">—</span>'}</td>
+      <td class="num">$${fmtUsd(r.equity)}</td>
+      <td class="num ${r.unrealized >= 0 ? 'pos' : 'neg'}">${r.unrealized >= 0 ? '+' : '-'}$${fmtUsd(Math.abs(r.unrealized || 0))}</td>
+      <td class="num ${r.realized >= 0 ? 'pos' : 'neg'}">${r.realized >= 0 ? '+' : '-'}$${fmtUsd(Math.abs(r.realized || 0))}</td>
+      <td class="num">${r.win_rate === null ? '<span class="faint">—</span>' : (r.win_rate * 100).toFixed(0) + '%'}</td>
+      <td class="num ${r.leverage >= 20 ? 'neg' : ''}">${r.leverage ? r.leverage.toFixed(1) + 'x' : '—'}</td>
+      <td class="num dim">${r.positions}</td>
+      <td class="num"><b>${r.score === null ? '—' : r.score.toFixed(0)}</b></td></tr>`).join('')}
+    </tbody></table>`;
+  restoreSelection();
+  return rows.length;
+}
+
+function viewSentiment() {
+  const s = state.sentiment;
+  if (!s || !s.overall) {
+    $('panel').innerHTML = '<div class="empty">NO SENTIMENT DATA — run the pipeline.</div>';
+    return null;
+  }
+  const o = s.overall;
+  const cls = o.label === 'bullish' ? 'pos' : o.label === 'bearish' ? 'neg' : 'dim';
+
+  const gauge = (score) => {
+    // -1..+1 mapped onto a bar with a centre marker at 0.
+    const pct = ((score + 1) / 2) * 100;
+    return `<div class="gauge"><div class="gauge-mid"></div>
+      <div class="gauge-fill ${score >= 0 ? 'pos' : 'neg'}"
+           style="left:${Math.min(50, pct)}%;width:${Math.abs(pct - 50)}%"></div></div>`;
+  };
+
+  const signals = o.signals.map((sig) => `
+    <div class="sigrow">
+      <span class="siglabel">${esc(sig.source)}</span>
+      <span class="sigscore ${sig.confidence < 0.05 ? 'faint' : sig.score > 0 ? 'pos' : sig.score < 0 ? 'neg' : 'dim'}">
+        ${sig.confidence < 0.05 ? 'NO DATA' : (sig.score >= 0 ? '+' : '') + sig.score.toFixed(2)}</span>
+      <span class="sigconf dim">conf ${sig.confidence.toFixed(2)}</span>
+      <span class="sigev dim">${esc(sig.evidence)}</span>
+    </div>`).join('');
+
+  const narratives = Object.entries(s.by_narrative || {}).map(([key, n]) => `
+    <tr data-key="${esc(key)}" data-kind="narrative">
+      <td><b>${esc(key)}</b></td>
+      <td class="${n.label === 'bullish' ? 'pos' : n.label === 'bearish' ? 'neg' : 'dim'}">${esc(n.label.toUpperCase())}</td>
+      <td class="num">${n.score >= 0 ? '+' : ''}${n.score.toFixed(2)}</td>
+      <td class="num dim">${n.confidence.toFixed(2)}</td>
+      <td class="dim">${esc((n.reporting_sources || []).join(', ')) || 'none'}</td></tr>`).join('');
+
+  $('panel').innerHTML = `
+    <div class="senthead">
+      <div class="sentbig ${cls}">${esc(o.label.toUpperCase())}
+        <span class="sentnum">${o.score >= 0 ? '+' : ''}${o.score.toFixed(2)}</span></div>
+      ${gauge(o.score)}
+      <div class="dim" style="margin-top:6px">confidence ${o.confidence.toFixed(2)}
+        · ${o.reporting_sources.length}/${o.signals.length} sources reporting</div>
+      <p class="note" style="margin-top:9px">${esc(o.narrative)}</p>
+    </div>
+    <div class="section">SIGNALS</div>
+    <div class="sigs">${signals}</div>
+    ${narratives ? `<div class="section">BY NARRATIVE</div>
+      <table><thead><tr><th>NARRATIVE</th><th>READ</th>
+        <th class="num">SCORE</th><th class="num">CONF</th><th>SOURCES</th>
+      </tr></thead><tbody>${narratives}</tbody></table>` : ''}`;
+  return null;
 }
 
 function viewChains() {
@@ -549,7 +711,7 @@ document.addEventListener('keydown', (e) => {
   }
   if (typing) return;
 
-  if (e.key >= '1' && e.key <= '6') { setView(VIEWS[+e.key - 1]); return; }
+  if (e.key >= '1' && e.key <= '9') { setView(VIEWS[+e.key - 1]); return; }
   if (e.key === 'ArrowDown' || e.key === 'j') {
     e.preventDefault(); select((state.selected[state.view] ?? -1) + 1); return;
   }
@@ -567,7 +729,7 @@ document.addEventListener('keydown', (e) => {
 const HELP = `
 <h3>COMMANDS</h3>
 <div class="prose">
-<p><b>DASH WAL ENT NAR CHN SRC</b> — switch view (or press 1-6)</p>
+<p><b>DASH WAL ENT NAR MAP PNL SENT CHN SRC</b> — switch view (or press 1-9)</p>
 <p><b>CHAIN &lt;name&gt;</b> — filter to one chain (CHAIN ALL to clear)</p>
 <p><b>FIND &lt;text&gt;</b> — search the current view</p>
 <p><b>HELP</b> — this panel · <b>ESC</b> — clear filters and close detail</p>
@@ -582,6 +744,27 @@ const HELP = `
 <span class="cf-inferred">INFERRED</span> (our own clustering).</p>
 <p><b>KB ONLY</b> in CHN means that chain has curated records but no live
 enrichment adapter yet.</p>
+<h2>MAP — THE RELATIONSHIP GRAPH</h2>
+<p>Two edge kinds, drawn differently on purpose:</p>
+<p><b>Solid, arrowed</b> = a <b>transfer</b>. Value actually moved on-chain.
+Thickness scales with value. This is evidence.</p>
+<p><b>Faint, dashed</b> = <b>behavioural</b>. The two wallets share something —
+the same entity, token, narrative or funding source. This is inference,
+not proof of any connection between them.</p>
+<p>The legend shows what share of edges are evidence. Early on that number
+is low, because transfer edges need on-chain enrichment to have run.</p>
+<p>A dashed ring around a node means a <span class="masked">masked</span>
+address: it can never gain transfer edges until it is resolved.</p>
+<p>Cluster names come from a dominant entity where one exists; otherwise
+they are <code>cluster-N</code> rather than being named after a single
+attributed member.</p>
+<h2>SENT — SENTIMENT</h2>
+<p>Every source reports a score (−1 bearish … +1 bullish) <i>and</i> a
+confidence. A source with no data reports <b>NO DATA</b> at zero confidence
+rather than a neutral reading, so silence never dilutes the sources that
+do have something to say.</p>
+<p>A source measured unreliable has its confidence cut, never its sign
+flipped — claiming to know the sign of a bad signal is its own overreach.</p>
 </div>`;
 
 function runCommand(raw) {
@@ -657,6 +840,11 @@ $('panel').addEventListener('click', (e) => {
 });
 
 document.addEventListener('click', (e) => {
+  const cluster = e.target.closest('[data-cluster]');
+  if (cluster && state.graphInstance) {
+    state.graphInstance.focusNode(cluster.dataset.cluster);
+    return;
+  }
   const goto = e.target.closest('[data-goto]');
   if (goto) {
     const [kind, ...keyParts] = goto.dataset.goto.split(':');

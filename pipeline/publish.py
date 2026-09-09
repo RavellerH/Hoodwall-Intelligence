@@ -8,7 +8,7 @@ and a copyright problem. Set PUBLISH_RAW_TEXT=true to override.
 import json
 from pathlib import Path
 
-from . import config, scoring
+from . import config, graph, scoring, sentiment
 from .kb import load as load_kb
 from .kb.schema import ValidationError
 from .store import load, utcnow
@@ -110,8 +110,18 @@ def run():
     kb_payload = _build_kb(rows)
     meta["knowledge"] = kb_payload["stats"]
 
+    graph_payload, sentiment_payload = _build_graph_and_sentiment(rows)
+    meta["graph"] = graph_payload.get("stats", {})
+    meta["sentiment"] = {
+        "score": sentiment_payload.get("overall", {}).get("score"),
+        "label": sentiment_payload.get("overall", {}).get("label"),
+        "confidence": sentiment_payload.get("overall", {}).get("confidence"),
+    }
+
     _write("wallets.json", rows)
     _write("kb.json", kb_payload)
+    _write("graph.json", graph_payload)
+    _write("sentiment.json", sentiment_payload)
     _write("meta.json", meta)
     print(f"[publish] {len(rows)} wallet(s) published of {len(scores)} scored")
     return len(rows)
@@ -254,3 +264,45 @@ def _build_kb(scored_rows):
         "sources": list(kb.sources.values()),
         "errors": kb.errors,
     }
+
+
+def _build_graph_and_sentiment(scored_rows):
+    """Assemble the relationship graph and the sentiment read.
+
+    Both degrade gracefully: with no enrichment yet the graph is entirely
+    behavioural and the flow signal reports zero confidence rather than a
+    fabricated neutral reading.
+    """
+    try:
+        kb = load_kb()
+    except ValidationError as exc:
+        print(f"  ! graph skipped, knowledge base failed: {exc}")
+        return {"nodes": [], "edges": [], "clusters": [], "stats": {}}, {}
+
+    events = load("events")
+    hl_scores = load("hl_scores")
+    evm_scores = {r["address"]: r for r in load("scores").values() if r.get("address")}
+
+    graph_payload = graph.build(kb, events, hl_scores, evm_scores)
+    stats = graph_payload["stats"]
+    print(f"  graph: {stats['nodes']} nodes, {stats['edges']} edges "
+          f"({stats['transfer_edges']} transfer / {stats['behavioural_edges']} behavioural), "
+          f"{stats['clusters']} clusters")
+
+    messages = list(load("telegram_messages").values())
+    source_trust = None
+    for source in kb.sources.values():
+        if source.get("trust"):
+            source_trust = source["trust"]
+            break
+
+    overall = sentiment.analyze(
+        graph_payload["nodes"], hl_scores, messages, quotes=[], posts=[],
+        source_trust=source_trust)
+    by_narrative = sentiment.per_narrative(kb, graph_payload["nodes"], hl_scores, messages)
+
+    print(f"  sentiment: {overall['label']} {overall['score']:+.2f} "
+          f"(confidence {overall['confidence']:.2f}, "
+          f"sources reporting: {', '.join(overall['reporting_sources']) or 'none'})")
+
+    return graph_payload, {"overall": overall, "by_narrative": by_narrative}

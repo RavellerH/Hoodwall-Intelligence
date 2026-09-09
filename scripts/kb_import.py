@@ -76,7 +76,7 @@ def sheet_rows(ws):
 
 # --- per-sheet importers --------------------------------------------------
 
-def import_smart_money(ws, source_key):
+def import_smart_money(ws, source_key, feed_narrative=None):
     """Masked memecoin wallets. Handles become entities."""
     wallets, entities = [], {}
     for row in sheet_rows(ws):
@@ -86,8 +86,16 @@ def import_smart_money(ws, source_key):
         handle = clean(row.get("Handle"))
         entity_key = slugify(handle.lstrip("@")) if handle else None
 
+        # "OG($$242.22); SOCIAL($$241.05)" -> ["OG", "SOCIAL"]
+        bought = clean(row.get("Tokens Bought (this feed)"))
+        tokens = sorted({
+            t.strip() for t in re.findall(r"([^;()]+)\(", bought) if t.strip()
+        }) if bought else []
+
         record = {"chain": "robinhood", "source": source_key,
-                  "labels": ["smart_money"], "confidence": "reported"}
+                  "labels": ["smart_money"], "confidence": "reported",
+                  "tokens": tokens,
+                  "narratives": [feed_narrative] if feed_narrative else []}
         if FULL_EVM.match(raw):
             record["address"] = raw.lower()
         elif MASKED.match(raw):
@@ -245,6 +253,8 @@ def main():
     ap.add_argument("files", nargs="+", help="xlsx workbooks to import")
     ap.add_argument("--write", action="store_true", help="actually write (default: dry run)")
     ap.add_argument("--source", default="intel-hood-vantis", help="source key for feed wallets")
+    ap.add_argument("--narrative", default=None,
+                    help="narrative key to link imported feed wallets to")
     args = ap.parse_args()
 
     all_wallets, all_entities = {}, {}
@@ -263,7 +273,8 @@ def main():
                 continue
             ws = wb[sheet_name]
             if kind == "smart_money":
-                wallets, entities = import_smart_money(ws, args.source)
+                wallets, entities = import_smart_money(
+                    ws, args.source, args.narrative)
             elif kind == "hyperliquid":
                 wallets, entities = import_hyperliquid(ws), {}
             elif kind == "named":
