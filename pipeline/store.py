@@ -29,6 +29,7 @@ TABLES = {
     "wallets": "address",
     "events": "event_id",
     "scores": "address",
+    "hl_scores": "address",
     "telegram_messages": "message_id",
     "masked": "mask",
     "state": "key",

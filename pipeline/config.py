@@ -49,13 +49,19 @@ DATA_DIR = Path(_env("DATA_DIR", ROOT / "data"))
 SITE_DATA_DIR = Path(_env("SITE_DATA_DIR", ROOT / "site" / "data"))
 
 # --- Chain data ------------------------------------------------------------
+# Robinhood Chain (chain id 4663) is served through Blockscout's multichain
+# Pro API. The per-instance host robinhoodchain.blockscout.com/api/v2 returns
+# 403 for programmatic access, so the Pro API is the default.
+BLOCKSCOUT_CHAIN_ID = _env("BLOCKSCOUT_CHAIN_ID", "4663")
 BLOCKSCOUT_BASE = _env(
-    "BLOCKSCOUT_BASE", "https://robinhoodchain.blockscout.com/api/v2"
+    "BLOCKSCOUT_BASE", f"https://api.blockscout.com/{BLOCKSCOUT_CHAIN_ID}/api/v2"
 )
+BLOCKSCOUT_API_KEY = _env("BLOCKSCOUT_API_KEY")
 BLOCKSCOUT_TIMEOUT = _int("BLOCKSCOUT_TIMEOUT", 20)
 BLOCKSCOUT_RETRIES = _int("BLOCKSCOUT_RETRIES", 3)
 # Politeness delay between Blockscout calls, in seconds.
-BLOCKSCOUT_DELAY = float(_env("BLOCKSCOUT_DELAY", "0.25"))
+# Free tier allows 5 req/s; 0.3s leaves margin for retry bursts.
+BLOCKSCOUT_DELAY = float(_env("BLOCKSCOUT_DELAY", "0.3"))
 CHAIN_EXPLORER_URL = _env(
     "CHAIN_EXPLORER_URL", "https://robinhoodchain.blockscout.com"
 )

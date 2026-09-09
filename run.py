@@ -6,7 +6,8 @@ lives in the workflow files and the logic lives here.
 
     python run.py ingest    # all candidate sources
     python run.py enrich    # on-chain enrichment
-    python run.py score     # deterministic scoring
+    python run.py score     # deterministic scoring (EVM)
+    python run.py hyperliquid  # perps enrichment (no API key needed)
     python run.py publish   # build site/data/*.json
     python run.py digest    # daily Telegram digest
     python run.py all       # ingest -> enrich -> score -> publish
@@ -16,7 +17,7 @@ import sys
 import time
 import traceback
 
-from pipeline import enrich, masks, publish, score
+from pipeline import enrich, enrich_hl, masks, publish, score
 from pipeline.sources import discovery, hood, telegram
 
 
@@ -54,6 +55,7 @@ STAGES = {
     "ingest": _ingest,
     "enrich": enrich.run,
     "score": score.run,
+    "hyperliquid": enrich_hl.run,
     "publish": publish.run,
 }
 

@@ -1,0 +1,29 @@
+name: Knowledge base
+
+# Validates every change to knowledge/ so a malformed record fails the pull
+# request instead of silently vanishing from the terminal.
+on:
+  push:
+    paths: ['knowledge/**', 'pipeline/kb/**', 'scripts/kb_*.py']
+  pull_request:
+    paths: ['knowledge/**', 'pipeline/kb/**', 'scripts/kb_*.py']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install pyyaml pytest requests
+      - name: Validate knowledge base
+        run: python scripts/kb_validate.py
+      - name: Knowledge base tests
+        run: python -m pytest tests/test_kb.py -q

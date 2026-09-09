@@ -1,0 +1,26 @@
+name: Diagnose chain API
+
+# Manual only. Probes every plausible Blockscout base URL and auth
+# combination and prints which one works, so endpoint problems are
+# identified in a single run instead of one scheduled run per guess.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install requests
+      - name: Probe endpoints
+        env:
+          BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
+          BLOCKSCOUT_CHAIN_ID: ${{ vars.BLOCKSCOUT_CHAIN_ID }}
+        run: python scripts/diagnose_chain.py
