@@ -5,9 +5,13 @@ name: Pipeline
 # repo, and publishes the dashboard to GitHub Pages.
 on:
   schedule:
-    # Every 30 minutes. GitHub queues scheduled runs on a best-effort basis,
-    # so treat this as "about every half hour", not a hard guarantee.
-    - cron: '*/30 * * * *'
+    # Hourly, sized to the Blockscout free tier: 100k credits/day at 20
+    # credits per call is ~5,000 calls/day. One run costs roughly
+    # 60 wallets x 2 calls + ~22 discovery calls = 142, so 24 runs/day is
+    # ~3,400 calls - about 68% of the allowance, leaving headroom for manual
+    # dispatches. A 30-minute cadence would exceed the free tier outright.
+    # Scheduled runs are best-effort and may be delayed under load.
+    - cron: '0 * * * *'
   workflow_dispatch:
     inputs:
       stage:
@@ -83,6 +87,17 @@ jobs:
           done
           echo "::error::Could not push data after 3 attempts."
           exit 1
+
+      - name: Push watchlist to the alert relay
+        # Best-effort: the realtime relay is optional, and a messaging
+        # outage must never fail the data pipeline.
+        if: vars.ALERT_WORKER_URL != ''
+        continue-on-error: true
+        env:
+          WATCHLIST_TOKEN: ${{ secrets.WATCHLIST_TOKEN }}
+        run: |
+          python scripts/kb_watchlist.py \
+            --push "${{ vars.ALERT_WORKER_URL }}" --token "$WATCHLIST_TOKEN"
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

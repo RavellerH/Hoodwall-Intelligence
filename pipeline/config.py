@@ -60,7 +60,8 @@ BLOCKSCOUT_API_KEY = _env("BLOCKSCOUT_API_KEY")
 BLOCKSCOUT_TIMEOUT = _int("BLOCKSCOUT_TIMEOUT", 20)
 BLOCKSCOUT_RETRIES = _int("BLOCKSCOUT_RETRIES", 3)
 # Politeness delay between Blockscout calls, in seconds.
-BLOCKSCOUT_DELAY = float(_env("BLOCKSCOUT_DELAY", "0.25"))
+# Free tier allows 5 req/s; 0.3s leaves margin for retry bursts.
+BLOCKSCOUT_DELAY = float(_env("BLOCKSCOUT_DELAY", "0.3"))
 CHAIN_EXPLORER_URL = _env(
     "CHAIN_EXPLORER_URL", "https://robinhoodchain.blockscout.com"
 )

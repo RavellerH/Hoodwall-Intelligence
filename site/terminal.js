@@ -20,6 +20,15 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g,
   (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
+/* A label is either curated (you asserted it) or observed (an adapter
+   measured it). Showing which is which keeps assertion apart from evidence. */
+function labelTag(l) {
+  const name = typeof l === 'string' ? l : l.name;
+  const observed = typeof l === 'object' && l.source === 'observed';
+  const title = (typeof l === 'object' && l.evidence) ? ` title="${esc(l.evidence)}"` : '';
+  return `<span class="tag${observed ? ' obs' : ''}"${title}>${esc(name)}</span>`;
+}
+
 const fmt = (n, d = 0) => (n === null || n === undefined || Number.isNaN(Number(n)))
   ? '—' : Number(n).toLocaleString('en-US', { minimumFractionDigits: d, maximumFractionDigits: d });
 
@@ -213,7 +222,7 @@ function viewWallets() {
       <td class="dim">${esc(w.chain.toUpperCase())}</td>
       <td class="${w.resolved ? 'addr' : 'masked'}">${esc(w.display)}${w.resolved ? '' : ' ◌'}</td>
       <td>${w.entity ? esc(w.entity) : '<span class="faint">—</span>'}</td>
-      <td>${(w.labels || []).map((l) => `<span class="tag">${esc(l)}</span>`).join('') || '<span class="faint">—</span>'}</td>
+      <td>${(w.labels || []).map(labelTag).join('') || '<span class="faint">—</span>'}</td>
       <td class="cf-${esc(w.confidence || 'reported')}">${esc((w.confidence || '—').toUpperCase())}</td>
       <td class="num">${obs ? `<b>${obs.smart_score.toFixed(0)}</b>` : '<span class="faint">—</span>'}</td>
       <td class="dim">${esc(w.source || '—')}</td></tr>`;
@@ -347,15 +356,11 @@ function detailWallet(w) {
       ['SOURCE', esc(w.source || '—')],
     ])}
     ${(w.labels || []).length ? `<h3>LABELS</h3>
-      <div>${w.labels.map((l) => `<span class="tag">${esc(l)}</span>`).join('')}</div>` : ''}
+      <div>${w.labels.map(labelTag).join('')}</div>
+      ${w.labels.filter((l) => l.evidence).map((l) =>
+        `<div class="note"><b>${esc(l.name)}</b> — ${esc(l.evidence)}</div>`).join('')}` : ''}
     ${w.notes ? `<h3>NOTES</h3><div class="note">${esc(w.notes)}</div>` : ''}
-    ${obs ? `<h3>OBSERVED ON-CHAIN</h3>${kv([
-      ['SMART SCORE', `<b>${obs.smart_score}</b> ${esc(obs.tier.toUpperCase())}`],
-      ['TXS', fmt(obs.tx_count)],
-      ['ACTIVE DAYS', fmt(obs.active_days)],
-      ['VOLUME', fmt(obs.volume_native, 2)],
-      ['LAST SEEN', esc((obs.last_seen || '').slice(0, 10))],
-    ])}` : `<h3>OBSERVED ON-CHAIN</h3>
+    ${obs ? observedBlock(obs) : `<h3>OBSERVED</h3>
       <p class="dim">No live data. ${chain.enrichment === 'none'
         ? `${esc(w.chain.toUpperCase())} has no enrichment adapter yet — this record is curated only.`
         : 'Not yet enriched.'}</p>`}
@@ -363,6 +368,59 @@ function detailWallet(w) {
       `<button class="linkbtn" data-goto="narrative:${esc(n)}">${esc(n)}</button>`).join('')}` : ''}
     ${w.address && chain.explorer ? `<a class="linkbtn" target="_blank" rel="noopener"
       href="${esc(chain.explorer)}/address/${esc(w.address)}">EXPLORER ↗</a>` : ''}`;
+}
+
+/* Observed data has two shapes. Perps accounts have no transaction history
+   and EVM wallets have no positions, so they get different panels rather
+   than a lowest-common-denominator one that misrepresents both. */
+function observedBlock(obs) {
+  return obs.kind === 'perps' ? observedPerps(obs) : observedEvm(obs);
+}
+
+function observedEvm(obs) {
+  return `<h3>OBSERVED ON-CHAIN</h3>${kv([
+    ['SMART SCORE', `<b>${obs.smart_score}</b> ${esc((obs.tier || '').toUpperCase())}`],
+    ['TXS', fmt(obs.tx_count)],
+    ['ACTIVE DAYS', fmt(obs.active_days)],
+    ['VOLUME', fmt(obs.volume_native, 2)],
+    ['LAST SEEN', esc((obs.last_seen || '').slice(0, 10))],
+  ])}`;
+}
+
+function observedPerps(obs) {
+  const pnlClass = (v) => (v > 0 ? 'pos' : v < 0 ? 'neg' : 'dim');
+  const bias = obs.net_bias > 0.2 ? 'LONG' : obs.net_bias < -0.2 ? 'SHORT' : 'NEUTRAL';
+  const positions = (obs.positions || []).slice(0, 8).map((p) => `
+    <tr><td>${esc(p.coin)}</td>
+        <td class="${p.direction === 'long' ? 'pos' : 'neg'}">${esc(p.direction.toUpperCase())}</td>
+        <td class="num">$${fmtUsd(p.notional)}</td>
+        <td class="num ${pnlClass(p.unrealized_pnl)}">${p.unrealized_pnl >= 0 ? '+' : ''}$${fmtUsd(p.unrealized_pnl)}</td>
+        <td class="num dim">${p.leverage ? p.leverage + 'x' : '—'}</td></tr>`).join('');
+
+  return `<h3>OBSERVED — PERPS</h3>${kv([
+      ['SMART SCORE', `<b>${obs.smart_score}</b> ${esc((obs.tier || '').toUpperCase())}`],
+      ['EQUITY', `$${fmtUsd(obs.equity)}`],
+      ['NOTIONAL', `$${fmtUsd(obs.notional)}`],
+      ['LEVERAGE', `<span class="${obs.leverage >= 20 ? 'neg' : obs.leverage >= 10 ? 'st-cooling' : 'pos'}">${(obs.leverage || 0).toFixed(1)}x</span>`],
+      ['BIAS', `${bias} <span class="dim">(${(obs.net_bias || 0).toFixed(2)})</span>`],
+      ['CONCENTRATION', `${((obs.concentration || 0) * 100).toFixed(0)}%`],
+      ['UNREALIZED', `<span class="${pnlClass(obs.unrealized_pnl)}">$${fmtUsd(obs.unrealized_pnl)}</span>`],
+      ['REALIZED', `<span class="${pnlClass(obs.realized_pnl)}">$${fmtUsd(obs.realized_pnl)}</span>`],
+      ['WIN RATE', obs.win_rate === null || obs.win_rate === undefined
+        ? '<span class="faint">no closes</span>' : `${(obs.win_rate * 100).toFixed(0)}%`],
+      ['FILLS', fmt(obs.fill_count)],
+      ['MARKETS', esc((obs.top_coins || []).join(', ')) || '—'],
+    ])}
+    ${positions ? `<h3>OPEN POSITIONS (${obs.position_count})</h3>
+      <table class="prose"><thead><tr>
+        <th>COIN</th><th>SIDE</th><th class="num">NOTIONAL</th>
+        <th class="num">uPnL</th><th class="num">LEV</th></tr></thead>
+      <tbody>${positions}</tbody></table>` : ''}
+    ${obs.components ? `<h3>SCORE BREAKDOWN</h3>${Object.entries(obs.components)
+      .sort((a, b) => b[1] - a[1]).map(([k, v]) => `<div class="bar">
+        <span class="lbl">${esc(k.replace(/_/g, ' '))}</span>
+        <span class="track"><span class="fill" style="width:${(v * 100).toFixed(0)}%"></span></span>
+        <span class="n">${(v * 100).toFixed(0)}</span></div>`).join('')}` : ''}`;
 }
 
 function detailEntity(e) {

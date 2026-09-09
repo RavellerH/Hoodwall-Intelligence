@@ -41,14 +41,34 @@ Purple `◌` marks an address known only in masked form.
 | Chain | Family | Live enrichment |
 |---|---|---|
 | Robinhood Chain, Ethereum, Arbitrum, Base, OP | EVM | Blockscout |
-| Hyperliquid | EVM addresses, perps venue | knowledge base only |
+| Hyperliquid | EVM addresses, perps venue | **live** (public API, no key) |
 | Solana | SVM (base58) | knowledge base only |
 | Bitcoin | UTXO | knowledge base only (entity-level) |
 
 Chains marked *knowledge base only* are fully tracked as curated records;
-they simply have no live adapter yet. Adding one means implementing an
-adapter — the EVM feature extractor does not transfer to perps positions
-or UTXO balances.
+they simply have no live adapter yet.
+
+Hyperliquid has its own adapter and its own scorer, because perps data is
+positional rather than transactional — there is no counterparty diversity
+or contract engagement to measure. It scores on capital scale, realized
+performance, activity, diversification and **risk control** (leverage is
+not penalized below 5x, since perps are leveraged by design, but an account
+above 20x is one wick from liquidation). It needs no API key, so it works
+immediately:
+
+```bash
+python run.py hyperliquid
+```
+
+### API budget
+
+Blockscout's free tier is 100,000 credits/day at 5 req/s; most endpoints
+cost 20 credits, so roughly **5,000 calls/day**. The pipeline runs hourly
+rather than half-hourly for exactly this reason: one run costs about
+60 wallets x 2 calls + ~22 discovery calls = 142, so 24 runs/day is ~3,400
+calls, about 68% of the allowance. A 30-minute cadence would exceed the
+free tier outright. Get a key at https://blockscout.com and store it as the
+`BLOCKSCOUT_API_KEY` **secret** — never in a file.
 
 See [docs/knowledge-base.md](docs/knowledge-base.md) for how to add records.
 

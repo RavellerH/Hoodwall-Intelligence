@@ -142,6 +142,9 @@ def _build_kb(scored_rows):
             print(f"  ! kb: {err}")
 
     observed = {r["address"]: r for r in scored_rows if r.get("address")}
+    # Hyperliquid has its own feature space and scorer, so its observations
+    # are merged separately rather than forced into the EVM row shape.
+    hl_observed = load("hl_scores")
 
     wallets = []
     for wallet in kb.wallets.values():
@@ -154,16 +157,19 @@ def _build_kb(scored_rows):
             "resolved": wallet["resolved"],
             "entity": wallet.get("entity"),
             "handle": wallet.get("handle"),
-            "labels": wallet.get("labels", []),
+            "labels": [{"name": l, "source": "curated"}
+                       for l in wallet.get("labels", [])],
             "confidence": wallet.get("confidence"),
             "conviction": wallet.get("conviction"),
             "narratives": wallet.get("narratives", []),
             "source": wallet.get("source"),
             "notes": wallet.get("notes"),
         }
-        match = observed.get(wallet["address"]) if wallet["address"] else None
+        address = wallet["address"]
+        match = observed.get(address) if address else None
         if match:
             row["observed"] = {
+                "kind": "evm",
                 "smart_score": match["smart_score"],
                 "tier": match["tier"],
                 "tx_count": match["tx_count"],
@@ -171,6 +177,34 @@ def _build_kb(scored_rows):
                 "volume_native": match["volume_native"],
                 "last_seen": match["last_seen"],
             }
+        hl_match = hl_observed.get(address) if address else None
+        if hl_match:
+            f = hl_match["features"]
+            row["observed"] = {
+                "kind": "perps",
+                "smart_score": hl_match["smart_score"],
+                "tier": hl_match["tier"],
+                "components": hl_match["components"],
+                "equity": f["equity"],
+                "notional": f["notional"],
+                "leverage": f["account_leverage"],
+                "positions": f["positions"],
+                "position_count": f["position_count"],
+                "net_bias": f["net_bias"],
+                "concentration": f["concentration"],
+                "unrealized_pnl": f["unrealized_pnl"],
+                "realized_pnl": f["realized_pnl"],
+                "win_rate": f["win_rate"],
+                "fill_count": f["fill_count"],
+                "top_coins": f["top_coins"],
+            }
+            # Adapter labels augment the curated ones rather than replace
+            # them, and carry their evidence plus an "observed" provenance so
+            # the terminal can show which assertions are ours vs measured.
+            existing = {l["name"] for l in row["labels"]}
+            row["labels"] = row["labels"] + [
+                {**l, "source": "observed"}
+                for l in hl_match["labels"] if l["name"] not in existing]
         wallets.append(row)
     wallets.sort(key=lambda w: (w["chain"], w["display"] or ""))
 

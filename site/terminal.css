@@ -160,6 +160,8 @@ td { padding: 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ell
   color: var(--amber-dim); border: 1px solid var(--border-lit);
   padding: 0 4px; margin-right: 3px; font-size: 10px;
 }
+/* Observed labels are measured by an adapter, not asserted by hand. */
+.tag.obs { color: var(--cyan); border-color: #1d4b4e; }
 .pill { padding: 0 5px; font-size: 10px; border: 1px solid currentColor; }
 .st-active   { color: var(--green); }
 .st-emerging { color: var(--cyan); }
@@ -182,9 +184,13 @@ td { padding: 2px 8px; white-space: nowrap; overflow: hidden; text-overflow: ell
 .section { padding: 8px 10px 2px; color: var(--faint);
            font-size: 10px; letter-spacing: 0.14em; }
 .bars { padding: 2px 10px 10px; }
-.bar { display: flex; align-items: center; gap: 7px; height: 17px; }
+.bar { display: flex; align-items: center; gap: 7px; min-height: 17px; }
 .bar .lbl { width: 108px; color: var(--dim); font-size: 11px;
-            overflow: hidden; text-overflow: ellipsis; }
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+/* The detail pane is narrower than the main panel, so two-word component
+   names would wrap and collide without a tighter label column. */
+.detail-body .bar { min-height: 19px; }
+.detail-body .bar .lbl { width: 86px; font-size: 10.5px; }
 .bar .track { flex: 1; height: 7px; background: #141414; }
 .bar .fill { height: 100%; background: var(--amber-dim); }
 .bar .n { width: 40px; text-align: right; color: var(--text); font-size: 11px; }
