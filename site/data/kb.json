@@ -1,0 +1,2596 @@
+{
+ "chains": {
+  "arbitrum": {
+   "api_base": "https://api.blockscout.com/42161/api/v2",
+   "chain_id": 42161,
+   "enrichment": "blockscout",
+   "explorer": "https://arbitrum.blockscout.com",
+   "family": "evm",
+   "name": "Arbitrum One",
+   "native_symbol": "ETH"
+  },
+  "base": {
+   "api_base": "https://api.blockscout.com/8453/api/v2",
+   "chain_id": 8453,
+   "enrichment": "blockscout",
+   "explorer": "https://base.blockscout.com",
+   "family": "evm",
+   "name": "Base",
+   "native_symbol": "ETH"
+  },
+  "bitcoin": {
+   "api_base": "https://mempool.space/api",
+   "enrichment": "none",
+   "explorer": "https://mempool.space",
+   "family": "utxo",
+   "name": "Bitcoin",
+   "native_symbol": "BTC",
+   "notes": "Tracked largely at entity level (exchanges, ETFs, treasuries) rather than per-address, since holdings are spread across many addresses.\n"
+  },
+  "ethereum": {
+   "api_base": "https://api.blockscout.com/1/api/v2",
+   "chain_id": 1,
+   "enrichment": "blockscout",
+   "explorer": "https://eth.blockscout.com",
+   "family": "evm",
+   "name": "Ethereum",
+   "native_symbol": "ETH"
+  },
+  "hyperliquid": {
+   "api_base": "https://api.hyperliquid.xyz/info",
+   "chain_id": 999,
+   "enrichment": "none",
+   "explorer": "https://app.hyperliquid.xyz/explorer",
+   "family": "evm",
+   "name": "Hyperliquid",
+   "native_symbol": "USDC",
+   "notes": "Addresses are EVM-shaped but activity is perps positions, not transactions. Needs its own adapter; the EVM feature extractor does not apply. Public WebSocket at wss://api.hyperliquid.xyz/ws needs no key.\n",
+   "venue_type": "perps"
+  },
+  "optimism": {
+   "api_base": "https://api.blockscout.com/10/api/v2",
+   "chain_id": 10,
+   "enrichment": "blockscout",
+   "explorer": "https://optimism.blockscout.com",
+   "family": "evm",
+   "name": "OP Mainnet",
+   "native_symbol": "ETH"
+  },
+  "robinhood": {
+   "api_base": "https://api.blockscout.com/4663/api/v2",
+   "chain_id": 4663,
+   "enrichment": "blockscout",
+   "explorer": "https://robinhoodchain.blockscout.com",
+   "family": "evm",
+   "name": "Robinhood Chain",
+   "native_symbol": "ETH",
+   "notes": "Arbitrum Orbit L2. Per-instance API is gated; use the Pro API."
+  },
+  "solana": {
+   "enrichment": "none",
+   "explorer": "https://solscan.io",
+   "family": "svm",
+   "name": "Solana",
+   "native_symbol": "SOL",
+   "notes": "Base58 addresses. Enrichment would use Helius or an RPC provider."
+  }
+ },
+ "entities": [
+  {
+   "cluster": [
+    "robinhood:0x62e5…5645"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@0xleet"
+   },
+   "holdings": [],
+   "key": "0xleet",
+   "name": "0xleet",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 37.4%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xbf00…4903"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@aa_AFeng"
+   },
+   "holdings": [],
+   "key": "aa-afeng",
+   "name": "aa_AFeng",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 56.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xa83b…8811"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@antpositions"
+   },
+   "holdings": [],
+   "key": "antpositions",
+   "name": "antpositions",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 45.3%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xa52d…c7c6"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Asmodeykaa"
+   },
+   "holdings": [],
+   "key": "asmodeykaa",
+   "name": "Asmodeykaa",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 46.8%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xc965…9641"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@b4lief"
+   },
+   "holdings": [],
+   "key": "b4lief",
+   "name": "b4lief",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 49.6%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "hyperliquid:0x6acc8739ca22c1c1280dc3c09ff20fb44283ac31"
+   ],
+   "cluster_size": 1,
+   "confidence": "confirmed",
+   "handles": {},
+   "holdings": [],
+   "key": "bizyugo",
+   "name": "bizyugo (bizyugo.hl / bizyugo.eth)",
+   "narratives": [],
+   "notes": "DeFi OG angel investor; top DeBank rank, high DegenScore; publicly skeptical of paid signal groups",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x2f5e…759e"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Connoreo"
+   },
+   "holdings": [],
+   "key": "connoreo",
+   "name": "Connoreo",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 24.0%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x3475…3a12"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Cupseyy"
+   },
+   "holdings": [],
+   "key": "cupseyy",
+   "name": "Cupseyy",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 40.0%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x8c15…0a95"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@cyrotrading"
+   },
+   "holdings": [],
+   "key": "cyrotrading",
+   "name": "cyrotrading",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 0.0%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x0759…0ab3"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@driz1x_"
+   },
+   "holdings": [],
+   "key": "driz1x",
+   "name": "driz1x_",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 37.2%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xc2c6…091c"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Ed_x0101"
+   },
+   "holdings": [],
+   "key": "ed-x0101",
+   "name": "Ed_x0101",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 63.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x492c…ff6e"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Esee06257"
+   },
+   "holdings": [],
+   "key": "esee06257",
+   "name": "Esee06257",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 35.3%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x4b10…8d76"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Giann2K"
+   },
+   "holdings": [],
+   "key": "giann2k",
+   "name": "Giann2K",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 40.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x4ede…6d0a"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@goatedondsticks"
+   },
+   "holdings": [],
+   "key": "goatedondsticks",
+   "name": "goatedondsticks",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 24.4%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x7551…ae61"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@kreo444"
+   },
+   "holdings": [],
+   "key": "kreo444",
+   "name": "kreo444",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 56.1%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xacd7…fb40"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@LeBronessy"
+   },
+   "holdings": [],
+   "key": "lebronessy",
+   "name": "LeBronessy",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 44.2%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "hyperliquid:0x8def9f50456c6c4e37fa5d3d57f108ed23992dae"
+   ],
+   "cluster_size": 1,
+   "confidence": "confirmed",
+   "handles": {
+    "twitter": "@loraclexyz"
+   },
+   "holdings": [],
+   "key": "loracle-hl",
+   "name": "loracle.hl (@loraclexyz)",
+   "narratives": [],
+   "notes": "Hypurrfun founder; ~$42M profit over 10mo wiped in ~18 days by an overleveraged HYPE short, repeated long/short whipsaws since",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xecb7…7039"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@MageArez"
+   },
+   "holdings": [],
+   "key": "magearez",
+   "name": "MageArez",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 41.2%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xc5c3…6280"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@mcmoney_one"
+   },
+   "holdings": [],
+   "key": "mcmoney-one",
+   "name": "mcmoney_one",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 43.2%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x3f65…f941"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@metaverseandre"
+   },
+   "holdings": [],
+   "key": "metaverseandre",
+   "name": "metaverseandre",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 46.3%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xe286…216d"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@NeoCallss"
+   },
+   "holdings": [],
+   "key": "neocallss",
+   "name": "NeoCallss",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 60.2%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xcbc0…721c"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@nyenchenn"
+   },
+   "holdings": [],
+   "key": "nyenchenn",
+   "name": "nyenchenn",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 24.4%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x3190…ef79"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@OrangeSBS"
+   },
+   "holdings": [],
+   "key": "orangesbs",
+   "name": "OrangeSBS",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 23.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xd422…b20f"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@ottabag"
+   },
+   "holdings": [],
+   "key": "ottabag",
+   "name": "ottabag",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 37.0%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x41cc…42f5"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@rawrstarxdd"
+   },
+   "holdings": [],
+   "key": "rawrstarxdd",
+   "name": "rawrstarxdd",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 34.0%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x8160…4d7f"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@RealWallSt_Wolf"
+   },
+   "holdings": [],
+   "key": "realwallst-wolf",
+   "name": "RealWallSt_Wolf",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 10.5%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x4d96…26f3"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@run1ooooo1"
+   },
+   "holdings": [],
+   "key": "run1ooooo1",
+   "name": "run1ooooo1",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 56.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x6d3a…735d"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@smalldracos"
+   },
+   "holdings": [],
+   "key": "smalldracos",
+   "name": "smalldracos",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 45.6%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x664d…5dc1"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@TurtleTavernTV"
+   },
+   "holdings": [],
+   "key": "turtletaverntv",
+   "name": "TurtleTavernTV",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 50.8%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x6f8c…5e44"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@vvantaeth"
+   },
+   "holdings": [],
+   "key": "vvantaeth",
+   "name": "vvantaeth",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 53.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x609f…c735"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@whashywash"
+   },
+   "holdings": [],
+   "key": "whashywash",
+   "name": "whashywash",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 69.8%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0xd171…d52c"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@YYzzy_diamond"
+   },
+   "holdings": [],
+   "key": "yyzzy-diamond",
+   "name": "YYzzy_diamond",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 36.5%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [
+    "robinhood:0x9dbf…aada"
+   ],
+   "cluster_size": 1,
+   "confidence": "reported",
+   "handles": {
+    "twitter": "@Zemrics"
+   },
+   "holdings": [],
+   "key": "zemrics",
+   "name": "Zemrics",
+   "narratives": [],
+   "notes": "Tagged as smart money by intel-hood-vantis. Vendor-reported win rate 52.9%.",
+   "type": "individual"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 761801.0,
+     "as_reported": "761,801 BTC",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "blackrock",
+   "name": "BlackRock",
+   "narratives": [],
+   "notes": "Etf Issuer. Holdings are entity-level; coins span many addresses.",
+   "type": "etf"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 993069.0,
+     "as_reported": "993,069 BTC",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "coinbase",
+   "name": "Coinbase",
+   "narratives": [],
+   "notes": "Exchange. Holdings are entity-level; coins span many addresses.",
+   "type": "exchange"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 218000.0,
+     "as_reported": "218,000 BTC",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "grayscale",
+   "name": "Grayscale",
+   "narratives": [],
+   "notes": "Etf Issuer. Holdings are entity-level; coins span many addresses.",
+   "type": "etf"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 13000.0,
+     "as_reported": "~13,000 BTC on-chain (53,200 BTC treasury reported)",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "mara-holdings",
+   "name": "MARA Holdings",
+   "narratives": [],
+   "notes": "Corporate / Miner. Holdings are entity-level; coins span many addresses.",
+   "type": "treasury"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 1096358.0,
+     "as_reported": "1,096,358 BTC",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "satoshi-nakamoto",
+   "name": "Satoshi Nakamoto",
+   "narratives": [],
+   "notes": "Founder / Dormant. Holdings are entity-level; coins span many addresses.",
+   "type": "individual"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": null,
+     "as_reported": "Largest public corporate holder",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "strategy",
+   "name": "Strategy",
+   "narratives": [],
+   "notes": "Corporate Treasury. Holdings are entity-level; coins span many addresses.",
+   "type": "treasury"
+  },
+  {
+   "cluster": [],
+   "cluster_size": 0,
+   "confidence": "reported",
+   "handles": {},
+   "holdings": [
+    {
+     "amount": 328372.0,
+     "as_reported": "328,372 BTC",
+     "asset": "BTC",
+     "chain": "bitcoin"
+    }
+   ],
+   "key": "us-government",
+   "name": "US Government",
+   "narratives": [],
+   "notes": "State Holder. Holdings are entity-level; coins span many addresses.",
+   "type": "treasury"
+  }
+ ],
+ "errors": [],
+ "narratives": [
+  {
+   "body": "## Thesis\n\nA single thematic launch wave on the Robinhood Chain / pons launchpad, not\nseveral independent narratives. Tokens are cloning whichever theme is\ncurrently getting volume — overwhelmingly \"Robinhood\", tokenized stocks,\nprediction markets and launchpad infrastructure — which is the signature of\na launchpad-driven meme cycle rather than fundamentals-driven interest.\n\n## Evidence\n\nNarrative distribution across 58 token cards in the 2026-09-08 window:\n\n| Bucket | Tokens | Character |\n|---|---|---|\n| platform | 12 | Parody \"infra\": prediction markets, DeFi terminals, launchpads |\n| brand-riff | 4 | Piggybacking a real brand (Robinhood, GameStop, CNBC-style) |\n| culture-meme | 4 | Internet-culture bit, no brand tie |\n| defi | 3 | — |\n| person-meme | 1 | — |\n| animal-meme | 1 | — |\n\n`platform` and `brand-riff` together are more than half of all tagged\ntokens, and nearly all reuse the same handful of buzzwords.\n\nMedian market cap at signal was $86,200 (range $23,700–$1,830,000): these\nare micro caps where a single exit moves the price.\n\n## Why conviction is low\n\nThe vendor's own 24h scoreboard reports a median outcome of **0.23x** — the\ntypical called token is down about 77% — with only 6.6% still at 2x. The\n`brand-riff` cluster additionally carries legal and reputational risk: those\ntokens trade on the name recognition of unrelated real companies, with no\naffiliation implied or likely genuine.\n\n## What would change this view\n\n- Median multiple recovering above 1.0x across a full window.\n- Narrative diversity rising (the `platform` share falling below ~25%).\n- Tokens sustaining market cap beyond the first 24 hours rather than\n  round-tripping.\n\n*Not investment advice. Vendor figures are self-reported and unaudited.*",
+   "chains": [
+    "robinhood"
+   ],
+   "closed": null,
+   "conviction": "low",
+   "entities": [],
+   "key": "robinhood-launchpad-wave",
+   "linked_wallets": [],
+   "opened": "2026-09-08",
+   "outcomes": [
+    {
+     "date": "2026-09-08",
+     "metric": "median_multiple",
+     "note": "Median across 228 tracked calls in the 24h window.",
+     "value": 0.23
+    },
+    {
+     "date": "2026-09-08",
+     "metric": "share_still_2x",
+     "note": "15 of 229 calls still at or above 2x.",
+     "value": 0.066
+    },
+    {
+     "date": "2026-09-08",
+     "metric": "share_at_half_or_less",
+     "value": 0.601
+    }
+   ],
+   "status": "cooling",
+   "title": "Robinhood Chain launchpad wave",
+   "tokens": [
+    "CHAD",
+    "w0x",
+    "RECEIPT",
+    "TIMES",
+    "HOODLAND",
+    "GME",
+    "CRYPTOHOOD",
+    "liquititty",
+    "Sonera"
+   ],
+   "updates": [
+    {
+     "date": "2026-09-08",
+     "note": "First window captured. 55%+ of tagged tokens fall into \"platform\" or \"brand-riff\" buckets reusing the same Robinhood/tokenized-stock buzzwords, which reads as one thematic wave rather than independent demand."
+    }
+   ]
+  }
+ ],
+ "sources": [
+  {
+   "caveats": [
+    "Addresses are masked to 8 of 40 hex digits and must be resolved before use.",
+    "71 of 74 tagged wallets are reported profitable, which is a selection artifact - the vendor tags wallets it has already scored as winners.",
+    "Reported win rate and reported PnL correlate at r = -0.001, so the two headline metrics carry no information about each other.",
+    "Recurring wallets have a LOWER median win rate (40.6%) than one-off wallets (44.5%), so repeat appearances are not a quality signal.",
+    "Median tracked call is down 77%; the \"10x from our call\" cards are survivorship-biased highlights."
+   ],
+   "chains": [
+    "robinhood"
+   ],
+   "description": "Bot-generated alert stream for very-early-stage tokens on the Robinhood Chain / pons launchpad. Publishes SMART MONEY / ALPHA / MOMENTUM / RUNNER cards with wallet attributions. Addresses are printed masked (8 of 40 hex).\n",
+   "key": "intel-hood-vantis",
+   "name": "Intel Hood by Vantis",
+   "notes": "Use as a discovery source only. Wallet tags are claims to verify on-chain, never score inputs.\n",
+   "reliability": {
+    "calls_tracked": 229,
+    "median_multiple": 0.23,
+    "share_at_half_or_less": 0.601,
+    "share_down_20pct": 0.732,
+    "share_reached_2x": 0.281,
+    "share_still_2x": 0.066,
+    "wallet_winrate_median": 0.443,
+    "window": "2026-09-08",
+    "winrate_pnl_correlation": -0.001
+   },
+   "trust": "low",
+   "type": "alert_feed",
+   "url": "https://hood.vantis.sh"
+  }
+ ],
+ "stats": {
+  "chains": 8,
+  "entities": 40,
+  "errors": 0,
+  "narratives": 1,
+  "narratives_by_status": {
+   "cooling": 1
+  },
+  "resolved": 22,
+  "sources": 1,
+  "unresolved": 74,
+  "wallets": 96,
+  "wallets_by_chain": {
+   "hyperliquid": 22,
+   "robinhood": 74
+  },
+  "wallets_by_label": {
+   "perps_trader": 20,
+   "smart_money": 76,
+   "whale": 20
+  }
+ },
+ "wallets": [
+  {
+   "address": "0x020ca66c30bec2c4fe3861a94e4db4a498a35872",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x020c…5872",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x020ca66c30bec2c4fe3861a94e4db4a498a35872",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $6,930,000; unrealized PnL $561,400",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x023a3d058020fb76cca98f01b3c48c8938a22355",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x023a…2355",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x023a3d058020fb76cca98f01b3c48c8938a22355",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $16,490,000; unrealized PnL $-1,840,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x31dea2516beee92135b96f464eeec3cf292a13f2",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x31de…13f2",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x31dea2516beee92135b96f464eeec3cf292a13f2",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $7,970,000; unrealized PnL $-249,100",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x4e23288cee4960f9f962195c22948e4bc7ae20c3",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x4e23…20c3",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x4e23288cee4960f9f962195c22948e4bc7ae20c3",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $9,300,000; unrealized PnL $1,620,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x50b309f78e774a756a2230e1769729094cac9f20",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x50b3…9f20",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x50b309f78e774a756a2230e1769729094cac9f20",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $337,000; unrealized PnL $-98,900",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x57dd78cd36e76e2011e8f6dc25cabbaba994494b",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x57dd…494b",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x57dd78cd36e76e2011e8f6dc25cabbaba994494b",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $6,430,000; unrealized PnL $0",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x66f889094739dbb7d20aa60f645acd88feba75a9",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x66f8…75a9",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x66f889094739dbb7d20aa60f645acd88feba75a9",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $1,020,000; unrealized PnL $-992,500",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x68bd85dc5c94a5511e959d299617eb19cd26c298",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x68bd…c298",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x68bd85dc5c94a5511e959d299617eb19cd26c298",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $27,500; unrealized PnL $-45,800",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x6acc8739ca22c1c1280dc3c09ff20fb44283ac31",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x6acc…ac31",
+   "entity": "bizyugo",
+   "handle": null,
+   "key": "hyperliquid:0x6acc8739ca22c1c1280dc3c09ff20fb44283ac31",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Publicly attributed to bizyugo (bizyugo.hl / bizyugo.eth).",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x7717a7a245d9f950e586822b8c9b46863ed7bd7e",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x7717…bd7e",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x7717a7a245d9f950e586822b8c9b46863ed7bd7e",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $6,130,000; unrealized PnL $-69,100",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x7b7f72a28fe109fa703eeed7984f2a8a68fedee2",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x7b7f…dee2",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x7b7f72a28fe109fa703eeed7984f2a8a68fedee2",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $1,880,000; unrealized PnL $-80",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x7fdafde5cfb5465924316eced2d3715494c517d1",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x7fda…17d1",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x7fdafde5cfb5465924316eced2d3715494c517d1",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $42,980,000; unrealized PnL $-13,170,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x8def9f50456c6c4e37fa5d3d57f108ed23992dae",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x8def…2dae",
+   "entity": "loracle-hl",
+   "handle": null,
+   "key": "hyperliquid:0x8def9f50456c6c4e37fa5d3d57f108ed23992dae",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Publicly attributed to loracle.hl (@loraclexyz).",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x8eff8ff863c1a54ec6697b7ad98fe30aa344bd5e",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x8eff…bd5e",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x8eff8ff863c1a54ec6697b7ad98fe30aa344bd5e",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $126,700; unrealized PnL $-8,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0x9546b9d4103be41ce13483a8f299d0df0eeb181c",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0x9546…181c",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0x9546b9d4103be41ce13483a8f299d0df0eeb181c",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $3,890,000; unrealized PnL $1,780,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xbeccae9ffcb69e9d42a1d4e744abf8056149562d",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xbecc…562d",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xbeccae9ffcb69e9d42a1d4e744abf8056149562d",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $527,200; unrealized PnL $1,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xdf9ea6ec3b7109935ccb4fb267e15ac1fb077ab1",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xdf9e…7ab1",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xdf9ea6ec3b7109935ccb4fb267e15ac1fb077ab1",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $215,800; unrealized PnL $-1,180,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xecb6…2b00",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xecb63caa47c7c4e77f60f1ce858cf28dc2b82b00",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $35,070,000; unrealized PnL $-561,700",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xf58b673c1633ccef0ac58263cdc95ed80f817fc7",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xf58b…7fc7",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xf58b673c1633ccef0ac58263cdc95ed80f817fc7",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $208,600; unrealized PnL $533",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xf5d81a135f756ca16544e53c20fc20643ec3ad53",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xf5d8…ad53",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xf5d81a135f756ca16544e53c20fc20643ec3ad53",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $1,220,000; unrealized PnL $372",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xfc27136e42af1732ddc9ce2605ea9bff1b959d9d",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xfc27…9d9d",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xfc27136e42af1732ddc9ce2605ea9bff1b959d9d",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $19,520,000; unrealized PnL $-1,090,000",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": "0xfc667adba8d4837586078f4fdcdc29804337ca06",
+   "chain": "hyperliquid",
+   "confidence": "confirmed",
+   "conviction": null,
+   "display": "0xfc66…ca06",
+   "entity": null,
+   "handle": null,
+   "key": "hyperliquid:0xfc667adba8d4837586078f4fdcdc29804337ca06",
+   "labels": [
+    "whale",
+    "perps_trader"
+   ],
+   "masked": null,
+   "narratives": [],
+   "notes": "Leaderboard snapshot: account value $26,660,000; unrealized PnL $329,600",
+   "resolved": true,
+   "source": null
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x025d…e6ed",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x025d…e6ed",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x025d…e6ed",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 50.8%; reported realized PnL $20,936; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x0759…0ab3",
+   "entity": "driz1x",
+   "handle": "@driz1x_",
+   "key": "robinhood:0x0759…0ab3",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x0759…0ab3",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 37.2%; reported realized PnL $64,329; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x0d54…7463",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x0d54…7463",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x0d54…7463",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 28.8%; reported realized PnL $6,796; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x1196…c201",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x1196…c201",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x1196…c201",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 32.4%; reported realized PnL $7,240; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x1994…a348",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x1994…a348",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x1994…a348",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 44.8%; reported realized PnL $7,658; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x1a0c…f784",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x1a0c…f784",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x1a0c…f784",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 57.5%; reported realized PnL $3,426; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x1f6d…7ed0",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x1f6d…7ed0",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x1f6d…7ed0",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 44.4%; reported realized PnL $6,226; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x21fa…04b6",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x21fa…04b6",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x21fa…04b6",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 32.1%; reported realized PnL $584,295; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x2797…4f84",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x2797…4f84",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x2797…4f84",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 44.7%; reported realized PnL $11,538; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x2c69…38ad",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x2c69…38ad",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x2c69…38ad",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 68.2%; reported realized PnL $7,765; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x2f5e…759e",
+   "entity": "connoreo",
+   "handle": "@Connoreo",
+   "key": "robinhood:0x2f5e…759e",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x2f5e…759e",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 24.0%; reported realized PnL $5,631; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x3133…656a",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x3133…656a",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x3133…656a",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 61.4%; reported realized PnL $2,775; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x3190…ef79",
+   "entity": "orangesbs",
+   "handle": "@OrangeSBS",
+   "key": "robinhood:0x3190…ef79",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x3190…ef79",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 23.9%; reported realized PnL $6,695; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x3475…3a12",
+   "entity": "cupseyy",
+   "handle": "@Cupseyy",
+   "key": "robinhood:0x3475…3a12",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x3475…3a12",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 40.0%; reported realized PnL $68,469; 3 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x3f65…f941",
+   "entity": "metaverseandre",
+   "handle": "@metaverseandre",
+   "key": "robinhood:0x3f65…f941",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x3f65…f941",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 46.3%; reported realized PnL $16,160; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x4077…9352",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x4077…9352",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x4077…9352",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 25.7%; reported realized PnL $48,444; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x41cc…42f5",
+   "entity": "rawrstarxdd",
+   "handle": "@rawrstarxdd",
+   "key": "robinhood:0x41cc…42f5",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x41cc…42f5",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 34.0%; reported realized PnL $35,166; 3 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x444c…c40d",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x444c…c40d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x444c…c40d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 42.6%; reported realized PnL $179,398; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x492c…ff6e",
+   "entity": "esee06257",
+   "handle": "@Esee06257",
+   "key": "robinhood:0x492c…ff6e",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x492c…ff6e",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 35.3%; reported realized PnL $17,271; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x4b10…8d76",
+   "entity": "giann2k",
+   "handle": "@Giann2K",
+   "key": "robinhood:0x4b10…8d76",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x4b10…8d76",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 40.9%; reported realized PnL $13,121; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x4d88…4271",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x4d88…4271",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x4d88…4271",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 53.1%; reported realized PnL $32,967; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x4d96…26f3",
+   "entity": "run1ooooo1",
+   "handle": "@run1ooooo1",
+   "key": "robinhood:0x4d96…26f3",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x4d96…26f3",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 56.9%; reported realized PnL $152,172; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x4ede…6d0a",
+   "entity": "goatedondsticks",
+   "handle": "@goatedondsticks",
+   "key": "robinhood:0x4ede…6d0a",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x4ede…6d0a",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 24.4%; reported realized PnL $4,062; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x51af…6697",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x51af…6697",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x51af…6697",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 68.8%; reported realized PnL $7,904; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x552b…be23",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x552b…be23",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x552b…be23",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 32.9%; reported realized PnL $12,563; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x573f…c9b2",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x573f…c9b2",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x573f…c9b2",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 39.4%; reported realized PnL $31,095; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x578a…390d",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x578a…390d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x578a…390d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 52.8%; reported realized PnL $40,099; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x57a8…2ede",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x57a8…2ede",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x57a8…2ede",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 31.4%; reported realized PnL $403; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x5a9b…8da6",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x5a9b…8da6",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x5a9b…8da6",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 30.1%; reported realized PnL $53,928; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x602f…5033",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x602f…5033",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x602f…5033",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 48.6%; reported realized PnL $9,114; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x609f…c735",
+   "entity": "whashywash",
+   "handle": "@whashywash",
+   "key": "robinhood:0x609f…c735",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x609f…c735",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 69.8%; reported realized PnL $205,885; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x6174…9ccf",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x6174…9ccf",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x6174…9ccf",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 39.9%; reported realized PnL $1,078; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x62e5…5645",
+   "entity": "0xleet",
+   "handle": "@0xleet",
+   "key": "robinhood:0x62e5…5645",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x62e5…5645",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 37.4%; reported realized PnL $263,213; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x63eb…a0c2",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x63eb…a0c2",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x63eb…a0c2",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 47.2%; reported realized PnL $18,910; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x664d…5dc1",
+   "entity": "turtletaverntv",
+   "handle": "@TurtleTavernTV",
+   "key": "robinhood:0x664d…5dc1",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x664d…5dc1",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 50.8%; reported realized PnL $10,397; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x6ad7…873e",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x6ad7…873e",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x6ad7…873e",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 89.5%; reported realized PnL $87,873; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x6d3a…735d",
+   "entity": "smalldracos",
+   "handle": "@smalldracos",
+   "key": "robinhood:0x6d3a…735d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x6d3a…735d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 45.6%; reported realized PnL $22,184; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x6f8c…5e44",
+   "entity": "vvantaeth",
+   "handle": "@vvantaeth",
+   "key": "robinhood:0x6f8c…5e44",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x6f8c…5e44",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 53.9%; reported realized PnL $32,555; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x7551…ae61",
+   "entity": "kreo444",
+   "handle": "@kreo444",
+   "key": "robinhood:0x7551…ae61",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x7551…ae61",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 56.1%; reported realized PnL $51,148; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x7701…6e5e",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x7701…6e5e",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x7701…6e5e",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 84.4%; reported realized PnL $19,065; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x7799…1fdb",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x7799…1fdb",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x7799…1fdb",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 57.8%; reported realized PnL $19,622; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x7e0b…63e0",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x7e0b…63e0",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x7e0b…63e0",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 70.4%; reported realized PnL $2,484; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x8160…4d7f",
+   "entity": "realwallst-wolf",
+   "handle": "@RealWallSt_Wolf",
+   "key": "robinhood:0x8160…4d7f",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x8160…4d7f",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 10.5%; reported realized PnL $-16,345; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x89d2…11d6",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x89d2…11d6",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x89d2…11d6",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 33.8%; reported realized PnL $64,818; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x8c15…0a95",
+   "entity": "cyrotrading",
+   "handle": "@cyrotrading",
+   "key": "robinhood:0x8c15…0a95",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x8c15…0a95",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 0.0%; reported realized PnL $0; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x917a…3841",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x917a…3841",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x917a…3841",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 35.4%; reported realized PnL $24,867; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x9846…c212",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x9846…c212",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x9846…c212",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 34.9%; reported realized PnL $193,437; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x9dbf…aada",
+   "entity": "zemrics",
+   "handle": "@Zemrics",
+   "key": "robinhood:0x9dbf…aada",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x9dbf…aada",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 52.9%; reported realized PnL $59,959; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0x9ff5…6cba",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0x9ff5…6cba",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0x9ff5…6cba",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 33.0%; reported realized PnL $3,725; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xa52d…c7c6",
+   "entity": "asmodeykaa",
+   "handle": "@Asmodeykaa",
+   "key": "robinhood:0xa52d…c7c6",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xa52d…c7c6",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 46.8%; reported realized PnL $1,743; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xa68e…ce75",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xa68e…ce75",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xa68e…ce75",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 39.4%; reported realized PnL $6,324; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xa83b…8811",
+   "entity": "antpositions",
+   "handle": "@antpositions",
+   "key": "robinhood:0xa83b…8811",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xa83b…8811",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 45.3%; reported realized PnL $72,223; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xacd7…fb40",
+   "entity": "lebronessy",
+   "handle": "@LeBronessy",
+   "key": "robinhood:0xacd7…fb40",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xacd7…fb40",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 44.2%; reported realized PnL $62,717; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xb255…23b8",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xb255…23b8",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xb255…23b8",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 54.1%; reported realized PnL $22,229; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xb43d…23c8",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xb43d…23c8",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xb43d…23c8",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 71.9%; reported realized PnL $6,629; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xb8f7…3e9d",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xb8f7…3e9d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xb8f7…3e9d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 48.2%; reported realized PnL $10,346; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xbf00…4903",
+   "entity": "aa-afeng",
+   "handle": "@aa_AFeng",
+   "key": "robinhood:0xbf00…4903",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xbf00…4903",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 56.9%; reported realized PnL $50,558; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xc2c6…091c",
+   "entity": "ed-x0101",
+   "handle": "@Ed_x0101",
+   "key": "robinhood:0xc2c6…091c",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xc2c6…091c",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 63.9%; reported realized PnL $45,967; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xc5c3…6280",
+   "entity": "mcmoney-one",
+   "handle": "@mcmoney_one",
+   "key": "robinhood:0xc5c3…6280",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xc5c3…6280",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 43.2%; reported realized PnL $191,818; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xc965…9641",
+   "entity": "b4lief",
+   "handle": "@b4lief",
+   "key": "robinhood:0xc965…9641",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xc965…9641",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 49.6%; reported realized PnL $114,828; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xcb4d…35c9",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xcb4d…35c9",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xcb4d…35c9",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 47.4%; reported realized PnL $21,375; 3 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xcbc0…721c",
+   "entity": "nyenchenn",
+   "handle": "@nyenchenn",
+   "key": "robinhood:0xcbc0…721c",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xcbc0…721c",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 24.4%; reported realized PnL $-34,467; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xd171…d52c",
+   "entity": "yyzzy-diamond",
+   "handle": "@YYzzy_diamond",
+   "key": "robinhood:0xd171…d52c",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xd171…d52c",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 36.5%; reported realized PnL $6,067; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xd27d…b245",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xd27d…b245",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xd27d…b245",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 47.5%; reported realized PnL $7,332; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xd409…3fed",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xd409…3fed",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xd409…3fed",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 27.7%; reported realized PnL $1,578; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xd422…b20f",
+   "entity": "ottabag",
+   "handle": "@ottabag",
+   "key": "robinhood:0xd422…b20f",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xd422…b20f",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 37.0%; reported realized PnL $23,883; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xd845…7d1b",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xd845…7d1b",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xd845…7d1b",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 55.9%; reported realized PnL $2,426; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xe286…216d",
+   "entity": "neocallss",
+   "handle": "@NeoCallss",
+   "key": "robinhood:0xe286…216d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xe286…216d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 60.2%; reported realized PnL $74,334; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xe5a9…f4f9",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xe5a9…f4f9",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xe5a9…f4f9",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 26.2%; reported realized PnL $-6,243; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xe957…88f2",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xe957…88f2",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xe957…88f2",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 40.9%; reported realized PnL $37,387; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xe95b…77fd",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xe95b…77fd",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xe95b…77fd",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 67.5%; reported realized PnL $4,710; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xecb7…7039",
+   "entity": "magearez",
+   "handle": "@MageArez",
+   "key": "robinhood:0xecb7…7039",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xecb7…7039",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 41.2%; reported realized PnL $14,870; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xf341…15c4",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xf341…15c4",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xf341…15c4",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 30.9%; reported realized PnL $23,877; 1 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  },
+  {
+   "address": null,
+   "chain": "robinhood",
+   "confidence": "reported",
+   "conviction": null,
+   "display": "0xf565…471d",
+   "entity": null,
+   "handle": null,
+   "key": "robinhood:0xf565…471d",
+   "labels": [
+    "smart_money"
+   ],
+   "masked": "0xf565…471d",
+   "narratives": [],
+   "notes": "Vendor-reported: reported win rate 38.3%; reported realized PnL $6,661; 2 feed appearance(s)",
+   "resolved": false,
+   "source": "intel-hood-vantis"
+  }
+ ]
+}

@@ -1,0 +1,14 @@
+name = "hoodwall-alerts"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+# Every minute. Cloudflare's free plan allows a 1-minute cron, which is the
+# tightest free scheduling available anywhere in this stack - GitHub Actions
+# cannot go below 5 minutes and is routinely delayed far longer.
+[triggers]
+crons = ["* * * * *"]
+
+# Create with: wrangler kv namespace create WATCHLIST
+[[kv_namespaces]]
+binding = "WATCHLIST"
+id = "REPLACE_WITH_YOUR_KV_NAMESPACE_ID"

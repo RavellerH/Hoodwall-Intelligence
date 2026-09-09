@@ -1,12 +1,56 @@
 # Hoodwall Intelligence
 
-Cloud-native wallet intelligence for Robinhood Chain. Discovers candidate
-wallets from three sources, enriches them with on-chain data from
-Blockscout, scores them with a published deterministic formula, and
-publishes a static dashboard to GitHub Pages.
+Multi-chain wallet and narrative intelligence, served as a Bloomberg-style
+terminal on GitHub Pages.
+
+Two halves that meet in the terminal:
+
+- **The knowledge base** (`knowledge/`) — your curated wallets, entity
+  clusters, narratives and sources across Robinhood Chain, Ethereum L2s,
+  Hyperliquid, Solana and Bitcoin. Human-authored, schema-validated, never
+  overwritten by automation.
+- **The pipeline** — discovers and enriches wallets on-chain, scores them
+  with a published deterministic formula, and merges those observations
+  onto your curated records.
+
+Plus a **realtime alert relay** on Cloudflare Workers, because Actions cron
+cannot go below 5 minutes. See [docs/realtime-alerts.md](docs/realtime-alerts.md).
 
 **No server, no database, no LLM, no cost.** GitHub Actions is the cron
-engine, the repo is the database, and GitHub Pages is the front end.
+engine, the repo is the database, GitHub Pages is the front end.
+
+## The terminal
+
+Keyboard-first, amber-on-black, information-dense.
+
+| Key | View |
+|---|---|
+| `1` | DASH — coverage overview |
+| `2` | WAL — every tracked wallet, all chains |
+| `3` | ENT — entity clusters (wallets grouped by person/org) |
+| `4` | NAR — narratives with measured outcomes |
+| `5` | CHN — chain coverage and which have live data |
+| `6` | SRC — sources and their measured reliability |
+| `/` | command line (`HELP`, `CHAIN sol`, `FIND cupsey`) |
+| `↑↓` / `j k` | move · `ENTER` open detail · `ESC` clear |
+
+Purple `◌` marks an address known only in masked form.
+
+## Chain coverage
+
+| Chain | Family | Live enrichment |
+|---|---|---|
+| Robinhood Chain, Ethereum, Arbitrum, Base, OP | EVM | Blockscout |
+| Hyperliquid | EVM addresses, perps venue | knowledge base only |
+| Solana | SVM (base58) | knowledge base only |
+| Bitcoin | UTXO | knowledge base only (entity-level) |
+
+Chains marked *knowledge base only* are fully tracked as curated records;
+they simply have no live adapter yet. Adding one means implementing an
+adapter — the EVM feature extractor does not transfer to perps positions
+or UTXO balances.
+
+See [docs/knowledge-base.md](docs/knowledge-base.md) for how to add records.
 
 ## How it works
 

@@ -1,0 +1,91 @@
+# Chain registry. Every wallet and narrative record references one of these
+# keys, and the `family` field decides how an address is validated and which
+# enrichment adapter (if any) can read it.
+#
+# family:
+#   evm   - 0x + 40 hex        (Ethereum and its L2s, Robinhood Chain, Hyperliquid)
+#   svm   - base58, 32-44 ch   (Solana)
+#   utxo  - base58 / bech32    (Bitcoin)
+#
+# enrichment: which live adapter can currently read this chain.
+#   blockscout - implemented
+#   none       - knowledge-base only for now (records are curated, not fetched)
+
+robinhood:
+  name: Robinhood Chain
+  family: evm
+  chain_id: 4663
+  native_symbol: ETH
+  explorer: https://robinhoodchain.blockscout.com
+  api_base: https://api.blockscout.com/4663/api/v2
+  enrichment: blockscout
+  notes: Arbitrum Orbit L2. Per-instance API is gated; use the Pro API.
+
+ethereum:
+  name: Ethereum
+  family: evm
+  chain_id: 1
+  native_symbol: ETH
+  explorer: https://eth.blockscout.com
+  api_base: https://api.blockscout.com/1/api/v2
+  enrichment: blockscout
+
+arbitrum:
+  name: Arbitrum One
+  family: evm
+  chain_id: 42161
+  native_symbol: ETH
+  explorer: https://arbitrum.blockscout.com
+  api_base: https://api.blockscout.com/42161/api/v2
+  enrichment: blockscout
+
+base:
+  name: Base
+  family: evm
+  chain_id: 8453
+  native_symbol: ETH
+  explorer: https://base.blockscout.com
+  api_base: https://api.blockscout.com/8453/api/v2
+  enrichment: blockscout
+
+optimism:
+  name: OP Mainnet
+  family: evm
+  chain_id: 10
+  native_symbol: ETH
+  explorer: https://optimism.blockscout.com
+  api_base: https://api.blockscout.com/10/api/v2
+  enrichment: blockscout
+
+hyperliquid:
+  name: Hyperliquid
+  family: evm
+  chain_id: 999
+  native_symbol: USDC
+  explorer: https://app.hyperliquid.xyz/explorer
+  api_base: https://api.hyperliquid.xyz/info
+  enrichment: none
+  venue_type: perps
+  notes: >
+    Addresses are EVM-shaped but activity is perps positions, not
+    transactions. Needs its own adapter; the EVM feature extractor does not
+    apply. Public WebSocket at wss://api.hyperliquid.xyz/ws needs no key.
+
+solana:
+  name: Solana
+  family: svm
+  native_symbol: SOL
+  explorer: https://solscan.io
+  enrichment: none
+  notes: Base58 addresses. Enrichment would use Helius or an RPC provider.
+
+bitcoin:
+  name: Bitcoin
+  family: utxo
+  native_symbol: BTC
+  explorer: https://mempool.space
+  api_base: https://mempool.space/api
+  enrichment: none
+  notes: >
+    Tracked largely at entity level (exchanges, ETFs, treasuries) rather
+    than per-address, since holdings are spread across many addresses.

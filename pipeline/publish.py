@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 
 from . import config, scoring
+from .kb import load as load_kb
+from .kb.schema import ValidationError
 from .store import load, utcnow
 
 # Wallets below this tier are omitted from the published feed to keep it
@@ -21,7 +23,10 @@ def _write(name, payload):
     directory.mkdir(parents=True, exist_ok=True)
     path = directory / name
     with open(path, "w", encoding="utf-8") as fh:
-        json.dump(payload, fh, indent=1, sort_keys=True, ensure_ascii=False)
+        # default=str is a safety net: a stray date or Decimal from a YAML
+        # record must not take down the whole publish step.
+        json.dump(payload, fh, indent=1, sort_keys=True,
+                  ensure_ascii=False, default=str)
         fh.write("\n")
     print(f"  wrote {path.relative_to(config.ROOT)} ({path.stat().st_size:,} bytes)")
 
@@ -102,7 +107,11 @@ def run():
         "saturation": dict(scoring.SATURATION),
     }
 
+    kb_payload = _build_kb(rows)
+    meta["knowledge"] = kb_payload["stats"]
+
     _write("wallets.json", rows)
+    _write("kb.json", kb_payload)
     _write("meta.json", meta)
     print(f"[publish] {len(rows)} wallet(s) published of {len(scores)} scored")
     return len(rows)
@@ -110,3 +119,104 @@ def run():
 
 if __name__ == "__main__":
     run()
+
+
+def _build_kb(scored_rows):
+    """Shape the knowledge base for the dashboard.
+
+    Observed on-chain data is merged onto curated records here rather than
+    in the browser, so the terminal only has to render. A KB wallet that has
+    also been enriched carries its score; one that has not simply lacks it,
+    which is the honest representation - most curated wallets are on chains
+    with no live adapter yet.
+    """
+    try:
+        kb = load_kb()
+    except ValidationError as exc:
+        print(f"  ! knowledge base failed to load: {exc}")
+        return {"stats": {}, "wallets": [], "entities": [], "narratives": [],
+                "chains": {}, "sources": [], "errors": [str(exc)]}
+
+    if kb.errors:
+        for err in kb.errors:
+            print(f"  ! kb: {err}")
+
+    observed = {r["address"]: r for r in scored_rows if r.get("address")}
+
+    wallets = []
+    for wallet in kb.wallets.values():
+        row = {
+            "key": wallet["key"],
+            "chain": wallet["chain"],
+            "address": wallet["address"],
+            "masked": wallet.get("masked"),
+            "display": wallet["display"],
+            "resolved": wallet["resolved"],
+            "entity": wallet.get("entity"),
+            "handle": wallet.get("handle"),
+            "labels": wallet.get("labels", []),
+            "confidence": wallet.get("confidence"),
+            "conviction": wallet.get("conviction"),
+            "narratives": wallet.get("narratives", []),
+            "source": wallet.get("source"),
+            "notes": wallet.get("notes"),
+        }
+        match = observed.get(wallet["address"]) if wallet["address"] else None
+        if match:
+            row["observed"] = {
+                "smart_score": match["smart_score"],
+                "tier": match["tier"],
+                "tx_count": match["tx_count"],
+                "active_days": match["active_days"],
+                "volume_native": match["volume_native"],
+                "last_seen": match["last_seen"],
+            }
+        wallets.append(row)
+    wallets.sort(key=lambda w: (w["chain"], w["display"] or ""))
+
+    entities = []
+    for entity in kb.entities.values():
+        entities.append({
+            "key": entity["key"],
+            "name": entity["name"],
+            "type": entity["type"],
+            "confidence": entity["confidence"],
+            "handles": entity.get("handles", {}),
+            "cluster": entity.get("cluster", []),
+            "cluster_size": len(entity.get("cluster", [])),
+            "holdings": entity.get("holdings", []),
+            "narratives": entity.get("narratives", []),
+            "notes": entity.get("notes"),
+        })
+    entities.sort(key=lambda e: (-e["cluster_size"], e["name"].lower()))
+
+    narratives = []
+    for narrative in kb.narratives.values():
+        narratives.append({
+            "key": narrative["key"],
+            "title": narrative["title"],
+            "status": narrative["status"],
+            "conviction": narrative["conviction"],
+            "chains": narrative.get("chains", []),
+            "tokens": narrative.get("tokens", []),
+            "entities": narrative.get("entities", []),
+            "linked_wallets": narrative.get("linked_wallets", []),
+            "opened": narrative.get("opened"),
+            "closed": narrative.get("closed"),
+            "outcomes": narrative.get("outcomes", []),
+            "updates": narrative.get("updates", []),
+            "body": narrative.get("body", ""),
+        })
+    narratives.sort(key=lambda n: (n["status"] != "active", n["key"]))
+
+    stats = kb.stats()
+    stats["errors"] = len(kb.errors)
+    return {
+        "stats": stats,
+        "chains": kb.chains,
+        "wallets": wallets,
+        "entities": entities,
+        "narratives": narratives,
+        "sources": list(kb.sources.values()),
+        "errors": kb.errors,
+    }

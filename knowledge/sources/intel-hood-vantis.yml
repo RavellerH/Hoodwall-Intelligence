@@ -1,0 +1,38 @@
+key: intel-hood-vantis
+name: Intel Hood by Vantis
+type: alert_feed
+chains: [robinhood]
+url: https://hood.vantis.sh
+description: >
+  Bot-generated alert stream for very-early-stage tokens on the Robinhood
+  Chain / pons launchpad. Publishes SMART MONEY / ALPHA / MOMENTUM / RUNNER
+  cards with wallet attributions. Addresses are printed masked (8 of 40 hex).
+
+# Measured from the feed's own published numbers, not from our observations.
+# Recorded so the KB can weight this source rather than trust it.
+reliability:
+  window: 2026-09-08
+  calls_tracked: 229
+  median_multiple: 0.23
+  share_reached_2x: 0.281
+  share_still_2x: 0.066
+  share_down_20pct: 0.732
+  share_at_half_or_less: 0.601
+  wallet_winrate_median: 0.443
+  winrate_pnl_correlation: -0.001
+
+caveats:
+  - Addresses are masked to 8 of 40 hex digits and must be resolved before use.
+  - 71 of 74 tagged wallets are reported profitable, which is a selection
+    artifact - the vendor tags wallets it has already scored as winners.
+  - Reported win rate and reported PnL correlate at r = -0.001, so the two
+    headline metrics carry no information about each other.
+  - Recurring wallets have a LOWER median win rate (40.6%) than one-off
+    wallets (44.5%), so repeat appearances are not a quality signal.
+  - Median tracked call is down 77%; the "10x from our call" cards are
+    survivorship-biased highlights.
+
+trust: low
+notes: >
+  Use as a discovery source only. Wallet tags are claims to verify on-chain,
+  never score inputs.
