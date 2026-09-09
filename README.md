@@ -125,6 +125,28 @@ Labels (`smart_money`, `whale`, `trading_bot`, `mev_bot`, `accumulator`,
 `distributor`, `lp_mm`, `fresh_emerging`, `noise`) are rule-based and each
 carries the evidence string that triggered it.
 
+## Money-flow tracing
+
+One address is a starting point. `pipeline/flow.py` walks the value that
+moved out of it and scores every counterparty as "same owner", with the
+evidence attached — sole funding, round-trips, exclusivity, sweeps — while
+throwing out the three things that make naive clustering useless: contracts,
+high-degree services, and CEX deposit addresses (which are exclusive to one
+user without belonging to them).
+
+```bash
+python scripts/trace_flow.py                    # trace knowledge/watchlist.yml
+python scripts/trace_flow.py --seed 0x... --depth 1
+python scripts/trace_flow.py --write-kb         # promote probable links
+```
+
+Submitted addresses are recorded in `knowledge/watchlist.yml`, not in
+`knowledge/wallets/`, because a bare `0x` address carries no chain — the
+tracer probes every readable EVM chain and only then files the record.
+Links it infers are written with `confidence: inferred` and never overwrite
+a hand-authored record. Full method and its limits:
+[docs/flow-tracing.md](docs/flow-tracing.md).
+
 ## Setup
 
 ### 1. Enable GitHub Pages
@@ -226,7 +248,8 @@ run.py                      CLI entrypoint; workflows call this
 pipeline/
   config.py                 env-var configuration
   store.py                  JSON store (keyed upserts, atomic writes)
-  chain.py                  Blockscout client (retry/backoff)
+  chain.py                  Blockscout client (retry/backoff, multi-chain)
+  flow.py                   money-flow tracing and same-owner scoring
   masks.py                  resolves truncated addresses like 0x3475…3a12
   features.py               behavioural feature extraction
   scoring.py                the Smart Score formula and label rules
@@ -234,7 +257,9 @@ pipeline/
   sources/hood.py | telegram.py | discovery.py
 site/                       the dashboard (published to Pages)
 data/                       the JSON store (committed by Actions)
+knowledge/watchlist.yml     submitted addresses awaiting a chain
 docs/signal-analysis.md     analysis of the vendor feed this ingests
+docs/flow-tracing.md        how wallets are linked to each other
 tests/                      scorer and mask-resolution tests
 ```
 

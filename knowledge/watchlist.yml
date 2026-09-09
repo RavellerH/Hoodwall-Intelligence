@@ -1,0 +1,48 @@
+# Flow-trace seeds: addresses submitted for money-flow tracing, before they
+# are known well enough to be wallet records.
+#
+# A wallet record in knowledge/wallets/ must name a chain, and a bare 0x
+# address carries none - the same 40 hex characters exist on every EVM
+# chain. So a submitted address is recorded here first, and
+# scripts/trace_flow.py probes every readable EVM chain to find where it is
+# actually active before promoting it to knowledge/wallets/<chain>.yml.
+#
+# Fields: address (required), handle, entity, source_url, labels,
+# confidence, added, note.
+#
+#     python scripts/trace_flow.py            # trace every seed below
+#     python scripts/trace_flow.py --write-kb # promote what it finds
+
+- address: '0xf64d0b62bea65bbbf6a7b089d0998d04c1fcbe30'
+  handle: '@soulscan07'
+  entity: soulscan07
+  source_url: https://x.com/soulscan07
+  labels:
+  - smart_money
+  confidence: reported
+  added: 2026-09-09
+  note: Submitted as a smart-money wallet with an X handle attached. Chain not stated by the source.
+
+- address: '0x1c66ae54d5e4ee86980c90edbc55ddb29161b4ea'
+  handle: '@CryptoExpert101'
+  entity: cryptoexpert101
+  source_url: https://x.com/CryptoExpert101
+  labels:
+  - smart_money
+  confidence: reported
+  added: 2026-09-09
+  note: Submitted as a smart-money wallet with an X handle attached. Chain not stated by the source.
+
+- address: '0x2c636db11e6076dab6133c57f6fc1213a4a107e2'
+  labels:
+  - smart_money
+  confidence: reported
+  added: 2026-09-09
+  note: Submitted as a smart-money wallet. No handle and no chain given; attribution pending.
+
+- address: '0xfe63af46b2b1ed710a6766d136a0337cc824ee77'
+  labels:
+  - smart_money
+  confidence: reported
+  added: 2026-09-09
+  note: Submitted as a smart-money wallet. No handle and no chain given; attribution pending.

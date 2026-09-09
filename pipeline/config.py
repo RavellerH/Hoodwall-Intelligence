@@ -97,6 +97,14 @@ MAX_ENRICH_PER_RUN = _int("MAX_ENRICH_PER_RUN", 60)
 MAX_EVENTS_PER_WALLET = _int("MAX_EVENTS_PER_WALLET", 100)
 MAX_DISCOVERY_BLOCKS = _int("MAX_DISCOVERY_BLOCKS", 20)
 
+# Flow tracing fans out multiplicatively, so it gets its own hard ceilings:
+# depth is how many hops from a seed, addresses is the total examined per
+# run whatever the depth, and pages caps how much history is read per
+# address (each page is one API call).
+MAX_FLOW_DEPTH = _int("MAX_FLOW_DEPTH", 2)
+MAX_FLOW_ADDRESSES = _int("MAX_FLOW_ADDRESSES", 120)
+MAX_FLOW_PAGES = _int("MAX_FLOW_PAGES", 3)
+
 # --- Publishing ------------------------------------------------------------
 SITE_TITLE = _env("SITE_TITLE", "Hoodwall Intelligence")
 # Keep raw Telegram text out of published artifacts even on a public site.

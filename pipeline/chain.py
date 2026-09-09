@@ -46,13 +46,17 @@ class ChainAuthError(ChainError):
     """
 
 
-def _get(path, params=None):
+def _get(path, params=None, base=None):
     """GET a Blockscout endpoint with exponential backoff.
 
     404 is returned as None rather than raised: an address Blockscout has
     never seen is a normal, expected outcome for a scraped candidate.
+
+    `base` overrides the configured chain, so one client can walk several
+    chains in a run - flow tracing follows a wallet wherever it went, and
+    that is rarely the chain the pipeline is pointed at.
     """
-    url = f"{config.BLOCKSCOUT_BASE.rstrip('/')}/{path.lstrip('/')}"
+    url = f"{(base or config.BLOCKSCOUT_BASE).rstrip('/')}/{path.lstrip('/')}"
     delay = 1.0
     last_error = None
 
@@ -103,22 +107,43 @@ def is_contract(value):
     return bool(value.get("is_contract")) if isinstance(value, dict) else False
 
 
-def get_address(address):
+def get_address(address, base=None):
     """Address summary: balance, contract flag, tx count."""
-    return _get(f"addresses/{address}")
+    return _get(f"addresses/{address}", base=base)
 
 
-def get_transactions(address, limit=None):
+def get_transactions(address, limit=None, base=None):
     """Recent transactions for an address, newest first."""
-    payload = _get(f"addresses/{address}/transactions", params={"filter": "to|from"})
+    payload = _get(f"addresses/{address}/transactions",
+                   params={"filter": "to|from"}, base=base)
     items = (payload or {}).get("items", [])
     return items[:limit] if limit else items
 
 
-def get_token_transfers(address, limit=None):
-    payload = _get(f"addresses/{address}/token-transfers")
+def get_token_transfers(address, limit=None, base=None):
+    payload = _get(f"addresses/{address}/token-transfers", base=base)
     items = (payload or {}).get("items", [])
     return items[:limit] if limit else items
+
+
+def get_paged(path, params=None, base=None, max_pages=1):
+    """Follow Blockscout v2 cursor pagination for up to `max_pages` pages.
+
+    Returns (items, complete). `complete` is True only when the last page
+    carried no next-page cursor - i.e. the list really is exhausted. Flow
+    tracing depends on that distinction: "this wallet's only funder is X"
+    is a claim you may only make when you have seen the whole history.
+    """
+    items, page_params, complete = [], dict(params or {}), False
+    for _ in range(max_pages):
+        payload = _get(path, params=page_params, base=base) or {}
+        items.extend(payload.get("items", []))
+        cursor = payload.get("next_page_params")
+        if not cursor:
+            complete = True
+            break
+        page_params = {**(params or {}), **cursor}
+    return items, complete
 
 
 def get_stats():
