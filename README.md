@@ -1,17 +1,19 @@
 # Hoodwall Intelligence
 
-Multi-chain wallet and narrative intelligence, served as a Bloomberg-style
-terminal on GitHub Pages.
+Multi-chain wallet and narrative intelligence, served as a dashboard on
+GitHub Pages — sidebar navigation, card overviews, readable tables, in the
+visual language of Nansen / DropsTab / Token Terminal / CoinMarketCap
+rather than a command-line terminal.
 
-Two halves that meet in the terminal:
+Two halves that meet in the dashboard:
 
 - **The knowledge base** (`knowledge/`) — your curated wallets, entity
   clusters, narratives and sources across Robinhood Chain, Ethereum L2s,
   Hyperliquid, Solana and Bitcoin. Human-authored, schema-validated, never
   overwritten by automation.
 - **The pipeline** — discovers and enriches wallets on-chain, scores them
-  with a published deterministic formula, and merges those observations
-  onto your curated records.
+  with a published deterministic formula, pulls free market data, and
+  merges all of it onto your curated records.
 
 Plus a **realtime alert relay** on Cloudflare Workers, because Actions cron
 cannot go below 5 minutes. See [docs/realtime-alerts.md](docs/realtime-alerts.md).
@@ -19,25 +21,29 @@ cannot go below 5 minutes. See [docs/realtime-alerts.md](docs/realtime-alerts.md
 **No server, no database, no LLM, no cost.** GitHub Actions is the cron
 engine, the repo is the database, GitHub Pages is the front end.
 
-## The terminal
+## The dashboard
 
-Keyboard-first, amber-on-black, information-dense.
+Mouse-first: a sidebar for navigation, a search bar that filters whatever
+view is open, sortable tables, and a detail panel that slides in from the
+right. Number keys `1`–`9` and `/` still work for anyone who prefers them,
+but nothing requires the keyboard.
 
-| Key | View |
+| Section | What it shows |
 |---|---|
-| `1` | DASH — coverage overview |
-| `2` | WAL — every tracked wallet, all chains |
-| `3` | ENT — entity clusters (wallets grouped by person/org) |
-| `4` | NAR — narratives with measured outcomes |
-| `5` | **MAP — wallet relationship graph** (Bubblemaps-style, with flow) |
-| `6` | **PNL — positions, equity, realized/unrealized P&L** |
-| `7` | **SENT — sentiment across five sources** |
-| `8` | CHN — chain coverage and which have live data |
-| `9` | SRC — sources and their measured reliability |
-| `/` | command line (`HELP`, `CHAIN sol`, `FIND cupsey`) |
-| `↑↓` / `j k` | move · `ENTER` open detail · `ESC` clear |
+| Overview | KPI tiles plus breakdowns by chain, label and entity cluster |
+| Wallets | Every tracked wallet, all chains, with score and confidence |
+| Entities | Wallets grouped by the person or organization behind them |
+| Narratives | Theses being tracked, with measured outcomes |
+| **Relationship Map** | **Bubblemaps-style wallet graph, with real flow** |
+| **Positions & P&L** | **Live equity, leverage, realized/unrealized P&L** |
+| **Sentiment** | **A confidence-weighted read across five sources** |
+| Chains | Coverage per chain and whether it has a live adapter |
+| Sources | Feeds this system reads, with their measured reliability |
 
-### The graph (MAP)
+A live price ticker in the top bar (BTC, ETH, SOL, HYPE, ARB, OP) comes
+from DefiLlama's free API — see [Market data](#market-data-defillama) below.
+
+### The graph (Relationship Map)
 
 Solid arrowed edges are **transfers** — value actually moved on-chain.
 Faint dashed edges are **behavioural** — the wallets share an entity, token,
@@ -46,7 +52,7 @@ what share of edges are evidence rather than inference. Nodes are sized by
 value, coloured by cluster, and a dashed ring marks a masked address that
 cannot gain transfer edges until resolved.
 
-### Sentiment (SENT)
+### Sentiment
 
 Five sources, each reporting a score, a confidence and its evidence.
 Confidence-weighted, so a source with no data contributes nothing instead of
@@ -55,7 +61,26 @@ clean seam where an LLM narrator can be dropped in later.
 
 See [docs/graph-and-sentiment.md](docs/graph-and-sentiment.md).
 
-Purple `◌` marks an address known only in masked form.
+A violet address in the wallet table marks one known only in masked form
+(e.g. `0x3475…3a12`).
+
+## Market data (DefiLlama)
+
+[`docs/tool-landscape.md`](docs/tool-landscape.md) surveys the third-party
+tools shared for this project (FOMO, Kaito, Bubblemaps, Artemis, GMGN, …).
+Of that whole list, exactly one has a genuinely free, keyless API:
+**DefiLlama**. Everything else is either a consumer app with no public data
+API, or gates its API behind signup or payment — Kaito's free Yaps API in
+particular was shut down in January 2026 after X revoked its access.
+
+`pipeline/adapters/defillama.py` pulls chain TVL and major-cap token prices
+with 24h change, at zero cost and no API key. This feeds the top-bar ticker
+and, for the first time, gives `pipeline/sentiment.py`'s `price` signal real
+data instead of an always-empty stub. Run it on its own with:
+
+```bash
+python run.py market
+```
 
 ## Chain coverage
 
@@ -249,14 +274,23 @@ pipeline/
   store.py                  JSON store (keyed upserts, atomic writes)
   chain.py                  Blockscout client (retry/backoff)
   masks.py                  resolves truncated addresses like 0x3475…3a12
-  features.py               behavioural feature extraction
-  scoring.py                the Smart Score formula and label rules
-  enrich.py / score.py / publish.py / digest.py
+  features.py                behavioural feature extraction (EVM)
+  scoring.py                  the Smart Score formula and label rules (EVM)
+  graph.py                    the relationship graph: transfer + behavioural edges, clustering
+  sentiment.py                 five-source confidence-weighted sentiment
+  market.py                    DefiLlama chain TVL + price stage
+  enrich.py / enrich_hl.py / score.py / publish.py / digest.py
+  adapters/hyperliquid.py     perps feature extraction and scoring
+  adapters/defillama.py       free market data client
+  kb/                          knowledge-base loader, schema, address validation
   sources/hood.py | telegram.py | discovery.py
-site/                       the dashboard (published to Pages)
+knowledge/                  your curated wallets, entities, narratives, sources
+site/                        the dashboard (published to Pages)
+  index.html / dashboard.css / dashboard.js / graph.js
 data/                       the JSON store (committed by Actions)
-docs/signal-analysis.md     analysis of the vendor feed this ingests
-tests/                      scorer and mask-resolution tests
+docs/                       signal-analysis, knowledge-base, graph-and-sentiment,
+                             realtime-alerts, tool-landscape
+tests/                      146 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis

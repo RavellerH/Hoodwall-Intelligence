@@ -118,10 +118,21 @@ def run():
         "confidence": sentiment_payload.get("overall", {}).get("confidence"),
     }
 
+    # A compact top-bar ticker (à la CoinMarketCap): live price + 24h change
+    # per chain that has a mapped DefiLlama coin id. Free, no key, works
+    # from the pipeline's very first run.
+    market_payload = list(load("market").values())
+    meta["market"] = [
+        {"chain": r["chain"], "name": r["name"], "symbol": r["symbol"],
+         "price_usd": r["price_usd"], "change_24h": r["price_change_24h"]}
+        for r in market_payload if r.get("price_usd") is not None
+    ]
+
     _write("wallets.json", rows)
     _write("kb.json", kb_payload)
     _write("graph.json", graph_payload)
     _write("sentiment.json", sentiment_payload)
+    _write("market.json", market_payload)
     _write("meta.json", meta)
     print(f"[publish] {len(rows)} wallet(s) published of {len(scores)} scored")
     return len(rows)
@@ -296,8 +307,17 @@ def _build_graph_and_sentiment(scored_rows):
             source_trust = source["trust"]
             break
 
+    # Real market momentum where available: DefiLlama needs no key and
+    # works from the very first run, so price_signal is no longer an
+    # always-empty stub once the market stage has run at least once.
+    market_rows = load("market")
+    quotes = [
+        {"symbol": r["symbol"], "change_24h": r["price_change_24h"], "volume_24h": None}
+        for r in market_rows.values() if r.get("price_change_24h") is not None
+    ]
+
     overall = sentiment.analyze(
-        graph_payload["nodes"], hl_scores, messages, quotes=[], posts=[],
+        graph_payload["nodes"], hl_scores, messages, quotes=quotes, posts=[],
         source_trust=source_trust)
     by_narrative = sentiment.per_narrative(kb, graph_payload["nodes"], hl_scores, messages)
 

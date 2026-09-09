@@ -20,6 +20,8 @@ robinhood:
   api_base: https://api.blockscout.com/4663/api/v2
   enrichment: blockscout
   notes: Arbitrum Orbit L2. Per-instance API is gated; use the Pro API.
+  # Too new/small for DefiLlama TVL tracking, and has no native token of
+  # its own (gas is paid in ETH) - no market mapping.
 
 ethereum:
   name: Ethereum
@@ -29,6 +31,8 @@ ethereum:
   explorer: https://eth.blockscout.com
   api_base: https://api.blockscout.com/1/api/v2
   enrichment: blockscout
+  defillama_chain: Ethereum
+  defillama_coin: "coingecko:ethereum"
 
 arbitrum:
   name: Arbitrum One
@@ -38,6 +42,9 @@ arbitrum:
   explorer: https://arbitrum.blockscout.com
   api_base: https://api.blockscout.com/42161/api/v2
   enrichment: blockscout
+  defillama_chain: Arbitrum
+  # Gas token is ETH, but ARB is the chain-associated asset worth a ticker.
+  defillama_coin: "coingecko:arbitrum"
 
 base:
   name: Base
@@ -47,6 +54,8 @@ base:
   explorer: https://base.blockscout.com
   api_base: https://api.blockscout.com/8453/api/v2
   enrichment: blockscout
+  defillama_chain: Base
+  # No native token of its own (gas is ETH); TVL only, no price ticker.
 
 optimism:
   name: OP Mainnet
@@ -56,6 +65,8 @@ optimism:
   explorer: https://optimism.blockscout.com
   api_base: https://api.blockscout.com/10/api/v2
   enrichment: blockscout
+  defillama_chain: OP Mainnet
+  defillama_coin: "coingecko:optimism"
 
 hyperliquid:
   name: Hyperliquid
@@ -66,6 +77,8 @@ hyperliquid:
   api_base: https://api.hyperliquid.xyz/info
   enrichment: none
   venue_type: perps
+  defillama_chain: Hyperliquid L1
+  defillama_coin: "coingecko:hyperliquid"
   notes: >
     Addresses are EVM-shaped but activity is perps positions, not
     transactions. Needs its own adapter; the EVM feature extractor does not
@@ -77,6 +90,8 @@ solana:
   native_symbol: SOL
   explorer: https://solscan.io
   enrichment: none
+  defillama_chain: Solana
+  defillama_coin: "coingecko:solana"
   notes: Base58 addresses. Enrichment would use Helius or an RPC provider.
 
 bitcoin:
@@ -86,6 +101,8 @@ bitcoin:
   explorer: https://mempool.space
   api_base: https://mempool.space/api
   enrichment: none
+  # Not a "DeFi chain" in DefiLlama's TVL sense - price only, no TVL mapping.
+  defillama_coin: "coingecko:bitcoin"
   notes: >
     Tracked largely at entity level (exchanges, ETFs, treasuries) rather
     than per-address, since holdings are spread across many addresses.

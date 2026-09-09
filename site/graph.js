@@ -1,23 +1,30 @@
 /* Force-directed wallet relationship map.
-   Hand-rolled rather than pulling in d3: the whole terminal is
+   Hand-rolled rather than pulling in d3: the whole dashboard is
    dependency-free, N is small enough that naive O(N^2) repulsion is fine
    (96 nodes = ~9k pair calculations per frame), and this keeps full control
-   of the amber-on-black aesthetic.
+   over matching the light/dark design system rather than a canvas that
+   looks bolted onto the page.
 
    Two edge kinds are drawn differently on purpose. A transfer edge is
    evidence (solid, arrowed, thickness by value); a behavioural edge is
    inference (faint, dashed). Blending them would let inference read as
-   proof. */
+   proof.
+
+   Colors are theme-aware: the caller reads the page's current CSS custom
+   properties and passes them in as `opts.palette`, so the graph matches
+   light or dark mode instead of carrying its own fixed palette. */
 'use strict';
 
-const GRAPH_PALETTE = [
-  '#ffa028', '#35c9d0', '#b07cff', '#35d07f', '#ff6b6b',
-  '#f2c94c', '#5b9bff', '#ff8ac4', '#7ee081', '#c98f4b',
-];
+const DEFAULT_PALETTE = {
+  transfer: '#4c5fea', behavioural: '#c7cbd6', text: '#565f70',
+  nodes: ['#4c5fea', '#0ea5a4', '#7c3aed', '#e0293f', '#b8860b',
+          '#2563eb', '#16a34a', '#db2777', '#0891b2', '#65a30d'],
+};
 
 function createGraph(canvas, data, opts = {}) {
   const ctx = canvas.getContext('2d');
   const onSelect = opts.onSelect || (() => {});
+  const palette = { ...DEFAULT_PALETTE, ...(opts.palette || {}) };
 
   const nodes = data.nodes.map((n, i) => ({
     ...n,
@@ -35,7 +42,7 @@ function createGraph(canvas, data, opts = {}) {
   for (const e of edges) { e.s.degree++; e.t.degree++; }
 
   const clusterColor = new Map();
-  (data.clusters || []).forEach((c, i) => clusterColor.set(c.id, GRAPH_PALETTE[i % GRAPH_PALETTE.length]));
+  (data.clusters || []).forEach((c, i) => clusterColor.set(c.id, palette.nodes[i % palette.nodes.length]));
 
   const maxValue = Math.max(1, ...nodes.map((n) => n.value_usd || 0));
   const maxDegree = Math.max(1, ...nodes.map((n) => n.degree));
@@ -147,11 +154,11 @@ function createGraph(canvas, data, opts = {}) {
       const transfer = e.kind === 'transfer';
 
       ctx.save();
-      ctx.globalAlpha = involved ? (transfer ? 0.85 : 0.4) : 0.06;
-      ctx.strokeStyle = transfer ? '#ffa028' : '#5a4620';
+      ctx.globalAlpha = involved ? (transfer ? 0.9 : 0.55) : 0.06;
+      ctx.strokeStyle = transfer ? palette.transfer : palette.behavioural;
       ctx.lineWidth = transfer
         ? Math.min(4, 0.6 + Math.log10(1 + (e.value || 0)) * 0.9)
-        : 0.6;
+        : 1;
       if (!transfer) ctx.setLineDash([3, 4]);
       ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
 
@@ -161,7 +168,7 @@ function createGraph(canvas, data, opts = {}) {
         const r = radius(e.t) * view.k + 3;
         const tipX = b.x - Math.cos(angle) * r, tipY = b.y - Math.sin(angle) * r;
         ctx.setLineDash([]);
-        ctx.fillStyle = '#ffa028';
+        ctx.fillStyle = palette.transfer;
         ctx.beginPath();
         ctx.moveTo(tipX, tipY);
         ctx.lineTo(tipX - Math.cos(angle - 0.4) * 7, tipY - Math.sin(angle - 0.4) * 7);
@@ -175,7 +182,7 @@ function createGraph(canvas, data, opts = {}) {
       const p = toScreen(n);
       const r = Math.max(2, radius(n) * view.k);
       const dim = focus && n !== focus && !near.has(n);
-      const color = clusterColor.get(n.cluster) || '#7d7264';
+      const color = clusterColor.get(n.cluster) || palette.behavioural;
 
       ctx.save();
       ctx.globalAlpha = dim ? 0.15 : 1;
@@ -189,15 +196,15 @@ function createGraph(canvas, data, opts = {}) {
       // Unresolved (masked) wallets get a dashed ring: they cannot be
       // enriched or alerted on, and that limitation should be visible.
       ctx.setLineDash(n.resolved ? [] : [2, 2]);
-      ctx.strokeStyle = n === selected ? '#fff' : color;
+      ctx.strokeStyle = n === selected ? palette.transfer : color;
       ctx.stroke();
       ctx.restore();
 
       if (!dim && (view.k > 1.15 || r > 11 || n === focus)) {
         ctx.save();
-        ctx.globalAlpha = 0.9;
-        ctx.fillStyle = '#d8cfc0';
-        ctx.font = '10px ui-monospace, monospace';
+        ctx.globalAlpha = 0.95;
+        ctx.fillStyle = palette.text;
+        ctx.font = '600 10px -apple-system, "Segoe UI", sans-serif';
         ctx.textAlign = 'center';
         ctx.fillText(n.entity || n.display, p.x, p.y + r + 11);
         ctx.restore();
@@ -276,7 +283,7 @@ function createGraph(canvas, data, opts = {}) {
     },
     legend() {
       return (data.clusters || []).map((c, i) => ({
-        ...c, color: GRAPH_PALETTE[i % GRAPH_PALETTE.length],
+        ...c, color: palette.nodes[i % palette.nodes.length],
       }));
     },
   };
