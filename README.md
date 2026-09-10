@@ -171,6 +171,46 @@ Labels (`smart_money`, `whale`, `trading_bot`, `mev_bot`, `accumulator`,
 `distributor`, `lp_mm`, `fresh_emerging`, `noise`) are rule-based and each
 carries the evidence string that triggered it.
 
+## Money-flow tracing
+
+One address is a starting point. `pipeline/flow.py` walks the value that
+moved out of it and scores every counterparty as "same owner", with the
+evidence attached — sole funding, round-trips, exclusivity, sweeps — while
+throwing out the three things that make naive clustering useless: contracts,
+high-degree services, and CEX deposit addresses (which are exclusive to one
+user without belonging to them).
+
+```bash
+python scripts/trace_flow.py                    # trace knowledge/watchlist.yml
+python scripts/trace_flow.py --seed 0x... --depth 1
+python scripts/trace_flow.py --write-kb         # promote probable links
+```
+
+Submitted addresses are recorded in `knowledge/watchlist.yml`, not in
+`knowledge/wallets/`, because a bare `0x` address carries no chain — the
+tracer probes every readable EVM chain and only then files the record.
+Links it infers are written with `confidence: inferred` and never overwrite
+a hand-authored record. Full method and its limits:
+[docs/flow-tracing.md](docs/flow-tracing.md).
+
+Where a wallet's money came from is a separate question, answered by
+`scripts/deposit_sources.py`: inbound value grouped by source, ranked by
+size, each source named as an exchange, a bridge, a mixer or another wallet.
+Hyperliquid accounts are redirected to their Arbitrum on-ramp automatically
+— the venue has no transfer graph, but the bridge deposit that funded the
+account is ordinary on-chain history.
+
+```bash
+python scripts/deposit_sources.py --entity theunipcs --venue
+```
+
+Deposit addresses are remembered in `data/deposits.json`, which inverts the
+exchange boundary: any wallet funding a deposit address we already attribute
+is the same exchange account, so the registry reaches wallets no forward
+walk could. What survives a mixer, an exchange or a bridge — and what
+honestly does not — is worked through in
+[docs/attribution-methods.md](docs/attribution-methods.md).
+
 ## Setup
 
 ### 1. Enable GitHub Pages
@@ -272,7 +312,8 @@ run.py                      CLI entrypoint; workflows call this
 pipeline/
   config.py                 env-var configuration
   store.py                  JSON store (keyed upserts, atomic writes)
-  chain.py                  Blockscout client (retry/backoff)
+  chain.py                  Blockscout client (retry/backoff, multi-chain)
+  flow.py                   money-flow tracing, same-owner scoring, funding sources
   masks.py                  resolves truncated addresses like 0x3475…3a12
   features.py                behavioural feature extraction (EVM)
   scoring.py                  the Smart Score formula and label rules (EVM)
@@ -283,14 +324,18 @@ pipeline/
   adapters/hyperliquid.py     perps feature extraction and scoring
   adapters/defillama.py       free market data client
   kb/                          knowledge-base loader, schema, address validation
-  sources/hood.py | telegram.py | discovery.py
+  sources/scraper.py          generic vendor-site scraper (addresses + masks)
+  sources/hood.py | bizyugoscan.py | telegram.py | discovery.py
 knowledge/                  your curated wallets, entities, narratives, sources
 site/                        the dashboard (published to Pages)
   index.html / dashboard.css / dashboard.js / graph.js
 data/                       the JSON store (committed by Actions)
-docs/                       signal-analysis, knowledge-base, graph-and-sentiment,
+knowledge/watchlist.yml     submitted addresses awaiting a chain
+knowledge/infrastructure.yml exchanges, bridges, mixers, routers - not wallets
+docs/                       signal-analysis, knowledge-base, flow-tracing,
+                             attribution-methods, graph-and-sentiment,
                              realtime-alerts, tool-landscape
-tests/                      146 tests across pipeline, kb, graph, sentiment, adapters
+tests/                      181 tests across pipeline, kb, graph, sentiment, adapters
 ```
 
 ## Analysis

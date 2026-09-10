@@ -1,0 +1,73 @@
+name: Flow trace
+
+# Money-flow tracing is manual, not scheduled: it fans out across several
+# chains and burns API calls proportional to how interesting the seeds are.
+# Run it when the watchlist changes, not every hour.
+on:
+  workflow_dispatch:
+    inputs:
+      seed:
+        description: 'Single address to trace (blank = every knowledge/watchlist.yml seed)'
+        required: false
+      chains:
+        description: 'Space-separated chain keys to restrict to (blank = all readable EVM chains)'
+        required: false
+      depth:
+        description: 'Hops out from each seed'
+        required: false
+        default: '2'
+      write_kb:
+        description: 'Commit probable links into knowledge/wallets/'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install requests PyYAML
+
+      - name: Trace money flow
+        env:
+          BLOCKSCOUT_API_KEY: ${{ secrets.BLOCKSCOUT_API_KEY }}
+          MAX_FLOW_DEPTH: ${{ github.event.inputs.depth }}
+        run: |
+          args=""
+          if [ -n "${{ github.event.inputs.seed }}" ]; then
+            args="$args --seed ${{ github.event.inputs.seed }}"
+          fi
+          for c in ${{ github.event.inputs.chains }}; do
+            args="$args --chain $c"
+          done
+          if [ "${{ github.event.inputs.write_kb }}" = "true" ]; then
+            args="$args --write-kb"
+          fi
+          python scripts/trace_flow.py $args | tee flow-trace.log
+
+      - name: Validate knowledge base
+        run: python scripts/kb_validate.py
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4
+        with:
+          name: flow-trace
+          path: |
+            data/flow_links.json
+            flow-trace.log
+
+      - name: Commit findings
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/flow_links.json knowledge/ || true
+          git diff --cached --quiet || git commit -m "flow: trace run $(date -u +%FT%RZ)"
+          git push

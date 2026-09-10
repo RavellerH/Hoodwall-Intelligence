@@ -50,15 +50,31 @@ def _split_frontmatter(path):
 class KnowledgeBase:
     """The loaded, cross-linked knowledge base."""
 
-    def __init__(self, chains, wallets, entities, narratives, sources, errors):
+    def __init__(self, chains, wallets, entities, narratives, sources,
+                 infrastructure, errors):
         self.chains = chains
         self.wallets = wallets          # key "chain:address" -> record
         self.entities = entities        # key -> record (with .cluster)
         self.narratives = narratives    # key -> record (with .body)
         self.sources = sources
+        self.infrastructure = infrastructure  # key "chain|*:address" -> record
         self.errors = errors
 
     # --- lookups ---------------------------------------------------------
+
+    def role_of(self, address, chain=None):
+        """The curated role of an address, or None if it is not registered.
+
+        A chain-scoped entry wins over a chain-agnostic one: a router that
+        happens to be a real wallet on some other chain should be judged
+        per chain where we have said so.
+        """
+        address = (address or "").lower()
+        for key in (f"{chain}:{address}", f"*:{address}"):
+            record = self.infrastructure.get(key)
+            if record:
+                return record["role"]
+        return None
 
     def wallets_for_entity(self, entity_key):
         return [w for w in self.wallets.values() if w.get("entity") == entity_key]
@@ -91,6 +107,7 @@ class KnowledgeBase:
             "entities": len(self.entities),
             "narratives": len(self.narratives),
             "sources": len(self.sources),
+            "infrastructure": len(self.infrastructure),
             "wallets_by_chain": by_chain,
             "wallets_by_label": by_label,
             "narratives_by_status": by_status,
@@ -200,7 +217,32 @@ def load(knowledge_dir=None, strict=False):
                 continue
             sources[record["key"]] = record
 
-    kb = KnowledgeBase(chains, wallets, entities, narratives, sources, errors)
+    # --- infrastructure --------------------------------------------------
+    # One flat file rather than a directory: the list is short, and every
+    # entry is read on every trace, so keeping it in one place makes it
+    # reviewable as a whole.
+    infrastructure = {}
+    infra_path = base / "infrastructure.yml"
+    if infra_path.exists():
+        rows = _read_yaml(infra_path)
+        rows = rows if isinstance(rows, list) else rows.get("infrastructure", [])
+        for i, row in enumerate(rows or []):
+            where = f"infrastructure.yml #{i + 1}"
+            if not isinstance(row, dict):
+                record_error(f"{where}: expected a mapping")
+                continue
+            try:
+                record = schema.validate_infrastructure(row, where, chains)
+            except schema.ValidationError as exc:
+                record_error(str(exc))
+                continue
+            if record["key"] in infrastructure:
+                record_error(f"{where}: duplicate address {record['address']}")
+                continue
+            infrastructure[record["key"]] = record
+
+    kb = KnowledgeBase(chains, wallets, entities, narratives, sources,
+                       infrastructure, errors)
     _cross_link(kb, record_error)
     return kb
 

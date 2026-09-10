@@ -18,7 +18,7 @@ import time
 import traceback
 
 from pipeline import enrich, enrich_hl, market, masks, publish, score
-from pipeline.sources import discovery, hood, telegram
+from pipeline.sources import bizyugoscan, discovery, hood, telegram
 
 
 def _ingest():
@@ -28,7 +28,9 @@ def _ingest():
     Telegram session) must never stop the others from contributing.
     """
     total, failures = 0, []
-    for name, source in (("hood", hood), ("telegram", telegram), ("discovery", discovery)):
+    sources = (("hood", hood), ("bizyugoscan", bizyugoscan),
+               ("telegram", telegram), ("discovery", discovery))
+    for name, source in sources:
         try:
             total += source.run() or 0
         except Exception:
@@ -46,7 +48,7 @@ def _ingest():
           + (f"; failed sources: {', '.join(failures)}" if failures else ""))
     # Fail the job only if every source broke - that signals a real outage
     # rather than one flaky upstream.
-    if failures and len(failures) == 3:
+    if failures and len(failures) == len(sources):
         raise RuntimeError("every ingestion source failed")
     return total
 

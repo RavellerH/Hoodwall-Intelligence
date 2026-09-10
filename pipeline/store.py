@@ -33,6 +33,11 @@ TABLES = {
     "market": "chain",
     "telegram_messages": "message_id",
     "masked": "mask",
+    # Deposit addresses discovered by flow tracing, keyed "chain:address".
+    # This is the table that makes a CEX boundary useful instead of fatal:
+    # it accumulates across runs, so a later trace can recognise an address
+    # an earlier one identified.
+    "deposits": "key",
     "state": "key",
 }
 

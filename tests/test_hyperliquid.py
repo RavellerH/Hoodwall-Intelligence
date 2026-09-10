@@ -239,3 +239,78 @@ def test_fills_per_day_guards_against_zero_span():
              for _ in range(100)]
     f = hl.extract("0x1", {}, burst)
     assert f["fills_per_day"] <= 100 * 24
+
+
+# --- venue membership -----------------------------------------------------
+# Every block explorer is blind to Hyperliquid, so a submitted address that
+# lives there probes as "no activity anywhere". exists() is how chain
+# resolution asks the venue instead.
+
+def _state(**kwargs):
+    return {"marginSummary": {"accountValue": kwargs.pop("equity", "0")},
+            "withdrawable": kwargs.pop("withdrawable", "0"),
+            "assetPositions": kwargs.pop("positions", [])}
+
+
+@pytest.mark.parametrize("state, fills, expected", [
+    (_state(equity="1200"), [], True),
+    (_state(withdrawable="50"), [], True),
+    (_state(positions=[{"position": {"coin": "ETH", "szi": "-3"}}]), [], True),
+    # Closed out, no balance, but it traded - still an account.
+    (_state(), [{"coin": "BTC"}], True),
+    # Forty hex characters that never touched the venue.
+    (_state(), [], False),
+    ({}, [], False),
+])
+def test_exists_distinguishes_an_account_from_a_bare_address(
+        monkeypatch, state, fills, expected):
+    monkeypatch.setattr(hl, "get_state", lambda address: state)
+    monkeypatch.setattr(hl, "get_fills", lambda address: fills)
+    assert hl.exists("0x" + "ab" * 20) is expected
+
+
+def test_exists_does_not_swallow_a_broken_api(monkeypatch):
+    """A failed call must not read as 'this address is not on Hyperliquid'."""
+    def boom(address):
+        raise hl.HyperliquidError("503")
+    monkeypatch.setattr(hl, "get_state", boom)
+    with pytest.raises(hl.HyperliquidError):
+        hl.exists("0x" + "ab" * 20)
+
+
+# --- venue-side cash movement ---------------------------------------------
+
+def test_ledger_keeps_cash_movement_and_drops_zero_deltas(monkeypatch):
+    monkeypatch.setattr(hl, "_post", lambda payload: [
+        {"time": 300, "delta": {"type": "withdraw", "usdc": "500"}},
+        {"time": 100, "delta": {"type": "deposit", "usdc": "1000"}},
+        {"time": 200, "delta": {"type": "accountClassTransfer", "usdc": "0"}},
+        {"time": 250, "delta": "not a mapping"},
+        "not a mapping either",
+    ])
+    events = hl.ledger("0x" + "ab" * 20)
+    assert [e["type"] for e in events] == ["deposit", "withdraw"], "sorted by time"
+    assert events[0]["amount"] == 1000.0
+
+
+def test_ledger_degrades_to_empty_rather_than_raising(monkeypatch):
+    """Arbitrum is the authoritative answer; the venue ledger corroborates."""
+    def boom(payload):
+        raise hl.HyperliquidError("422 Unprocessable")
+    monkeypatch.setattr(hl, "_post", boom)
+    assert hl.ledger("0x" + "ab" * 20) == []
+    monkeypatch.setattr(hl, "_post", lambda payload: {"unexpected": "shape"})
+    assert hl.ledger("0x" + "ab" * 20) == []
+
+
+def test_funding_summary_totals_deposits(monkeypatch):
+    monkeypatch.setattr(hl, "ledger", lambda address: [
+        {"type": "deposit", "amount": 1000.0, "time": 100},
+        {"type": "deposit", "amount": 250.0, "time": 400},
+        {"type": "withdraw", "amount": 90.0, "time": 500},
+    ])
+    summary = hl.funding_summary("0x" + "ab" * 20)
+    assert summary["deposit_count"] == 2
+    assert summary["deposit_total"] == 1250.0
+    assert summary["withdrawal_count"] == 1
+    assert summary["first_deposit_at"] == 100
