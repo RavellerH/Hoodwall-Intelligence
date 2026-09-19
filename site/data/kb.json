@@ -1015,13 +1015,13 @@
     },
     {
      "confidence": 1.0,
-     "evidence": "100% win rate over 288 closes, $168,180 realized",
+     "evidence": "100% win rate over 439 closes, $246,059 realized",
      "name": "smart_money",
      "source": "observed"
     },
     {
      "confidence": 0.9,
-     "evidence": "20.1x account leverage - liquidation risk",
+     "evidence": "20.2x account leverage - liquidation risk",
      "name": "high_leverage",
      "source": "observed"
     }
@@ -1031,67 +1031,67 @@
    "notes": "Leaderboard snapshot: account value $6,930,000; unrealized PnL $561,400. Also listed by bizyugoscan on 2026-09-09 - two independent sources naming the same account",
    "observed": {
     "components": {
-     "activity": 0.7342,
-     "capital_scale": 0.9745,
-     "diversification": 0.429,
+     "activity": 0.7709,
+     "capital_scale": 0.9743,
+     "diversification": 0.439,
      "realized_performance": 1.0,
      "risk_control": 0.0
     },
-    "concentration": 0.642,
-    "equity": 6633500.58,
+    "concentration": 0.622,
+    "equity": 6613658.63,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 20.149,
+    "leverage": 20.238,
     "net_bias": 1.0,
-    "notional": 133661283.5,
+    "notional": 133845941.58,
     "position_count": 3,
     "positions": [
      {
       "coin": "ETH",
       "direction": "long",
-      "entry_px": 2517.46,
+      "entry_px": 2519.96,
       "leverage": 25.0,
       "leverage_type": "cross",
-      "liquidation_px": 2516.291535435,
-      "notional": 85776707.5,
-      "roe": 1.2501565042,
-      "size": 32450.0,
-      "unrealized_pnl": 4085092.169802
+      "liquidation_px": 2519.4603537756,
+      "notional": 83210766.58395,
+      "roe": 1.2474248338,
+      "size": 31451.3235,
+      "unrealized_pnl": 3954642.306059
      },
      {
       "coin": "BTC",
       "direction": "long",
-      "entry_px": 80855.9,
+      "entry_px": 80877.0,
       "leverage": 40.0,
       "leverage_type": "cross",
-      "liquidation_px": 73301.5385225949,
-      "notional": 40449296.0,
-      "roe": 0.3438431831,
-      "size": 496.0,
-      "unrealized_pnl": 344741.938145
+      "liquidation_px": 73336.2095742634,
+      "notional": 39288302.0,
+      "roe": 0.3135482856,
+      "size": 482.0,
+      "unrealized_pnl": 305574.186839
      },
      {
       "coin": "HYPE",
       "direction": "long",
-      "entry_px": 92.5699,
+      "entry_px": 92.7338,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 39.775391689,
-      "notional": 7435280.0,
-      "roe": 0.0400803167,
-      "size": 80000.0,
-      "unrealized_pnl": 29681.87184
+      "liquidation_px": 58.9519339077,
+      "notional": 11346873.0,
+      "roe": -0.0520698741,
+      "size": 123000.0,
+      "unrealized_pnl": -59392.27965
      }
     ],
-    "realized_pnl": 168179.85,
-    "smart_score": 70.5,
+    "realized_pnl": 246058.98,
+    "smart_score": 71.4,
     "tier": "watch",
     "top_coins": [
      "HYPE",
      "ETH",
      "BTC"
     ],
-    "unrealized_pnl": 4459515.98,
+    "unrealized_pnl": 4200824.21,
     "win_rate": 1.0
    },
    "resolved": true,
@@ -1116,8 +1116,14 @@
      "source": "curated"
     },
     {
+     "confidence": 0.81,
+     "evidence": "81% of gross notional is short",
+     "name": "short_bias",
+     "source": "observed"
+    },
+    {
      "confidence": 0.7,
-     "evidence": "$-68,638 realized over 1296 closes",
+     "evidence": "$-107,333 realized over 1373 closes",
      "name": "unprofitable",
      "source": "observed"
     },
@@ -1135,150 +1141,138 @@
     "components": {
      "activity": 0.8474,
      "capital_scale": 1.0,
-     "diversification": 0.942,
-     "realized_performance": 0.1061,
+     "diversification": 0.948,
+     "realized_performance": 0.1353,
      "risk_control": 1.0
     },
-    "concentration": 0.116,
-    "equity": 19972993.27,
+    "concentration": 0.104,
+    "equity": 20291545.55,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 3.601,
-    "net_bias": -0.758,
-    "notional": 71925774.62,
+    "leverage": 3.398,
+    "net_bias": -0.812,
+    "notional": 68946779.62,
     "position_count": 111,
     "positions": [
      {
-      "coin": "ETH",
-      "direction": "short",
-      "entry_px": 2627.98,
-      "leverage": 25.0,
-      "leverage_type": "cross",
-      "liquidation_px": 7572.5547411381,
-      "notional": 8341223.5877,
-      "roe": -0.1466760814,
-      "size": -3155.4905,
-      "unrealized_pnl": -48652.871107
-     },
-     {
       "coin": "XRP",
       "direction": "short",
-      "entry_px": 1.385117,
+      "entry_px": 1.386161,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 4.5775904777,
-      "notional": 7159932.7464,
-      "roe": -0.9050930993,
-      "size": -4945388.0,
-      "unrealized_pnl": -309991.717789
+      "liquidation_px": 4.6155761726,
+      "notional": 7166705.2893,
+      "roe": -0.6628154193,
+      "size": -5004333.0,
+      "unrealized_pnl": -229891.361598
+     },
+     {
+      "coin": "ETH",
+      "direction": "short",
+      "entry_px": 2628.89,
+      "leverage": 25.0,
+      "leverage_type": "cross",
+      "liquidation_px": 8568.0038377336,
+      "notional": 7151899.62948,
+      "roe": -0.159781975,
+      "size": -2703.2164,
+      "unrealized_pnl": -45419.497232
      },
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 81308.1,
+      "entry_px": 81473.3,
       "leverage": 40.0,
       "leverage_type": "cross",
-      "liquidation_px": 320848.7693632731,
-      "notional": 5339924.41307,
-      "roe": -0.1194799381,
-      "size": -65.47957,
-      "unrealized_pnl": -15902.844191
+      "liquidation_px": 303760.0241610457,
+      "notional": 5914976.1326,
+      "roe": -0.0185043407,
+      "size": -72.5666,
+      "unrealized_pnl": -2735.053081
      },
      {
       "coin": "HYPE",
       "direction": "short",
-      "entry_px": 87.1344,
+      "entry_px": 87.5565,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 387.4101778475,
-      "notional": 4768961.83272,
-      "roe": -0.6665056613,
-      "size": -51311.16,
-      "unrealized_pnl": -297992.628601
+      "liquidation_px": 377.0286241907,
+      "notional": 5029319.72278,
+      "roe": -0.536167144,
+      "size": -54517.78,
+      "unrealized_pnl": -255933.296744
      },
      {
       "coin": "UNI",
       "direction": "short",
-      "entry_px": 7.71259,
+      "entry_px": 7.73483,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 41.4440006341,
-      "notional": 4205978.3239,
-      "roe": -1.7009854774,
-      "size": -466062.2,
-      "unrealized_pnl": -611427.820428
+      "liquidation_px": 44.4593275452,
+      "notional": 3774581.83008,
+      "roe": -1.226096512,
+      "size": -434699.4,
+      "unrealized_pnl": -412253.859681
      },
      {
       "coin": "XPL",
       "direction": "short",
-      "entry_px": 0.088783,
+      "entry_px": 0.089017,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 0.4953107033,
-      "notional": 3270820.902603,
-      "roe": -0.1565447277,
-      "size": -35722081.0,
-      "unrealized_pnl": -99297.067033
+      "liquidation_px": 0.484879218,
+      "notional": 3511125.312181,
+      "roe": -0.2094797391,
+      "size": -37857023.0,
+      "unrealized_pnl": -141186.76935
      },
      {
       "coin": "ARB",
       "direction": "short",
-      "entry_px": 0.1733,
+      "entry_px": 0.17366,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1.2474935267,
-      "notional": 2924854.676938,
-      "roe": -2.1339653261,
-      "size": -13908672.2,
-      "unrealized_pnl": -514385.717845
+      "liquidation_px": 1.2685561196,
+      "notional": 2907581.388912,
+      "roe": -1.9606701414,
+      "size": -13997599.6,
+      "unrealized_pnl": -476629.481927
      },
      {
       "coin": "ONDO",
       "direction": "short",
-      "entry_px": 0.388022,
+      "entry_px": 0.389853,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.5885009463,
-      "notional": 2906709.82056,
-      "roe": -1.1867239825,
-      "size": -6696408.0,
-      "unrealized_pnl": -308353.210428
+      "liquidation_px": 2.7697499565,
+      "notional": 2761900.38908,
+      "roe": -1.1377607626,
+      "size": -6360748.0,
+      "unrealized_pnl": -282137.672009
      },
      {
       "coin": "TAO",
       "direction": "short",
-      "entry_px": 240.568,
+      "entry_px": 240.96,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 1690.1974550805,
-      "notional": 2722708.90896,
-      "roe": -0.5785590649,
-      "size": -10144.032,
-      "unrealized_pnl": -282375.413104
+      "liquidation_px": 1757.2271204899,
+      "notional": 2641848.309264,
+      "roe": -0.5087109613,
+      "size": -9951.364,
+      "unrealized_pnl": -243965.821138
      },
      {
       "coin": "ENA",
       "direction": "short",
-      "entry_px": 0.165223,
+      "entry_px": 0.167071,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1.3464667789,
-      "notional": 2686596.82376,
-      "roe": -2.302760452,
-      "size": -13216888.0,
-      "unrealized_pnl": -502861.852861
-     },
-     {
-      "coin": "SOL",
-      "direction": "long",
-      "entry_px": 112.0886,
-      "leverage": 20.0,
-      "leverage_type": "cross",
-      "liquidation_px": null,
-      "notional": 2551815.9018,
-      "roe": 0.0145124753,
-      "size": 22749.54,
-      "unrealized_pnl": 1850.315631
+      "liquidation_px": 1.7118778822,
+      "notional": 2088677.47972,
+      "roe": -2.131913931,
+      "size": -10304788.0,
+      "unrealized_pnl": -367038.592739
      },
      {
       "coin": "VVV",
@@ -1286,25 +1280,37 @@
       "entry_px": 26.5032,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 208.5424985474,
-      "notional": 2144638.87577,
-      "roe": -0.2157208093,
-      "size": -75491.53,
-      "unrealized_pnl": -143869.216719
+      "liquidation_px": 218.4345410502,
+      "notional": 1981274.26844,
+      "roe": -0.0659654984,
+      "size": -73147.54,
+      "unrealized_pnl": -42627.924126
+     },
+     {
+      "coin": "NEAR",
+      "direction": "short",
+      "entry_px": 3.55154,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": 36.8860103805,
+      "notional": 1717943.87727,
+      "roe": -0.3315682583,
+      "size": -468193.9,
+      "unrealized_pnl": -55133.513617
      }
     ],
-    "realized_pnl": -68638.01,
-    "smart_score": 73.7,
+    "realized_pnl": -107333.4,
+    "smart_score": 74.6,
     "tier": "watch",
     "top_coins": [
-     "BTC",
-     "UNI",
+     "ENA",
      "ETH",
-     "ONDO",
-     "ENA"
+     "PONS",
+     "kPEPE",
+     "ZEC"
     ],
-    "unrealized_pnl": -4512485.31,
-    "win_rate": 0.1273
+    "unrealized_pnl": -3952523.19,
+    "win_rate": 0.1624
    },
    "resolved": true,
    "source": null
@@ -1328,14 +1334,14 @@
      "source": "curated"
     },
     {
-     "confidence": 1.0,
-     "evidence": "100% of gross notional is short",
+     "confidence": 0.96,
+     "evidence": "96% of gross notional is short",
      "name": "short_bias",
      "source": "observed"
     },
     {
      "confidence": 0.7,
-     "evidence": "$-16,820 realized over 1033 closes",
+     "evidence": "$-12,937 realized over 1178 closes",
      "name": "unprofitable",
      "source": "observed"
     },
@@ -1351,56 +1357,56 @@
    "notes": "Leaderboard snapshot: account value $7,970,000; unrealized PnL $-249,100",
    "observed": {
     "components": {
-     "activity": 0.7558,
-     "capital_scale": 0.991,
-     "diversification": 0.6821,
-     "realized_performance": 0.317,
+     "activity": 0.7963,
+     "capital_scale": 0.9912,
+     "diversification": 0.6666,
+     "realized_performance": 0.4895,
      "risk_control": 1.0
     },
-    "concentration": 0.561,
-    "equity": 8645745.97,
+    "concentration": 0.592,
+    "equity": 8680143.05,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 1.771,
-    "net_bias": -1.0,
-    "notional": 15311521.56,
+    "leverage": 1.826,
+    "net_bias": -0.964,
+    "notional": 15852965.53,
     "position_count": 8,
     "positions": [
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 80957.5,
+      "entry_px": 81215.1,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 159703.4119627318,
-      "notional": 8594965.70625,
-      "roe": -0.1466087206,
-      "size": -105.39375,
-      "unrealized_pnl": -62546.354254
+      "liquidation_px": 153215.9576607358,
+      "notional": 9392653.54403,
+      "roe": -0.0728614663,
+      "size": -115.23173,
+      "unrealized_pnl": -34093.918827
      },
      {
       "coin": "ETH",
       "direction": "short",
-      "entry_px": 2616.77,
+      "entry_px": 2623.2,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 6836.0291220971,
-      "notional": 5154998.48996,
-      "roe": -0.2035197853,
-      "size": -1950.1394,
-      "unrealized_pnl": -51928.782552
+      "liquidation_px": 7494.0264292555,
+      "notional": 4475740.21452,
+      "roe": -0.1715265981,
+      "size": -1691.7036,
+      "unrealized_pnl": -38059.017956
      },
      {
       "coin": "SOL",
       "direction": "short",
-      "entry_px": 112.3548,
+      "entry_px": 112.1042,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 2785.2608779244,
-      "notional": 341421.9243,
-      "roe": 0.0329045719,
-      "size": -3043.79,
-      "unrealized_pnl": 562.642789
+      "liquidation_px": 1437.0133395956,
+      "notional": 687235.032,
+      "roe": 0.089963773,
+      "size": -6158.02,
+      "unrealized_pnl": 3105.280962
      },
      {
       "coin": "LIT",
@@ -1408,11 +1414,11 @@
       "entry_px": 1.702806,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 120.0009893306,
-      "notional": 338487.6,
-      "roe": -10.0592584487,
+      "liquidation_px": 120.2145451768,
+      "notional": 328732.8,
+      "roe": -9.6252689781,
       "size": -66000.0,
-      "unrealized_pnl": -226102.3849
+      "unrealized_pnl": -216347.5849
      },
      {
       "coin": "BNB",
@@ -1420,23 +1426,35 @@
       "entry_px": 617.162,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 20056.3967312759,
-      "notional": 308659.24022,
-      "roe": -2.5187437889,
+      "liquidation_px": 20107.1602245,
+      "notional": 304919.9015,
+      "roe": -2.3670819649,
       "size": -399.502,
-      "unrealized_pnl": -62101.56205
+      "unrealized_pnl": -58362.22333
+     },
+     {
+      "coin": "ZEC",
+      "direction": "long",
+      "entry_px": 1477.5854,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": null,
+      "notional": 284420.968565,
+      "roe": 0.0753925746,
+      "size": 191.05,
+      "unrealized_pnl": 2128.27728
      },
      {
       "coin": "HYPE",
       "direction": "short",
-      "entry_px": 92.4529,
+      "entry_px": 92.6712,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 2575.0526661824,
-      "notional": 297408.82348,
-      "roe": -0.0158678107,
-      "size": -3199.94,
-      "unrealized_pnl": -1564.798991
+      "liquidation_px": 3696.2235258933,
+      "notional": 203946.66578,
+      "roe": 0.0136044337,
+      "size": -2210.78,
+      "unrealized_pnl": 929.072804
      },
      {
       "coin": "MNT",
@@ -1444,37 +1462,25 @@
       "entry_px": 0.57207,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 27.7204031994,
-      "notional": 180135.2,
-      "roe": -0.6228323387,
+      "liquidation_px": 27.7883699345,
+      "notional": 175316.4,
+      "roe": -0.4724158489,
       "size": -280000.0,
-      "unrealized_pnl": -19953.294201
-     },
-     {
-      "coin": "ZEC",
-      "direction": "short",
-      "entry_px": 1533.2874,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": 129104.5580652716,
-      "notional": 95444.58,
-      "roe": 0.0018744148,
-      "size": -62.26,
-      "unrealized_pnl": 17.893627
+      "unrealized_pnl": -15134.494201
      }
     ],
-    "realized_pnl": -16819.65,
-    "smart_score": 73.0,
+    "realized_pnl": -12937.42,
+    "smart_score": 77.9,
     "tier": "watch",
     "top_coins": [
      "ZEC",
-     "HYPE",
      "BTC",
+     "HYPE",
      "ETH",
-     "@151"
+     "SOL"
     ],
-    "unrealized_pnl": -423616.64,
-    "win_rate": 0.3804
+    "unrealized_pnl": -355834.61,
+    "win_rate": 0.5874
    },
    "resolved": true,
    "source": null
@@ -1505,7 +1511,7 @@
     },
     {
      "confidence": 1.0,
-     "evidence": "100% win rate over 813 closes, $205,688 realized",
+     "evidence": "100% win rate over 1171 closes, $173,498 realized",
      "name": "smart_money",
      "source": "observed"
     }
@@ -1515,19 +1521,19 @@
    "notes": "Leaderboard snapshot: account value $9,300,000; unrealized PnL $1,620,000",
    "observed": {
     "components": {
-     "activity": 0.6614,
-     "capital_scale": 0.9853,
-     "diversification": 0.4935,
+     "activity": 0.6389,
+     "capital_scale": 0.9845,
+     "diversification": 0.4945,
      "realized_performance": 1.0,
      "risk_control": 1.0
     },
-    "concentration": 0.513,
-    "equity": 7888009.39,
+    "concentration": 0.511,
+    "equity": 7785589.09,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 3.66,
+    "leverage": 3.695,
     "net_bias": 1.0,
-    "notional": 28870422.48,
+    "notional": 28769447.48,
     "position_count": 5,
     "positions": [
      {
@@ -1537,10 +1543,10 @@
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 14816463.24866,
-      "roe": 0.0878457257,
+      "notional": 14706306.63373,
+      "roe": 0.0500188939,
       "size": 159416.23,
-      "unrealized_pnl": 255818.088034
+      "unrealized_pnl": 145661.473104
      },
      {
       "coin": "ETH",
@@ -1549,10 +1555,10 @@
       "leverage": 20.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 13947117.12492,
-      "roe": 1.0320985747,
+      "notional": 13959252.39366,
+      "roe": 1.0503984259,
       "size": 5276.2038,
-      "unrealized_pnl": 684420.51346
+      "unrealized_pnl": 696555.7822
      },
      {
       "coin": "ZEC",
@@ -1561,10 +1567,10 @@
       "leverage": 4.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 54804.75,
-      "roe": 0.1376594753,
+      "notional": 53221.929475,
+      "roe": 0.0181593892,
       "size": 35.75,
-      "unrealized_pnl": 1823.348
+      "unrealized_pnl": 240.527475
      },
      {
       "coin": "LIT",
@@ -1573,10 +1579,10 @@
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 48357.5694,
-      "roe": 0.7438518713,
+      "notional": 46963.9632,
+      "roe": 0.5783210624,
       "size": 9429.0,
-      "unrealized_pnl": 6262.499329
+      "unrealized_pnl": 4868.893129
      },
      {
       "coin": "WLD",
@@ -1585,21 +1591,21 @@
       "leverage": 10.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 3679.789182,
-      "roe": 2.1966459735,
+      "notional": 3702.558998,
+      "roe": 2.2721164342,
       "size": 8496.2,
-      "unrealized_pnl": 662.739093
+      "unrealized_pnl": 685.508909
      }
     ],
-    "realized_pnl": 205688.49,
-    "smart_score": 85.3,
+    "realized_pnl": 173497.61,
+    "smart_score": 84.8,
     "tier": "elite",
     "top_coins": [
-     "HYPE",
      "xyz:SNDK",
+     "HYPE",
      "xyz:SILVER"
     ],
-    "unrealized_pnl": 948987.19,
+    "unrealized_pnl": 848012.18,
     "win_rate": 1.0
    },
    "resolved": true,
@@ -1642,18 +1648,18 @@
    "observed": {
     "components": {
      "activity": 0.4805,
-     "capital_scale": 0.7457,
+     "capital_scale": 0.7454,
      "diversification": 0.125,
      "realized_performance": 0.5,
-     "risk_control": 0.692
+     "risk_control": 0.689
     },
     "concentration": 1.0,
-    "equity": 165981.37,
+    "equity": 165118.31,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 9.62,
+    "leverage": 9.665,
     "net_bias": 1.0,
-    "notional": 1596672.35,
+    "notional": 1595889.2,
     "position_count": 1,
     "positions": [
      {
@@ -1662,11 +1668,11 @@
       "entry_px": 81149.0,
       "leverage": 25.0,
       "leverage_type": "cross",
-      "liquidation_px": 73998.3814408386,
-      "notional": 1596672.34982,
-      "roe": 0.1238317093,
+      "liquidation_px": 74002.5144837539,
+      "notional": 1595889.19702,
+      "roe": 0.1115087057,
       "size": 19.57882,
-      "unrealized_pnl": 7869.76559
+      "unrealized_pnl": 7086.61279
      }
     ],
     "realized_pnl": -192174.03,
@@ -1675,7 +1681,7 @@
     "top_coins": [
      "BTC"
     ],
-    "unrealized_pnl": 7869.77,
+    "unrealized_pnl": 7086.61,
     "win_rate": 0.8915
    },
    "resolved": true,
@@ -1718,13 +1724,13 @@
    "observed": {
     "components": {
      "activity": 0.4336,
-     "capital_scale": 0.9717,
+     "capital_scale": 0.9764,
      "diversification": 1.0,
      "realized_performance": 0.0271,
      "risk_control": 0.5
     },
     "concentration": 0.0,
-    "equity": 6333915.02,
+    "equity": 6833921.02,
     "fill_count": 2000,
     "kind": "perps",
     "leverage": 0.0,
@@ -1733,7 +1739,7 @@
     "position_count": 0,
     "positions": [],
     "realized_pnl": -27734.4,
-    "smart_score": 56.1,
+    "smart_score": 56.3,
     "tier": "candidate",
     "top_coins": [
      "xyz:XYZ100",
@@ -1767,14 +1773,20 @@
      "source": "curated"
     },
     {
-     "confidence": 0.88,
-     "evidence": "88% of notional in one market (BTC)",
+     "confidence": 0.97,
+     "evidence": "97% of notional in one market (BTC)",
      "name": "concentrated",
      "source": "observed"
     },
     {
+     "confidence": 0.95,
+     "evidence": "95% of gross notional is short",
+     "name": "short_bias",
+     "source": "observed"
+    },
+    {
      "confidence": 0.83,
-     "evidence": "83% win rate over 1579 closes, $81,745 realized",
+     "evidence": "83% win rate over 1586 closes, $92,202 realized",
      "name": "smart_money",
      "source": "observed"
     }
@@ -1784,19 +1796,19 @@
    "notes": "Leaderboard snapshot: account value $1,020,000; unrealized PnL $-992,500",
    "observed": {
     "components": {
-     "activity": 0.508,
-     "capital_scale": 0.8207,
-     "diversification": 0.2581,
+     "activity": 0.5064,
+     "capital_scale": 0.8189,
+     "diversification": 0.2116,
      "realized_performance": 1.0,
-     "risk_control": 0.7771
+     "risk_control": 0.8165
     },
-    "concentration": 0.88,
-    "equity": 555438.52,
+    "concentration": 0.973,
+    "equity": 540043.33,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 8.344,
-    "net_bias": -0.76,
-    "notional": 4634482.37,
+    "leverage": 7.753,
+    "net_bias": -0.947,
+    "notional": 4186868.94,
     "position_count": 2,
     "positions": [
      {
@@ -1805,11 +1817,11 @@
       "entry_px": 81270.4,
       "leverage": 40.0,
       "leverage_type": "cross",
-      "liquidation_px": 104649.6484412444,
-      "notional": 4077850.0,
-      "roe": -0.1410295675,
+      "liquidation_px": 104906.8861576691,
+      "notional": 4075450.0,
+      "roe": -0.1174047478,
       "size": -50.0,
-      "unrealized_pnl": -14326.92255
+      "unrealized_pnl": -11926.92255
      },
      {
       "coin": "ETH",
@@ -1818,21 +1830,21 @@
       "leverage": 25.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 556632.36896,
-      "roe": 0.3754834612,
-      "size": 210.5744,
-      "unrealized_pnl": 8236.54252
+      "notional": 111418.9362,
+      "roe": 0.3956425428,
+      "size": 42.1164,
+      "unrealized_pnl": 1735.8124
      }
     ],
-    "realized_pnl": 81745.43,
-    "smart_score": 71.2,
+    "realized_pnl": 92201.62,
+    "smart_score": 71.0,
     "tier": "watch",
     "top_coins": [
      "BTC",
      "ETH"
     ],
-    "unrealized_pnl": -6090.38,
-    "win_rate": 0.829
+    "unrealized_pnl": -10191.11,
+    "win_rate": 0.8298
    },
    "resolved": true,
    "source": null
@@ -1868,18 +1880,18 @@
    "observed": {
     "components": {
      "activity": 0.3085,
-     "capital_scale": 0.6378,
+     "capital_scale": 0.6392,
      "diversification": 0.2902,
      "realized_performance": 0.8788,
      "risk_control": 1.0
     },
     "concentration": 1.0,
-    "equity": 29141.43,
+    "equity": 29834.07,
     "fill_count": 51,
     "kind": "perps",
-    "leverage": 3.189,
+    "leverage": 3.092,
     "net_bias": -1.0,
-    "notional": 92939.0,
+    "notional": 92251.0,
     "position_count": 1,
     "positions": [
      {
@@ -1888,15 +1900,15 @@
       "entry_px": 38.974,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 116.2670737505,
-      "notional": 92939.0,
-      "roe": -13.8464104275,
+      "liquidation_px": 116.2714969752,
+      "notional": 92251.0,
+      "roe": -13.6698824858,
       "size": -1000.0,
-      "unrealized_pnl": -53965.0
+      "unrealized_pnl": -53277.0
      }
     ],
     "realized_pnl": 34.04,
-    "smart_score": 63.4,
+    "smart_score": 63.5,
     "tier": "candidate",
     "top_coins": [
      "BTC",
@@ -1904,7 +1916,7 @@
      "xyz:XYZ100",
      "HYPE"
     ],
-    "unrealized_pnl": -53965.0,
+    "unrealized_pnl": -53277.0,
     "win_rate": 0.4545
    },
    "resolved": true,
@@ -1987,13 +1999,13 @@
     },
     {
      "confidence": 0.7,
-     "evidence": "$-7,242 realized over 742 closes",
+     "evidence": "$-536 realized over 1403 closes",
      "name": "unprofitable",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 141 markets",
+     "evidence": "2000 fills across 128 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -2004,177 +2016,177 @@
    "observed": {
     "components": {
      "activity": 0.8474,
-     "capital_scale": 0.9714,
-     "diversification": 0.9795,
-     "realized_performance": 0.2067,
+     "capital_scale": 0.9713,
+     "diversification": 0.9805,
+     "realized_performance": 0.5,
      "risk_control": 1.0
     },
-    "concentration": 0.041,
-    "equity": 6302058.47,
+    "concentration": 0.039,
+    "equity": 6293563.68,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 3.979,
-    "net_bias": -0.572,
-    "notional": 25075731.76,
+    "leverage": 4.07,
+    "net_bias": -0.565,
+    "notional": 25617405.88,
     "position_count": 173,
     "positions": [
      {
       "coin": "ETHFI",
       "direction": "short",
-      "entry_px": 0.67415,
+      "entry_px": 0.67457,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 3.271159224,
-      "notional": 1015720.00992,
-      "roe": -0.5322713412,
-      "size": -1361701.0,
-      "unrealized_pnl": -97724.53639
+      "liquidation_px": 3.2632214476,
+      "notional": 1007071.092468,
+      "roe": -0.5148248953,
+      "size": -1353535.6,
+      "unrealized_pnl": -94013.006679
      },
      {
       "coin": "XMR",
       "direction": "long",
-      "entry_px": 575.136,
+      "entry_px": 571.585,
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 767120.12644,
-      "roe": 0.035499245,
-      "size": 1324.402,
-      "unrealized_pnl": 5408.040791
-     },
-     {
-      "coin": "LIT",
-      "direction": "short",
-      "entry_px": 5.021902,
-      "leverage": 5.0,
-      "leverage_type": "cross",
-      "liquidation_px": 31.2215668685,
-      "notional": 676069.521,
-      "roe": -0.1075264294,
-      "size": -131790.0,
-      "unrealized_pnl": -14232.98394
-     },
-     {
-      "coin": "BNB",
-      "direction": "long",
-      "entry_px": 751.861,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": null,
-      "notional": 597525.66,
-      "roe": 0.2744967796,
-      "size": 773.496,
-      "unrealized_pnl": 15963.688821
+      "notional": 826113.23766,
+      "roe": -0.1505060215,
+      "size": 1490.157,
+      "unrealized_pnl": -25638.76092
      },
      {
       "coin": "WLD",
       "direction": "short",
-      "entry_px": 0.42678,
+      "entry_px": 0.42769,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 3.0821412644,
-      "notional": 589167.499368,
-      "roe": -0.1510914224,
-      "size": -1359941.6,
-      "unrealized_pnl": -8769.31867
+      "liquidation_px": 2.8222734228,
+      "notional": 652255.459752,
+      "roe": -0.1886766897,
+      "size": -1496822.7,
+      "unrealized_pnl": -12078.64424
      },
      {
-      "coin": "ONDO",
+      "coin": "NEAR",
       "direction": "short",
-      "entry_px": 0.403079,
+      "entry_px": 3.64584,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 3.4882850915,
-      "notional": 505309.76276,
-      "roe": -0.7780341863,
-      "size": -1163129.0,
-      "unrealized_pnl": -36476.806745
+      "liquidation_px": 25.5944525997,
+      "notional": 597711.9414,
+      "roe": -0.0626894783,
+      "size": -162922.0,
+      "unrealized_pnl": -3723.681411
      },
      {
-      "coin": "JUP",
-      "direction": "short",
-      "entry_px": 0.26977,
+      "coin": "BNB",
+      "direction": "long",
+      "entry_px": 751.865,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.3342517668,
-      "notional": 496954.69191,
-      "roe": -0.6190087845,
-      "size": -1734753.0,
-      "unrealized_pnl": -28968.741436
+      "liquidation_px": null,
+      "notional": 570732.408,
+      "roe": 0.1507539282,
+      "size": 747.815,
+      "unrealized_pnl": 8476.232707
      },
      {
-      "coin": "XRP",
-      "direction": "short",
-      "entry_px": 1.428516,
-      "leverage": 20.0,
+      "coin": "ZEC",
+      "direction": "long",
+      "entry_px": 1486.1447,
+      "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 13.2421028725,
-      "notional": 452604.4351,
-      "roe": -0.2545786556,
-      "size": -312853.0,
-      "unrealized_pnl": -5688.759591
+      "liquidation_px": null,
+      "notional": 570692.64,
+      "roe": 0.0124837877,
+      "size": 383.53,
+      "unrealized_pnl": 711.552288
      },
      {
       "coin": "PUMP",
       "direction": "short",
-      "entry_px": 0.004176,
+      "entry_px": 0.004175,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 0.0371877046,
-      "notional": 452262.168388,
-      "roe": 0.0688853076,
-      "size": -109031381.0,
-      "unrealized_pnl": 3137.031398
+      "liquidation_px": 0.0347183592,
+      "notional": 487886.8218,
+      "roe": 0.0088946401,
+      "size": -116943150.0,
+      "unrealized_pnl": 434.344101
      },
      {
-      "coin": "TAO",
+      "coin": "LIT",
       "direction": "short",
-      "entry_px": 255.525,
+      "entry_px": 5.037313,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 2375.7624260224,
-      "notional": 438081.82884,
-      "roe": -0.2532981024,
-      "size": -1631.772,
-      "unrealized_pnl": -21122.977179
+      "liquidation_px": 39.8334393582,
+      "notional": 487129.8983,
+      "roe": 0.0575838875,
+      "size": -97831.0,
+      "unrealized_pnl": 5675.530473
      },
      {
-      "coin": "MORPHO",
+      "coin": "JTO",
       "direction": "short",
-      "entry_px": 2.5116,
+      "entry_px": 0.444382,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 24.1618534114,
-      "notional": 436367.87467,
-      "roe": -0.4166655418,
-      "size": -160376.3,
-      "unrealized_pnl": -33566.675938
+      "liquidation_px": 3.8918392897,
+      "notional": 475080.94088,
+      "roe": -0.3549529221,
+      "size": -998216.0,
+      "unrealized_pnl": -31490.728426
      },
      {
-      "coin": "DASH",
+      "coin": "JUP",
       "direction": "short",
-      "entry_px": 57.7964,
-      "leverage": 5.0,
+      "entry_px": 0.271203,
+      "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 535.1291201575,
-      "notional": 434675.902852,
-      "roe": -0.1953194425,
-      "size": -7238.06,
-      "unrealized_pnl": -16341.758375
+      "liquidation_px": 2.3580475081,
+      "notional": 472749.62671,
+      "roe": -0.2826738191,
+      "size": -1695233.0,
+      "unrealized_pnl": -12996.030491
+     },
+     {
+      "coin": "XPL",
+      "direction": "short",
+      "entry_px": 0.090434,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": 0.8032535102,
+      "notional": 460175.184646,
+      "roe": -0.2557583836,
+      "size": -4961618.0,
+      "unrealized_pnl": -11475.861365
+     },
+     {
+      "coin": "BTC",
+      "direction": "short",
+      "entry_px": 81665.7,
+      "leverage": 20.0,
+      "leverage_type": "cross",
+      "liquidation_px": 738772.9343146652,
+      "notional": 459403.47107,
+      "roe": 0.038380964,
+      "size": -5.63623,
+      "unrealized_pnl": 883.312523
      }
     ],
-    "realized_pnl": -7242.4,
-    "smart_score": 76.1,
-    "tier": "watch",
+    "realized_pnl": -535.56,
+    "smart_score": 83.4,
+    "tier": "elite",
     "top_coins": [
      "LIT",
-     "MEGA",
-     "JUP",
-     "ENA",
-     "0G"
+     "USELESS",
+     "UNI",
+     "XPL",
+     "kPEPE"
     ],
-    "unrealized_pnl": -609975.1,
-    "win_rate": 0.248
+    "unrealized_pnl": -570694.02,
+    "win_rate": 0.6907
    },
    "resolved": true,
    "source": null
@@ -2198,14 +2210,20 @@
      "source": "curated"
     },
     {
-     "confidence": 0.7,
-     "evidence": "$-1,077 realized over 1114 closes",
-     "name": "unprofitable",
+     "confidence": 0.93,
+     "evidence": "93% of gross notional is long",
+     "name": "long_bias",
+     "source": "observed"
+    },
+    {
+     "confidence": 0.65,
+     "evidence": "65% win rate over 1135 closes, $7,249 realized",
+     "name": "smart_money",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 13 markets",
+     "evidence": "2000 fills across 14 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -2215,94 +2233,94 @@
    "notes": "Leaderboard snapshot: account value $1,880,000; unrealized PnL $-80",
    "observed": {
     "components": {
-     "activity": 0.7898,
-     "capital_scale": 0.8935,
-     "diversification": 0.7994,
-     "realized_performance": 0.472,
+     "activity": 0.803,
+     "capital_scale": 0.8938,
+     "diversification": 0.6959,
+     "realized_performance": 1.0,
      "risk_control": 1.0
     },
-    "concentration": 0.353,
-    "equity": 1796583.72,
+    "concentration": 0.585,
+    "equity": 1806595.41,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 0.216,
-    "net_bias": -0.308,
-    "notional": 388422.1,
+    "leverage": 1.112,
+    "net_bias": 0.934,
+    "notional": 2009382.09,
     "position_count": 5,
     "positions": [
      {
-      "coin": "SOL",
-      "direction": "short",
-      "entry_px": 112.0233,
-      "leverage": 10.0,
+      "coin": "ETH",
+      "direction": "long",
+      "entry_px": 2646.46,
+      "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 1537.4864099394,
-      "notional": 137230.1045,
-      "roe": -0.0113013594,
-      "size": -1223.63,
-      "unrealized_pnl": -154.9136
+      "liquidation_px": null,
+      "notional": 1176439.34313,
+      "roe": -0.0057947441,
+      "size": 444.6609,
+      "unrealized_pnl": -340.957036
      },
      {
       "coin": "BTC",
       "direction": "long",
-      "entry_px": 81508.0,
+      "entry_px": 81832.0,
       "leverage": 20.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 111413.254025,
-      "roe": 0.012146047,
-      "size": 1.36607,
-      "unrealized_pnl": 67.620465
-     },
-     {
-      "coin": "ETH",
-      "direction": "short",
-      "entry_px": 2641.43,
-      "leverage": 20.0,
-      "leverage_type": "cross",
-      "liquidation_px": 62084.7390012077,
-      "notional": 77940.91334,
-      "roe": -0.0148771615,
-      "size": -29.4851,
-      "unrealized_pnl": -57.933883
-     },
-     {
-      "coin": "HYPE",
-      "direction": "short",
-      "entry_px": 92.9315,
-      "leverage": 3.0,
-      "leverage_type": "cross",
-      "liquidation_px": 4172.6255360258,
-      "notional": 38761.51624,
-      "roe": 0.0015984138,
-      "size": -417.32,
-      "unrealized_pnl": 20.663324
+      "notional": 586519.679385,
+      "roe": -0.0790859024,
+      "size": 7.19581,
+      "unrealized_pnl": -2328.4794
      },
      {
       "coin": "XRP",
       "direction": "long",
-      "entry_px": 1.450169,
+      "entry_px": 1.425788,
       "leverage": 10.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 23076.3117,
-      "roe": -0.023925346,
-      "size": 15951.0,
-      "unrealized_pnl": -55.343285
+      "notional": 109622.9587,
+      "roe": 0.0442647044,
+      "size": 76547.0,
+      "unrealized_pnl": 483.104339
+     },
+     {
+      "coin": "HYPE",
+      "direction": "long",
+      "entry_px": 92.2126,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": null,
+      "notional": 70297.66764,
+      "roe": 0.0015078491,
+      "size": 761.96,
+      "unrealized_pnl": 35.315009
+     },
+     {
+      "coin": "SOL",
+      "direction": "short",
+      "entry_px": 111.8979,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": 3005.8769229098,
+      "notional": 66502.44,
+      "roe": 0.0266264335,
+      "size": -595.9,
+      "unrealized_pnl": 177.545019
      }
     ],
-    "realized_pnl": -1076.66,
-    "smart_score": 76.9,
-    "tier": "watch",
+    "realized_pnl": 7249.23,
+    "smart_score": 88.8,
+    "tier": "elite",
     "top_coins": [
-     "ETH",
      "HYPE",
+     "ETH",
      "XRP",
-     "BTC",
-     "xyz:CL"
+     "SOL",
+     "BTC"
     ],
-    "unrealized_pnl": -179.91,
-    "win_rate": 0.5664
+    "unrealized_pnl": -1973.47,
+    "win_rate": 0.6546
    },
    "resolved": true,
    "source": null
@@ -2333,13 +2351,13 @@
     },
     {
      "confidence": 0.7,
-     "evidence": "$-85,732 realized over 941 closes",
+     "evidence": "$-191,213 realized over 1384 closes",
      "name": "unprofitable",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 10 markets",
+     "evidence": "2000 fills across 14 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -2349,32 +2367,32 @@
    "notes": "Leaderboard snapshot: account value $42,980,000; unrealized PnL $-13,170,000",
    "observed": {
     "components": {
-     "activity": 0.7987,
+     "activity": 0.8204,
      "capital_scale": 1.0,
-     "diversification": 0.7709,
-     "realized_performance": 0.2205,
+     "diversification": 0.8209,
+     "realized_performance": 0.0247,
      "risk_control": 1.0
     },
-    "concentration": 0.323,
-    "equity": 48774766.27,
+    "concentration": 0.335,
+    "equity": 49618468.49,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 3.706,
-    "net_bias": -1.0,
-    "notional": 180745986.97,
+    "leverage": 3.62,
+    "net_bias": -0.999,
+    "notional": 179638902.57,
     "position_count": 34,
     "positions": [
      {
       "coin": "ETH",
       "direction": "short",
-      "entry_px": 2399.9,
+      "entry_px": 2407.12,
       "leverage": 25.0,
       "leverage_type": "cross",
-      "liquidation_px": 4541.19476619,
-      "notional": 58372850.62958,
-      "roe": -2.5364687882,
-      "size": -22082.4887,
-      "unrealized_pnl": -5376902.711816
+      "liquidation_px": 4528.3600681869,
+      "notional": 60172738.81602,
+      "roe": -2.4777526012,
+      "size": -22743.5986,
+      "unrealized_pnl": -5425959.039884
      },
      {
       "coin": "BTC",
@@ -2382,23 +2400,11 @@
       "entry_px": 79811.8,
       "leverage": 30.0,
       "leverage_type": "cross",
-      "liquidation_px": 154561.6281898094,
-      "notional": 47169028.875375,
-      "roe": -0.656171722,
-      "size": -578.35305,
-      "unrealized_pnl": -1009616.699194
-     },
-     {
-      "coin": "ZEC",
-      "direction": "short",
-      "entry_px": 1342.8376,
-      "leverage": 5.0,
-      "leverage_type": "cross",
-      "liquidation_px": 4991.344102606,
-      "notional": 17277549.455069,
-      "roe": -0.707011844,
-      "size": -11272.49,
-      "unrealized_pnl": -2140425.22315
+      "liquidation_px": 156412.080536178,
+      "notional": 46982157.98868,
+      "roe": -0.6377533986,
+      "size": -576.40808,
+      "unrealized_pnl": -977977.416972
      },
      {
       "coin": "HYPE",
@@ -2406,11 +2412,23 @@
       "entry_px": 80.034,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 331.3463564975,
-      "notional": 15221978.64466,
-      "roe": -1.6053166522,
-      "size": -163885.13,
-      "unrealized_pnl": -2105594.920825
+      "liquidation_px": 336.2556399008,
+      "notional": 15110605.25658,
+      "roe": -1.5274747423,
+      "size": -163784.62,
+      "unrealized_pnl": -2002265.750845
+     },
+     {
+      "coin": "ZEC",
+      "direction": "short",
+      "entry_px": 1345.884,
+      "leverage": 5.0,
+      "leverage_type": "cross",
+      "liquidation_px": 5470.8775657275,
+      "notional": 14933121.6,
+      "roe": -0.5279650615,
+      "size": -10035.7,
+      "unrealized_pnl": -1426233.04884
      },
      {
       "coin": "LIT",
@@ -2418,11 +2436,11 @@
       "entry_px": 3.278751,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 25.9463588477,
-      "notional": 9577338.6236,
-      "roe": -2.8229460711,
+      "liquidation_px": 26.2684442617,
+      "notional": 9301588.0408,
+      "roe": -2.597707931,
       "size": -1866964.0,
-      "unrealized_pnl": -3456026.692921
+      "unrealized_pnl": -3180276.110121
      },
      {
       "coin": "SOL",
@@ -2430,11 +2448,11 @@
       "entry_px": 102.3804,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 889.6269949436,
-      "notional": 6016214.974,
-      "roe": -1.9084726671,
+      "liquidation_px": 906.6230797342,
+      "notional": 5986710.576,
+      "roe": -1.8010303134,
       "size": -53644.36,
-      "unrealized_pnl": -524079.519902
+      "unrealized_pnl": -494575.121902
      },
      {
       "coin": "WLD",
@@ -2442,11 +2460,11 @@
       "entry_px": 0.40368,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 4.7919077971,
-      "notional": 3935417.433801,
-      "roe": -0.7319359743,
+      "liquidation_px": 4.8909420411,
+      "notional": 3959035.570421,
+      "roe": -0.7963429488,
       "size": -9083898.7,
-      "unrealized_pnl": -268402.047936
+      "unrealized_pnl": -292020.184556
      },
      {
       "coin": "DOGE",
@@ -2454,11 +2472,11 @@
       "entry_px": 0.088498,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1.0287042794,
-      "notional": 3779798.91824,
-      "roe": -0.1280404466,
-      "size": -42170195.0,
-      "unrealized_pnl": -47784.8745
+      "liquidation_px": 1.0502603975,
+      "notional": 3809193.936119,
+      "roe": -0.2077024927,
+      "size": -42166487.0,
+      "unrealized_pnl": -77508.04614
      },
      {
       "coin": "PUMP",
@@ -2466,11 +2484,11 @@
       "entry_px": 0.004609,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 0.0497837907,
-      "notional": 3600205.691596,
-      "roe": 1.0018488145,
+      "liquidation_px": 0.0508162699,
+      "notional": 3620168.259317,
+      "roe": 0.9519554979,
       "size": -867937727.0,
-      "unrealized_pnl": 400844.76576
+      "unrealized_pnl": 380882.198039
      },
      {
       "coin": "XRP",
@@ -2478,11 +2496,11 @@
       "entry_px": 1.339666,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 18.4352153071,
-      "notional": 3541045.6357,
-      "roe": -1.5979121739,
+      "liquidation_px": 18.7963556202,
+      "notional": 3505309.6391,
+      "roe": -1.3799474834,
       "size": -2447671.0,
-      "unrealized_pnl": -261982.727041
+      "unrealized_pnl": -226246.730441
      },
      {
       "coin": "XMR",
@@ -2490,11 +2508,11 @@
       "entry_px": 511.208,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 9760.8408902268,
-      "notional": 2451698.08876,
-      "roe": -0.6652004603,
+      "liquidation_px": 9943.2495211562,
+      "notional": 2346717.224844,
+      "roe": -0.4226185367,
       "size": -4232.758,
-      "unrealized_pnl": -287875.196759
+      "unrealized_pnl": -182894.332843
      },
      {
       "coin": "NEAR",
@@ -2502,25 +2520,25 @@
       "entry_px": 1.985,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 76.2233898381,
-      "notional": 1971709.2208,
-      "roe": -8.1763151782,
+      "liquidation_px": 77.8867492491,
+      "notional": 2005153.95592,
+      "roe": -8.4846273979,
       "size": -546482.6,
-      "unrealized_pnl": -886940.827716
+      "unrealized_pnl": -920385.562836
      }
     ],
-    "realized_pnl": -85732.09,
-    "smart_score": 73.0,
+    "realized_pnl": -191213.45,
+    "smart_score": 69.3,
     "tier": "watch",
     "top_coins": [
-     "ETH",
      "ZEC",
-     "xyz:SILVER",
+     "ETH",
      "xyz:CL",
-     "xyz:SPCX"
+     "xyz:SILVER",
+     "xyz:GOLD"
     ],
-    "unrealized_pnl": -15779133.9,
-    "win_rate": 0.2646
+    "unrealized_pnl": -14734748.32,
+    "win_rate": 0.0296
    },
    "resolved": true,
    "source": null
@@ -2547,7 +2565,7 @@
     },
     {
      "confidence": 0.9,
-     "evidence": "$2,209,197 account equity",
+     "evidence": "$2,255,602 account equity",
      "name": "whale",
      "source": "observed"
     },
@@ -2570,18 +2588,18 @@
    "observed": {
     "components": {
      "activity": 0.8136,
-     "capital_scale": 0.9063,
+     "capital_scale": 0.9076,
      "diversification": 0.125,
      "realized_performance": 0.0,
      "risk_control": 1.0
     },
     "concentration": 1.0,
-    "equity": 2209196.69,
+    "equity": 2255602.43,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 3.141,
+    "leverage": 3.056,
     "net_bias": -1.0,
-    "notional": 6938103.35,
+    "notional": 6892044.54,
     "position_count": 1,
     "positions": [
      {
@@ -2590,11 +2608,11 @@
       "entry_px": 53.9653,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 136.5699673489,
-      "notional": 6938103.35128,
-      "roe": -2.1634272082,
+      "liquidation_px": 136.5743905751,
+      "notional": 6892044.539816,
+      "roe": -2.1291496386,
       "size": -74698.04,
-      "unrealized_pnl": -2906999.742252
+      "unrealized_pnl": -2860940.930788
      }
     ],
     "realized_pnl": -1266633.55,
@@ -2603,7 +2621,7 @@
     "top_coins": [
      "HYPE"
     ],
-    "unrealized_pnl": -2906999.74,
+    "unrealized_pnl": -2860940.93,
     "win_rate": 0.0
    },
    "resolved": true,
@@ -2634,8 +2652,8 @@
      "source": "observed"
     },
     {
-     "confidence": 0.9,
-     "evidence": "90% win rate over 1172 closes, $102,769 realized",
+     "confidence": 0.88,
+     "evidence": "88% win rate over 1208 closes, $93,032 realized",
      "name": "smart_money",
      "source": "observed"
     }
@@ -2645,32 +2663,32 @@
    "notes": "Leaderboard snapshot: account value $126,700; unrealized PnL $-8,000",
    "observed": {
     "components": {
-     "activity": 0.6152,
-     "capital_scale": 0.8402,
-     "diversification": 0.4696,
+     "activity": 0.6134,
+     "capital_scale": 0.8271,
+     "diversification": 0.4371,
      "realized_performance": 1.0,
      "risk_control": 1.0
     },
-    "concentration": 0.707,
-    "equity": 761335.02,
+    "concentration": 0.772,
+    "equity": 616364.25,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 0.987,
+    "leverage": 1.568,
     "net_bias": 1.0,
-    "notional": 751234.99,
+    "notional": 966244.96,
     "position_count": 2,
     "positions": [
      {
-      "coin": "HYPE",
+      "coin": "ETH",
       "direction": "long",
-      "entry_px": 93.0832,
-      "leverage": 10.0,
+      "entry_px": 2652.14,
+      "leverage": 20.0,
       "leverage_type": "isolated",
-      "liquidation_px": 88.20401483,
-      "notional": 530965.228784,
-      "roe": -0.0284637899,
-      "size": 5720.48,
-      "unrealized_pnl": -1515.642366
+      "liquidation_px": 2571.5018769873,
+      "notional": 745862.96384,
+      "roe": -0.0433486901,
+      "size": 281.8406,
+      "unrealized_pnl": -1620.12063
      },
      {
       "coin": "BCH",
@@ -2678,16 +2696,16 @@
       "entry_px": 256.358,
       "leverage": 10.0,
       "leverage_type": "isolated",
-      "liquidation_px": 206.2701115102,
-      "notional": 220269.76106,
-      "roe": -0.0475168447,
+      "liquidation_px": 206.2835313756,
+      "notional": 220381.99383,
+      "roe": -0.0424458139,
       "size": 863.329,
-      "unrealized_pnl": -1051.64951
+      "unrealized_pnl": -939.41674
      }
     ],
-    "realized_pnl": 102768.96,
-    "smart_score": 80.4,
-    "tier": "elite",
+    "realized_pnl": 93031.54,
+    "smart_score": 79.5,
+    "tier": "watch",
     "top_coins": [
      "BTC",
      "ONDO",
@@ -2695,8 +2713,8 @@
      "ETH",
      "BCH"
     ],
-    "unrealized_pnl": -2567.29,
-    "win_rate": 0.8959
+    "unrealized_pnl": -2559.54,
+    "win_rate": 0.8808
    },
    "resolved": true,
    "source": null
@@ -2744,18 +2762,18 @@
    "observed": {
     "components": {
      "activity": 0.6377,
-     "capital_scale": 0.9295,
-     "diversification": 0.4275,
+     "capital_scale": 0.9247,
+     "diversification": 0.4255,
      "realized_performance": 0.0025,
-     "risk_control": 0.8377
+     "risk_control": 0.8037
     },
-    "concentration": 0.895,
-    "equity": 3207874.89,
+    "concentration": 0.899,
+    "equity": 2972612.02,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 7.435,
+    "leverage": 7.944,
     "net_bias": 1.0,
-    "notional": 23849630.39,
+    "notional": 23615682.87,
     "position_count": 4,
     "positions": [
      {
@@ -2764,11 +2782,11 @@
       "entry_px": 80.6752,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 84.7736583029,
-      "notional": 21348209.0,
-      "roe": 1.5051797156,
+      "liquidation_px": 85.1912927198,
+      "notional": 21221042.0,
+      "roe": 1.4366456672,
       "size": 230000.0,
-      "unrealized_pnl": 2792906.494719
+      "unrealized_pnl": 2665739.494719
      },
      {
       "coin": "VVV",
@@ -2776,11 +2794,11 @@
       "entry_px": 27.7084,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": null,
-      "notional": 1988490.0,
-      "roe": 0.0756266358,
+      "liquidation_px": 1.6350227306,
+      "notional": 1896020.0,
+      "roe": -0.0673980689,
       "size": 70000.0,
-      "unrealized_pnl": 48895.014503
+      "unrealized_pnl": -43574.985497
      },
      {
       "coin": "LIT",
@@ -2789,10 +2807,10 @@
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 512900.0,
-      "roe": 0.0385540707,
+      "notional": 498590.0,
+      "roe": -0.102022472,
       "size": 100000.0,
-      "unrealized_pnl": 3924.6146
+      "unrealized_pnl": -10385.3854
      },
      {
       "coin": "CHIP",
@@ -2801,14 +2819,14 @@
       "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 31.39452,
-      "roe": 0.3422841985,
+      "notional": 30.871278,
+      "roe": 0.2865794618,
       "size": 709.0,
-      "unrealized_pnl": 3.215121
+      "unrealized_pnl": 2.691879
      }
     ],
     "realized_pnl": -24227.5,
-    "smart_score": 55.0,
+    "smart_score": 54.4,
     "tier": "candidate",
     "top_coins": [
      "LIT",
@@ -2817,7 +2835,7 @@
      "SEI",
      "PUMP"
     ],
-    "unrealized_pnl": 2845729.34,
+    "unrealized_pnl": 2611781.82,
     "win_rate": 0.003
    },
    "resolved": true,
@@ -2842,14 +2860,8 @@
      "source": "curated"
     },
     {
-     "confidence": 0.7,
-     "evidence": "$-3,388 realized over 1146 closes",
-     "name": "unprofitable",
-     "source": "observed"
-    },
-    {
      "confidence": 0.6,
-     "evidence": "2000 fills across 41 markets",
+     "evidence": "2000 fills across 37 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -2859,178 +2871,178 @@
    "notes": "Leaderboard snapshot: account value $527,200; unrealized PnL $1,000",
    "observed": {
     "components": {
-     "activity": 0.784,
-     "capital_scale": 0.8237,
-     "diversification": 0.834,
-     "realized_performance": 0.2508,
-     "risk_control": 0.9101
+     "activity": 0.8232,
+     "capital_scale": 0.8221,
+     "diversification": 0.808,
+     "realized_performance": 0.9238,
+     "risk_control": 0.9232
     },
-    "concentration": 0.332,
-    "equity": 583133.29,
+    "concentration": 0.384,
+    "equity": 568247.86,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 6.349,
-    "net_bias": -0.554,
-    "notional": 3702193.06,
+    "leverage": 6.152,
+    "net_bias": -0.509,
+    "notional": 3496104.12,
     "position_count": 45,
     "positions": [
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 81252.9,
+      "entry_px": 81546.3,
       "leverage": 40.0,
       "leverage_type": "cross",
-      "liquidation_px": 108341.4964481354,
-      "notional": 1229550.93063,
-      "roe": -0.147695466,
-      "size": -15.07671,
-      "unrealized_pnl": -4523.275759
+      "liquidation_px": 105035.985391854,
+      "notional": 1342760.58825,
+      "roe": 0.0133921487,
+      "size": -16.47175,
+      "unrealized_pnl": 449.711801
      },
      {
       "coin": "ETH",
       "direction": "short",
-      "entry_px": 2633.69,
+      "entry_px": 2638.98,
       "leverage": 25.0,
       "leverage_type": "cross",
-      "liquidation_px": 4083.9171348898,
-      "notional": 735657.397104,
-      "roe": -0.0917423271,
-      "size": -278.3039,
-      "unrealized_pnl": -2689.766245
+      "liquidation_px": 5543.3641006113,
+      "notional": 351310.74264,
+      "roe": -0.0721182039,
+      "size": -132.7404,
+      "unrealized_pnl": -1010.520912
      },
      {
       "coin": "AAVE",
       "direction": "short",
-      "entry_px": 140.8681,
+      "entry_px": 141.1956,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 352.3394104234,
-      "notional": 268017.8889,
-      "roe": -0.1960570861,
-      "size": -1866.03,
-      "unrealized_pnl": -5153.63987
+      "liquidation_px": 366.6102540048,
+      "notional": 238656.3912,
+      "roe": -0.1221275686,
+      "size": -1669.86,
+      "unrealized_pnl": -2879.486016
      },
      {
       "coin": "XMR",
       "direction": "long",
-      "entry_px": 581.058,
+      "entry_px": 574.138,
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 181657.8725,
-      "roe": -0.0158183838,
-      "size": 313.625,
-      "unrealized_pnl": -576.530745
+      "notional": 202216.31794,
+      "roe": -0.1712843114,
+      "size": 364.702,
+      "unrealized_pnl": -7173.021773
      },
      {
       "coin": "FARTCOIN",
       "direction": "long",
-      "entry_px": 0.15676,
+      "entry_px": 0.15807,
       "leverage": 10.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 149184.904194,
-      "roe": 0.3514039193,
-      "size": 919362.2,
-      "unrealized_pnl": 5064.449271
+      "notional": 164681.718272,
+      "roe": 0.4054718617,
+      "size": 1001226.4,
+      "unrealized_pnl": 6417.181632
      },
      {
       "coin": "ZEC",
       "direction": "long",
-      "entry_px": 1538.4794,
+      "entry_px": 1504.0069,
       "leverage": 10.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 94279.4,
-      "roe": -0.0388657793,
-      "size": 61.52,
-      "unrealized_pnl": -367.853928
-     },
-     {
-      "coin": "kPEPE",
-      "direction": "short",
-      "entry_px": 0.00382,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": 0.0231262977,
-      "notional": 77833.824012,
-      "roe": -0.0817750207,
-      "size": -20206081.0,
-      "unrealized_pnl": -631.323607
-     },
-     {
-      "coin": "MEGA",
-      "direction": "short",
-      "entry_px": 0.04127,
-      "leverage": 3.0,
-      "leverage_type": "isolated",
-      "liquidation_px": 0.0471658939,
-      "notional": 63507.155468,
-      "roe": -0.0008549718,
-      "size": -1538374.0,
-      "unrealized_pnl": -18.093786
-     },
-     {
-      "coin": "HYPE",
-      "direction": "short",
-      "entry_px": 92.8269,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": 670.5977575135,
-      "notional": 62565.103298,
-      "roe": 0.0009326879,
-      "size": -674.06,
-      "unrealized_pnl": 5.835916
+      "notional": 159335.04,
+      "roe": -0.106428405,
+      "size": 107.08,
+      "unrealized_pnl": -1714.019453
      },
      {
       "coin": "XPL",
       "direction": "short",
-      "entry_px": 0.088987,
+      "entry_px": 0.090703,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 0.7000245581,
-      "notional": 58605.997778,
-      "roe": -0.289334929,
-      "size": -640069.0,
-      "unrealized_pnl": -1647.993998
+      "liquidation_px": 0.3706170876,
+      "notional": 124825.53044,
+      "roe": -0.2344374325,
+      "size": -1344668.0,
+      "unrealized_pnl": -2859.343961
      },
      {
-      "coin": "BERA",
+      "coin": "NEAR",
+      "direction": "short",
+      "entry_px": 3.63194,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": 17.6885132803,
+      "notional": 97816.17468,
+      "roe": -0.1069902161,
+      "size": -26647.1,
+      "unrealized_pnl": -1035.458969
+     },
+     {
+      "coin": "kPEPE",
+      "direction": "short",
+      "entry_px": 0.003924,
+      "leverage": 10.0,
+      "leverage_type": "cross",
+      "liquidation_px": 0.022504491,
+      "notional": 86965.36575,
+      "roe": -0.8289834935,
+      "size": -20462439.0,
+      "unrealized_pnl": -6657.397969
+     },
+     {
+      "coin": "PONS",
       "direction": "long",
-      "entry_px": 0.19243,
-      "leverage": 5.0,
+      "entry_px": 0.590186,
+      "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 54567.870978,
-      "roe": 0.4307989281,
-      "size": 261077.8,
-      "unrealized_pnl": 4328.604435
+      "notional": 78437.934648,
+      "roe": -0.007820792,
+      "size": 133251.0,
+      "unrealized_pnl": -205.016722
      },
      {
       "coin": "CRV",
       "direction": "short",
-      "entry_px": 0.34296,
+      "entry_px": 0.34164,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.9637003638,
-      "notional": 50505.965198,
-      "roe": 0.0799523167,
-      "size": -148450.9,
-      "unrealized_pnl": 407.061443
+      "liquidation_px": 2.4472212133,
+      "notional": 60211.63308,
+      "roe": 0.0563692151,
+      "size": -177239.0,
+      "unrealized_pnl": 341.332313
+     },
+     {
+      "coin": "MET",
+      "direction": "long",
+      "entry_px": 0.261259,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": null,
+      "notional": 54951.35964,
+      "roe": 0.0101066249,
+      "size": 209626.0,
+      "unrealized_pnl": 184.502694
      }
     ],
-    "realized_pnl": -3388.06,
-    "smart_score": 68.7,
-    "tier": "watch",
+    "realized_pnl": 1781.64,
+    "smart_score": 86.1,
+    "tier": "elite",
     "top_coins": [
+     "BERA",
      "BTC",
-     "ETH",
-     "ENA",
      "PONS",
+     "ETH",
      "SOL"
     ],
-    "unrealized_pnl": -1389.76,
-    "win_rate": 0.301
+    "unrealized_pnl": -14834.21,
+    "win_rate": 0.5086
    },
    "resolved": true,
    "source": null
@@ -3067,7 +3079,7 @@
     },
     {
      "confidence": 0.6,
-     "evidence": "12.4x account leverage",
+     "evidence": "11.5x account leverage",
      "name": "high_leverage",
      "source": "observed"
     }
@@ -3078,18 +3090,18 @@
    "observed": {
     "components": {
      "activity": 0.7833,
-     "capital_scale": 0.7394,
+     "capital_scale": 0.7435,
      "diversification": 0.1981,
      "realized_performance": 0.0,
-     "risk_control": 0.5084
+     "risk_control": 0.5648
     },
     "concentration": 1.0,
-    "equity": 149979.33,
+    "equity": 160110.23,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 12.374,
+    "leverage": 11.528,
     "net_bias": -1.0,
-    "notional": 1855780.93,
+    "notional": 1845742.92,
     "position_count": 1,
     "positions": [
      {
@@ -3098,21 +3110,21 @@
       "entry_px": 25.9443,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 125.313488601,
-      "notional": 1855780.92789,
-      "roe": -25.7645995508,
+      "liquidation_px": 125.3179118271,
+      "notional": 1845742.922871,
+      "roe": -25.5711471748,
       "size": -20000.01,
-      "unrealized_pnl": -1336893.270486
+      "unrealized_pnl": -1326855.265467
      }
     ],
     "realized_pnl": -208684.19,
-    "smart_score": 44.7,
-    "tier": "archive",
+    "smart_score": 45.7,
+    "tier": "candidate",
     "top_coins": [
      "HYPE",
      "@107"
     ],
-    "unrealized_pnl": -1336893.27,
+    "unrealized_pnl": -1326855.27,
     "win_rate": 0.0
    },
    "resolved": true,
@@ -3144,13 +3156,13 @@
     },
     {
      "confidence": 0.7,
-     "evidence": "$-19,500 realized over 895 closes",
+     "evidence": "$-15,126 realized over 1050 closes",
      "name": "unprofitable",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 84 markets",
+     "evidence": "2000 fills across 82 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -3162,176 +3174,176 @@
     "components": {
      "activity": 0.8474,
      "capital_scale": 1.0,
-     "diversification": 0.8345,
-     "realized_performance": 0.419,
+     "diversification": 0.843,
+     "realized_performance": 0.1611,
      "risk_control": 1.0
     },
-    "concentration": 0.331,
-    "equity": 65611279.3,
+    "concentration": 0.314,
+    "equity": 69151178.9,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 2.686,
-    "net_bias": -0.962,
-    "notional": 176234781.65,
+    "leverage": 2.668,
+    "net_bias": -0.965,
+    "notional": 184461139.75,
     "position_count": 86,
     "positions": [
      {
       "coin": "ETH",
       "direction": "short",
-      "entry_px": 2576.06,
+      "entry_px": 2582.46,
       "leverage": 15.0,
       "leverage_type": "cross",
-      "liquidation_px": 5230.2652916057,
-      "notional": 58383634.72887,
-      "roe": -0.3915237604,
-      "size": -22087.4039,
-      "unrealized_pnl": -1485140.819639
+      "liquidation_px": 5406.0541911116,
+      "notional": 57894596.07965,
+      "roe": -0.3719190922,
+      "size": -21875.9101,
+      "unrealized_pnl": -1400742.840896
      },
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 81113.9,
+      "entry_px": 81346.0,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 207341.9367021265,
-      "notional": 37451453.61456,
-      "roe": -0.10799745,
-      "size": -459.23403,
-      "unrealized_pnl": -201146.906877
+      "liquidation_px": 196692.1219284805,
+      "notional": 43214742.22935,
+      "roe": -0.0425263482,
+      "size": -530.11865,
+      "unrealized_pnl": -91693.289666
      },
      {
       "coin": "SOL",
       "direction": "short",
-      "entry_px": 105.5469,
+      "entry_px": 106.2575,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 490.746675695,
-      "notional": 16875606.3895,
-      "roe": -1.2511975271,
-      "size": -150473.53,
-      "unrealized_pnl": -993577.748081
+      "liquidation_px": 468.9085054458,
+      "notional": 18780623.0535,
+      "roe": -1.0149828844,
+      "size": -168209.79,
+      "unrealized_pnl": -907067.641307
      },
      {
       "coin": "HYPE",
       "direction": "short",
-      "entry_px": 84.9235,
+      "entry_px": 85.0172,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 474.3323960359,
-      "notional": 13008369.20489,
-      "roe": -0.2778544638,
-      "size": -140193.01,
-      "unrealized_pnl": -1102682.71224
+      "liquidation_px": 497.8199340797,
+      "notional": 12862921.263848,
+      "roe": -0.2565216231,
+      "size": -139379.86,
+      "unrealized_pnl": -1013233.696096
      },
      {
       "coin": "XRP",
       "direction": "short",
-      "entry_px": 1.37671,
+      "entry_px": 1.384253,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 11.1390317466,
-      "notional": 8427369.8312,
-      "roe": -0.5091111437,
-      "size": -5824834.0,
-      "unrealized_pnl": -408261.729737
+      "liquidation_px": 11.5616939054,
+      "notional": 8435897.607,
+      "roe": -0.3521502542,
+      "size": -5886879.0,
+      "unrealized_pnl": -286964.87336
      },
      {
       "coin": "DOGE",
       "direction": "short",
-      "entry_px": 0.085199,
+      "entry_px": 0.085548,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1.0684801711,
-      "notional": 4932087.54948,
-      "roe": -0.5211836348,
-      "size": -55021057.0,
-      "unrealized_pnl": -244318.833853
-     },
-     {
-      "coin": "SUI",
-      "direction": "short",
-      "entry_px": 0.78524,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": 15.3934094342,
-      "notional": 3170678.34886,
-      "roe": -0.8840476899,
-      "size": -3709871.0,
-      "unrealized_pnl": -257535.702681
+      "liquidation_px": 1.0554036468,
+      "notional": 5327343.63674,
+      "roe": -0.5675285088,
+      "size": -58928185.0,
+      "unrealized_pnl": -286104.682599
      },
      {
       "coin": "kPEPE",
       "direction": "short",
-      "entry_px": 0.003682,
+      "entry_px": 0.00374,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 0.0779980375,
-      "notional": 2803735.616441,
-      "roe": -0.4623153211,
-      "size": -727675997.0,
-      "unrealized_pnl": -123893.219822
+      "liquidation_px": 0.070259104,
+      "notional": 3667077.07119,
+      "roe": -1.3648241739,
+      "size": -862638690.0,
+      "unrealized_pnl": -440386.525808
      },
      {
-      "coin": "ENA",
+      "coin": "SUI",
       "direction": "short",
-      "entry_px": 0.16403,
-      "leverage": 5.0,
+      "entry_px": 0.78787,
+      "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 5.9786070307,
-      "notional": 1896348.29625,
-      "roe": -1.183309481,
-      "size": -9348525.0,
-      "unrealized_pnl": -362907.100974
+      "liquidation_px": 16.0717957377,
+      "notional": 3244044.968271,
+      "roe": -0.9916752559,
+      "size": -3745967.1,
+      "unrealized_pnl": -292679.600627
      },
      {
       "coin": "XPL",
       "direction": "short",
-      "entry_px": 0.08859,
+      "entry_px": 0.089065,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.8717453737,
-      "notional": 1752763.189321,
-      "roe": -0.1669735769,
-      "size": -19145629.0,
-      "unrealized_pnl": -56641.501022
+      "liquidation_px": 2.7131911523,
+      "notional": 1992542.1086,
+      "roe": -0.2113474355,
+      "size": -21464420.0,
+      "unrealized_pnl": -80808.019434
+     },
+     {
+      "coin": "ENA",
+      "direction": "short",
+      "entry_px": 0.164192,
+      "leverage": 5.0,
+      "leverage_type": "cross",
+      "liquidation_px": 6.3406742614,
+      "notional": 1879744.28715,
+      "roe": -1.1619864362,
+      "size": -9289569.0,
+      "unrealized_pnl": -354469.680804
      },
      {
       "coin": "LTC",
       "direction": "short",
-      "entry_px": 55.3442,
+      "entry_px": 55.4254,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1916.4532539608,
-      "notional": 1684452.11408,
-      "roe": -0.4740741013,
-      "size": -29058.31,
-      "unrealized_pnl": -76241.11825
+      "liquidation_px": 2100.478587144,
+      "notional": 1610990.347,
+      "roe": -0.4103825072,
+      "size": -27920.11,
+      "unrealized_pnl": -63506.048623
      },
      {
-      "coin": "CASHCAT",
+      "coin": "PUMP",
       "direction": "short",
-      "entry_px": 0.201376,
-      "leverage": 1.0,
-      "leverage_type": "isolated",
-      "liquidation_px": 0.3455831005,
-      "notional": 1526270.191128,
-      "roe": -0.0590687704,
-      "size": -7156449.0,
-      "unrealized_pnl": -85126.581054
+      "entry_px": 0.004101,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": 0.167070699,
+      "notional": 1462323.34584,
+      "roe": -0.0547341984,
+      "size": -350173215.0,
+      "unrealized_pnl": -26201.656471
      }
     ],
-    "realized_pnl": -19500.4,
-    "smart_score": 79.9,
+    "realized_pnl": -15125.62,
+    "smart_score": 73.6,
     "tier": "watch",
     "top_coins": [
      "@107",
-     "kPEPE",
-     "BTC",
-     "SOL",
-     "LIT"
+     "CASHCAT",
+     "xyz:BRENTOIL",
+     "UNI",
+     "xyz:INTC"
     ],
-    "unrealized_pnl": -6175382.11,
-    "win_rate": 0.5028
+    "unrealized_pnl": -5782689.58,
+    "win_rate": 0.1933
    },
    "resolved": true,
    "source": null
@@ -3372,32 +3384,32 @@
    "notes": "Leaderboard snapshot: account value $208,600; unrealized PnL $533",
    "observed": {
     "components": {
-     "activity": 0.6504,
-     "capital_scale": 0.7168,
-     "diversification": 0.1986,
-     "realized_performance": 0.8576,
-     "risk_control": 0.9653
+     "activity": 0.6499,
+     "capital_scale": 0.7039,
+     "diversification": 0.1991,
+     "realized_performance": 0.9243,
+     "risk_control": 0.9929
     },
-    "concentration": 0.999,
-    "equity": 104096.74,
+    "concentration": 0.998,
+    "equity": 84608.92,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 5.521,
+    "leverage": 5.107,
     "net_bias": 1.0,
-    "notional": 574748.03,
+    "notional": 432102.42,
     "position_count": 2,
     "positions": [
      {
       "coin": "BTC",
       "direction": "long",
-      "entry_px": 81352.7,
+      "entry_px": 81688.1,
       "leverage": 40.0,
       "leverage_type": "cross",
-      "liquidation_px": 67615.1775806586,
-      "notional": 573888.553,
-      "roe": 0.0970030707,
-      "size": 7.03726,
-      "unrealized_pnl": 1388.356925
+      "liquidation_px": 66371.7074363398,
+      "notional": 431279.53026,
+      "roe": -0.0828095769,
+      "size": 5.29054,
+      "unrealized_pnl": -894.704137
      },
      {
       "coin": "XMR",
@@ -3406,21 +3418,21 @@
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 859.47344,
-      "roe": 1.7294776925,
+      "notional": 822.89284,
+      "roe": 1.4430600788,
       "size": 1.484,
-      "unrealized_pnl": 220.88492
+      "unrealized_pnl": 184.30432
      }
     ],
-    "realized_pnl": 266.07,
-    "smart_score": 69.8,
+    "realized_pnl": 3201.82,
+    "smart_score": 71.6,
     "tier": "watch",
     "top_coins": [
      "BTC",
      "xyz:SKHX"
     ],
-    "unrealized_pnl": 1609.24,
-    "win_rate": 0.4291
+    "unrealized_pnl": -710.4,
+    "win_rate": 0.5092
    },
    "resolved": true,
    "source": null
@@ -3444,14 +3456,14 @@
      "source": "curated"
     },
     {
-     "confidence": 0.94,
-     "evidence": "94% of gross notional is short",
-     "name": "short_bias",
+     "confidence": 0.62,
+     "evidence": "62% win rate over 948 closes, $658 realized",
+     "name": "smart_money",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 17 markets",
+     "evidence": "2000 fills across 18 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -3462,177 +3474,177 @@
    "observed": {
     "components": {
      "activity": 0.8474,
-     "capital_scale": 0.8751,
-     "diversification": 0.801,
-     "realized_performance": 0.8769,
+     "capital_scale": 0.8753,
+     "diversification": 0.791,
+     "realized_performance": 1.0,
      "risk_control": 1.0
     },
-    "concentration": 0.398,
-    "equity": 1336713.62,
+    "concentration": 0.418,
+    "equity": 1340281.12,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 0.928,
-    "net_bias": -0.942,
-    "notional": 1240319.74,
+    "leverage": 0.883,
+    "net_bias": 0.752,
+    "notional": 1183998.23,
     "position_count": 24,
     "positions": [
      {
-      "coin": "BTC",
-      "direction": "short",
-      "entry_px": 81545.0,
+      "coin": "ETH",
+      "direction": "long",
+      "entry_px": 2646.57,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 294960.1735547298,
-      "notional": 493327.7545,
-      "roe": -0.0001838697,
-      "size": -6.04939,
-      "unrealized_pnl": -30.23415
+      "liquidation_px": null,
+      "notional": 495079.1671,
+      "roe": -8.42396e-05,
+      "size": 187.0694,
+      "unrealized_pnl": -13.902154
      },
      {
-      "coin": "ETH",
-      "direction": "short",
-      "entry_px": 2642.44,
+      "coin": "BTC",
+      "direction": "long",
+      "entry_px": 81526.0,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 10064.0076155053,
-      "notional": 456480.99288,
-      "roe": -0.0009677332,
-      "size": -172.6936,
-      "unrealized_pnl": -147.203122
+      "liquidation_px": null,
+      "notional": 254845.51299,
+      "roe": -0.0002585996,
+      "size": 3.12621,
+      "unrealized_pnl": -21.969543
      },
      {
       "coin": "HYPE",
-      "direction": "short",
-      "entry_px": 92.9482,
+      "direction": "long",
+      "entry_px": 92.3398,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": 604.0265785492,
-      "notional": 225946.78234,
-      "roe": 0.0051393576,
-      "size": -2435.06,
-      "unrealized_pnl": 387.738016
+      "liquidation_px": null,
+      "notional": 222828.324336,
+      "roe": -0.001723056,
+      "size": 2414.52,
+      "unrealized_pnl": -128.055446
      },
      {
       "coin": "ZEC",
-      "direction": "long",
-      "entry_px": 1530.2394,
+      "direction": "short",
+      "entry_px": 1489.8904,
       "leverage": 3.0,
       "leverage_type": "cross",
-      "liquidation_px": null,
-      "notional": 23404.329,
-      "roe": 0.0048238005,
-      "size": 15.27,
-      "unrealized_pnl": 37.572191
+      "liquidation_px": 15639.1826727003,
+      "notional": 130824.96,
+      "roe": 0.003806549,
+      "size": -87.92,
+      "unrealized_pnl": 166.208098
      },
      {
       "coin": "SOL",
-      "direction": "short",
-      "entry_px": 111.9156,
-      "leverage": 3.0,
-      "leverage_type": "cross",
-      "liquidation_px": 8697.4297270539,
-      "notional": 16658.761,
-      "roe": -0.0062829915,
-      "size": -148.54,
-      "unrealized_pnl": -34.816035
-     },
-     {
-      "coin": "ENA",
       "direction": "long",
-      "entry_px": 0.202403,
+      "entry_px": 111.5086,
       "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 7217.50272,
-      "roe": 0.0063251107,
-      "size": 35584.0,
-      "unrealized_pnl": 15.185152
-     },
-     {
-      "coin": "PUMP",
-      "direction": "short",
-      "entry_px": 0.00415,
-      "leverage": 3.0,
-      "leverage_type": "cross",
-      "liquidation_px": 0.8761911639,
-      "notional": 5918.651322,
-      "roe": 0.0028915663,
-      "size": -1427557.0,
-      "unrealized_pnl": 5.710228
+      "notional": 42787.6295,
+      "roe": 0.0038028352,
+      "size": 383.23,
+      "unrealized_pnl": 54.169436
      },
      {
       "coin": "XRP",
-      "direction": "short",
-      "entry_px": 1.448293,
-      "leverage": 3.0,
-      "leverage_type": "cross",
-      "liquidation_px": 671.9292610182,
-      "notional": 2752.0038,
-      "roe": 0.0028875189,
-      "size": -1902.0,
-      "unrealized_pnl": 2.651373
-     },
-     {
-      "coin": "DOGE",
-      "direction": "short",
-      "entry_px": 0.08892,
-      "leverage": 3.0,
-      "leverage_type": "cross",
-      "liquidation_px": 49.8854081209,
-      "notional": 2241.025,
-      "roe": -0.0243167224,
-      "size": -25000.0,
-      "unrealized_pnl": -18.018742
-     },
-     {
-      "coin": "NEAR",
       "direction": "long",
-      "entry_px": 3.59734,
+      "entry_px": 1.427226,
       "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 2075.55604,
-      "roe": 0.0071335308,
-      "size": 575.6,
-      "unrealized_pnl": 4.92364
+      "notional": 14403.083,
+      "roe": 0.0121348508,
+      "size": 10051.0,
+      "unrealized_pnl": 58.025046
      },
      {
-      "coin": "TRUMP",
+      "coin": "ENA",
+      "direction": "short",
+      "entry_px": 0.200378,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": 28.2849606127,
+      "notional": 8964.9144,
+      "roe": -0.0295173301,
+      "size": -44304.0,
+      "unrealized_pnl": -87.347359
+     },
+     {
+      "coin": "PUMP",
       "direction": "long",
-      "entry_px": 2.0526,
+      "entry_px": 0.004155,
       "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 1012.88943,
-      "roe": 0.0083308974,
-      "size": 492.1,
-      "unrealized_pnl": 2.80497
+      "notional": 4052.34864,
+      "roe": 0.015035474,
+      "size": 970390.0,
+      "unrealized_pnl": 20.20838
      },
      {
       "coin": "PONS",
+      "direction": "short",
+      "entry_px": 0.587812,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": 197.8328147252,
+      "notional": 3342.10667,
+      "roe": -0.004579808,
+      "size": -5677.0,
+      "unrealized_pnl": -5.094292
+     },
+     {
+      "coin": "ARB",
       "direction": "long",
-      "entry_px": 0.62285,
+      "entry_px": 0.20771,
       "leverage": 3.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 738.66208,
-      "roe": 0.0049129004,
-      "size": 1184.0,
-      "unrealized_pnl": 1.20768
+      "notional": 1262.072721,
+      "roe": 0.00305191,
+      "size": 6069.7,
+      "unrealized_pnl": 1.282606
+     },
+     {
+      "coin": "FARTCOIN",
+      "direction": "short",
+      "entry_px": 0.16332,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": 174.9937170187,
+      "notional": 1170.80658,
+      "roe": -0.0218754549,
+      "size": -7116.5,
+      "unrealized_pnl": -8.475507
+     },
+     {
+      "coin": "USELESS",
+      "direction": "long",
+      "entry_px": 0.26305,
+      "leverage": 3.0,
+      "leverage_type": "cross",
+      "liquidation_px": null,
+      "notional": 1014.0315,
+      "roe": 0.0353544953,
+      "size": 3810.0,
+      "unrealized_pnl": 11.811
      }
     ],
-    "realized_pnl": 259.78,
-    "smart_score": 87.8,
+    "realized_pnl": 657.81,
+    "smart_score": 90.7,
     "tier": "elite",
     "top_coins": [
+     "ZEC",
      "HYPE",
      "BTC",
-     "ZEC",
      "ETH",
-     "MEGA"
+     "PONS"
     ],
-    "unrealized_pnl": 198.07,
-    "win_rate": 0.4523
+    "unrealized_pnl": 32.0,
+    "win_rate": 0.6224
    },
    "resolved": true,
    "source": null
@@ -3663,19 +3675,19 @@
     },
     {
      "confidence": 0.7,
-     "evidence": "$-180,049 realized over 214 closes",
+     "evidence": "$-308,426 realized over 382 closes",
      "name": "unprofitable",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "14.3x account leverage",
+     "evidence": "14.1x account leverage",
      "name": "high_leverage",
      "source": "observed"
     },
     {
      "confidence": 0.6,
-     "evidence": "2000 fills across 9 markets",
+     "evidence": "2000 fills across 10 markets",
      "name": "market_maker",
      "source": "observed"
     }
@@ -3685,80 +3697,80 @@
    "notes": "Leaderboard snapshot: account value $19,520,000; unrealized PnL $-1,090,000",
    "observed": {
     "components": {
-     "activity": 0.7457,
+     "activity": 0.711,
      "capital_scale": 1.0,
-     "diversification": 0.6547,
-     "realized_performance": 0.0272,
-     "risk_control": 0.3768
+     "diversification": 0.6659,
+     "realized_performance": 0.0677,
+     "risk_control": 0.3955
     },
-    "concentration": 0.521,
-    "equity": 12878594.6,
+    "concentration": 0.533,
+    "equity": 13151809.43,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 14.348,
+    "leverage": 14.068,
     "net_bias": -1.0,
-    "notional": 184779545.92,
+    "notional": 185016440.73,
     "position_count": 22,
     "positions": [
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 79018.3,
+      "entry_px": 79092.2,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 89374.3594679274,
-      "notional": 96323385.97,
-      "roe": -0.6407836424,
-      "size": -1181.1574,
-      "unrealized_pnl": -2990315.250735
+      "liquidation_px": 89389.2365830709,
+      "notional": 98689901.2992,
+      "roe": -0.6136563775,
+      "size": -1210.6368,
+      "unrealized_pnl": -2937940.082787
      },
      {
       "coin": "ETH",
       "direction": "short",
-      "entry_px": 2518.89,
+      "entry_px": 2519.78,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 2996.4916901262,
-      "notional": 68657408.84178,
-      "roe": -0.987741915,
-      "size": -25974.1266,
-      "unrealized_pnl": -3231209.949202
+      "liquidation_px": 3022.1330099542,
+      "notional": 66635347.5085,
+      "roe": -1.005782754,
+      "size": -25178.669,
+      "unrealized_pnl": -3190582.52278
      },
      {
       "coin": "ZEC",
       "direction": "short",
-      "entry_px": 1503.6971,
+      "entry_px": 1503.9501,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2937.3351492349,
-      "notional": 9724245.804,
-      "roe": -0.1928772616,
-      "size": -6344.52,
-      "unrealized_pnl": -184009.465962
+      "liquidation_px": 2927.1216490842,
+      "notional": 9499764.0,
+      "roe": 0.1060553306,
+      "size": -6384.25,
+      "unrealized_pnl": 101830.022816
      },
      {
       "coin": "HYPE",
       "direction": "short",
-      "entry_px": 87.789,
+      "entry_px": 88.0345,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 472.7004904902,
-      "notional": 2176588.6886,
-      "roe": -0.5695386705,
-      "size": -23457.4,
-      "unrealized_pnl": -117285.291876
+      "liquidation_px": 467.3920776517,
+      "notional": 2260444.270292,
+      "roe": -0.4830185156,
+      "size": -24493.69,
+      "unrealized_pnl": -104152.867268
      },
      {
       "coin": "XRP",
       "direction": "short",
-      "entry_px": 1.430834,
+      "entry_px": 1.433583,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 7.7484643694,
-      "notional": 2096128.3707,
-      "roe": -0.2245624582,
-      "size": -1448703.0,
-      "unrealized_pnl": -23274.260719
+      "liquidation_px": 9.3929010609,
+      "notional": 1694382.066,
+      "roe": 0.0081393413,
+      "size": -1182402.0,
+      "unrealized_pnl": 689.838438
      },
      {
       "coin": "SUI",
@@ -3766,11 +3778,11 @@
       "entry_px": 0.71865,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 5.8225536238,
-      "notional": 1533208.647661,
-      "roe": -1.8929166264,
+      "liquidation_px": 5.9877172856,
+      "notional": 1553515.334169,
+      "roe": -2.0504331718,
       "size": -1793876.9,
-      "unrealized_pnl": -244030.647156
+      "unrealized_pnl": -264337.333664
      },
      {
       "coin": "ENA",
@@ -3778,11 +3790,11 @@
       "entry_px": 0.108628,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.158501263,
-      "notional": 924269.53644,
-      "roe": -8.6719022581,
+      "liquidation_px": 2.2185840424,
+      "notional": 922082.2398,
+      "roe": -8.6277149432,
       "size": -4556868.0,
-      "unrealized_pnl": -429263.980143
+      "unrealized_pnl": -427076.683503
      },
      {
       "coin": "AAVE",
@@ -3790,11 +3802,23 @@
       "entry_px": 97.8508,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 1939.6980863539,
-      "notional": 712502.992,
-      "roe": -4.6753988239,
+      "liquidation_px": 1994.6392401356,
+      "notional": 709129.0224,
+      "roe": -4.6059052919,
       "size": -4961.72,
-      "unrealized_pnl": -226994.556728
+      "unrealized_pnl": -223620.587128
+     },
+     {
+      "coin": "SOL",
+      "direction": "short",
+      "entry_px": 111.8949,
+      "leverage": 20.0,
+      "leverage_type": "cross",
+      "liquidation_px": 1686.2067801242,
+      "notional": 667380.0595,
+      "roe": 0.0437753463,
+      "size": -5977.43,
+      "unrealized_pnl": 1463.943894
      },
      {
       "coin": "DOGE",
@@ -3802,11 +3826,11 @@
       "entry_px": 0.079604,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 2.1718971833,
-      "notional": 383649.675286,
-      "roe": -1.2608524349,
+      "liquidation_px": 2.2371430154,
+      "notional": 386915.197784,
+      "roe": -1.3567017718,
       "size": -4279846.0,
-      "unrealized_pnl": -42956.395178
+      "unrealized_pnl": -46221.917676
      },
      {
       "coin": "BNB",
@@ -3814,11 +3838,11 @@
       "entry_px": 626.684,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 18376.4336796015,
-      "notional": 378566.00964,
-      "roe": -2.3282185031,
+      "liquidation_px": 18905.215713427,
+      "notional": 374028.64668,
+      "roe": -2.1804566846,
       "size": -489.996,
-      "unrealized_pnl": -71493.248441
+      "unrealized_pnl": -66955.885481
      },
      {
       "coin": "NEAR",
@@ -3826,27 +3850,15 @@
       "entry_px": 1.76998,
       "leverage": 10.0,
       "leverage_type": "cross",
-      "liquidation_px": 104.9743440077,
-      "notional": 317010.17437,
-      "roe": -10.3725399428,
+      "liquidation_px": 108.1783987429,
+      "notional": 322715.81244,
+      "roe": -10.7392106331,
       "size": -87914.3,
-      "unrealized_pnl": -161403.570942
-     },
-     {
-      "coin": "BCH",
-      "direction": "short",
-      "entry_px": 216.27,
-      "leverage": 10.0,
-      "leverage_type": "cross",
-      "liquidation_px": 8205.8723383785,
-      "notional": 286210.09532,
-      "roe": -1.8065115784,
-      "size": -1120.898,
-      "unrealized_pnl": -43792.939821
+      "unrealized_pnl": -167109.209012
      }
     ],
-    "realized_pnl": -180049.28,
-    "smart_score": 56.1,
+    "realized_pnl": -308426.31,
+    "smart_score": 56.8,
     "tier": "candidate",
     "top_coins": [
      "BTC",
@@ -3855,8 +3867,8 @@
      "HYPE",
      "ZEC"
     ],
-    "unrealized_pnl": -7930350.15,
-    "win_rate": 0.0327
+    "unrealized_pnl": -7537081.08,
+    "win_rate": 0.0812
    },
    "resolved": true,
    "source": null
@@ -3880,9 +3892,15 @@
      "source": "curated"
     },
     {
-     "confidence": 0.92,
-     "evidence": "92% of gross notional is short",
+     "confidence": 0.93,
+     "evidence": "93% of gross notional is short",
      "name": "short_bias",
+     "source": "observed"
+    },
+    {
+     "confidence": 0.7,
+     "evidence": "$-13,481 realized over 670 closes",
+     "name": "unprofitable",
      "source": "observed"
     },
     {
@@ -3897,19 +3915,19 @@
    "notes": "Leaderboard snapshot: account value $26,660,000; unrealized PnL $329,600. Also listed by bizyugoscan on 2026-09-09 - two independent sources naming the same account",
    "observed": {
     "components": {
-     "activity": 0.726,
+     "activity": 0.8141,
      "capital_scale": 1.0,
-     "diversification": 0.7765,
-     "realized_performance": 0.8297,
+     "diversification": 0.793,
+     "realized_performance": 0.3209,
      "risk_control": 1.0
     },
-    "concentration": 0.447,
-    "equity": 29159352.94,
+    "concentration": 0.414,
+    "equity": 29252069.37,
     "fill_count": 2000,
     "kind": "perps",
-    "leverage": 0.664,
-    "net_bias": -0.924,
-    "notional": 19361270.25,
+    "leverage": 0.694,
+    "net_bias": -0.927,
+    "notional": 20287555.2,
     "position_count": 6,
     "positions": [
      {
@@ -3918,11 +3936,11 @@
       "entry_px": 1.323343,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 6.1276948071,
-      "notional": 8649728.8059,
-      "roe": -1.8673458098,
-      "size": -5978111.0,
-      "unrealized_pnl": -738637.189073
+      "liquidation_px": 6.2160086301,
+      "notional": 8405354.645,
+      "roe": -1.6572717848,
+      "size": -5865565.0,
+      "unrealized_pnl": -643199.994573
      },
      {
       "coin": "ETH",
@@ -3930,35 +3948,35 @@
       "entry_px": 2470.7,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 15043.1087765097,
-      "notional": 5994303.66117,
-      "roe": -1.3971469327,
-      "size": -2267.7349,
-      "unrealized_pnl": -391403.723124
+      "liquidation_px": 15358.82768212,
+      "notional": 5869235.41285,
+      "roe": -1.4230504889,
+      "size": -2217.7349,
+      "unrealized_pnl": -389870.636214
      },
      {
       "coin": "BTC",
       "direction": "short",
-      "entry_px": 76634.4,
+      "entry_px": 78130.5,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 999557.1085106925,
-      "notional": 2516461.745,
-      "roe": -1.2828429259,
-      "size": -30.8579,
-      "unrealized_pnl": -151682.045443
+      "liquidation_px": 737360.3550575924,
+      "notional": 3530204.7507,
+      "roe": -0.8673842932,
+      "size": -43.3053,
+      "unrealized_pnl": -146738.283513
      },
      {
       "coin": "HYPE",
       "direction": "short",
-      "entry_px": 80.7892,
+      "entry_px": 82.8256,
       "leverage": 5.0,
       "leverage_type": "cross",
-      "liquidation_px": 1803.9190089499,
-      "notional": 1459630.35496,
-      "roe": -0.7426588806,
-      "size": -15730.64,
-      "unrealized_pnl": -188764.032147
+      "liquidation_px": 1521.5191796871,
+      "notional": 1741614.340768,
+      "roe": -0.5711518798,
+      "size": -18871.76,
+      "unrealized_pnl": -178549.485995
      },
      {
       "coin": "PAXG",
@@ -3967,10 +3985,10 @@
       "leverage": 5.0,
       "leverage_type": "cross",
       "liquidation_px": null,
-      "notional": 735560.6154,
-      "roe": 0.3354590464,
+      "notional": 735585.88545,
+      "roe": 0.3356423451,
       "size": 168.467,
-      "unrealized_pnl": 46247.278907
+      "unrealized_pnl": 46272.548957
      },
      {
       "coin": "SOL",
@@ -3978,25 +3996,25 @@
       "entry_px": 101.1457,
       "leverage": 20.0,
       "leverage_type": "cross",
-      "liquidation_px": 562005.9436748752,
-      "notional": 5585.07,
-      "roe": -2.1759301853,
+      "liquidation_px": 563466.0278252718,
+      "notional": 5560.17,
+      "roe": -2.0770629085,
       "size": -49.8,
-      "unrealized_pnl": -548.014099
+      "unrealized_pnl": -523.114099
      }
     ],
-    "realized_pnl": 866.3,
-    "smart_score": 86.9,
-    "tier": "elite",
+    "realized_pnl": -13480.76,
+    "smart_score": 76.2,
+    "tier": "watch",
     "top_coins": [
-     "xyz:TSM",
-     "xyz:SKHX",
+     "xyz:MSFT",
+     "xyz:INTC",
+     "xyz:COIN",
      "xyz:MSTR",
-     "xyz:CRCL",
-     "xyz:CL"
+     "xyz:SP500"
     ],
-    "unrealized_pnl": -1424787.72,
-    "win_rate": 0.3957
+    "unrealized_pnl": -1312608.97,
+    "win_rate": 0.3851
    },
    "resolved": true,
    "source": null
